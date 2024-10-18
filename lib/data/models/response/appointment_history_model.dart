@@ -93,26 +93,26 @@ class AppointmentHistoryModel {
   // Factory method to create a Patient from JSON
   factory AppointmentHistoryModel.fromJson(Map<String, dynamic> json) {
     return AppointmentHistoryModel(
-      id: json['id'],
-      userId: json['user_id'],
+      id: json['id'] ?? 0,
+      userId: json['user_id'] ?? 0,
       parentId: json['parent_id'],
       apiRegid: json['api_regid'],
-      branchId: json['branchid'],
-      regDate: DateTime.parse(json['regdate']),
-      regTime: json['regtime'],
-      initial: json['initial'],
-      firstName: json['firstname'],
-      lastName: json['lastname'],
+      branchId: json['branchid'] ?? 0,
+      regDate: DateTime.parse(json['regdate'] ?? DateTime.now().toString()),
+      regTime: json['regtime'] ?? '',
+      initial: json['initial'] ?? '',
+      firstName: json['firstname'] ?? '',
+      lastName: json['lastname'] ?? '',
       careOfType: json['careoftype'],
       careOfName: json['careofname'],
-      mobileNo: json['mobileno'],
+      mobileNo: json['mobileno'] ?? '',
       emergencyNo: json['emmergencyno'],
       phoneRes: json['phoneres'],
-      sex: json['sex'],
-      dob: DateTime.parse(json['dob']),
-      ageYear: json['ageyear'],
-      ageMonth: json['agemonth'],
-      ageDays: json['agedays'],
+      sex: json['sex'] ?? '',
+      dob: DateTime.parse(json['dob'] ?? DateTime.now().toString()),
+      ageYear: json['ageyear'] ?? 0,
+      ageMonth: json['agemonth'] ?? 0,
+      ageDays: json['agedays'] ?? 0,
       areaName: json['areaname'],
       pincode: json['pincode'],
       patientAddress: json['patientaddress'],
@@ -128,14 +128,13 @@ class AppointmentHistoryModel {
       vip: json['vip'],
       isDisabled: json['isdisabled'],
       nationality: json['nationality'],
-      createSource: json['create_source'],
-      diabetesProblem: json['diabetes_problem'],
-      bpProblem: json['bp_problem'],
-      eyeProblem: json['eye_problem'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
-      patientAppointments: List<Appointment>.from(
-          json['patient_appointments'].map((x) => Appointment.fromJson(x))),
+      createSource: json['create_source'] ?? 0,
+      diabetesProblem: json['diabetes_problem'] ?? 0,
+      bpProblem: json['bp_problem'] ?? 0,
+      eyeProblem: json['eye_problem'] ?? 0,
+      createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toString()),
+      updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toString()),
+      patientAppointments: List<Appointment>.from(json['patient_appointments']?.map((x) => Appointment.fromJson(x)) ?? []),
     );
   }
 }
@@ -150,7 +149,7 @@ class Appointment {
   final int? apiBranchId;
   final String branchName;
   final DateTime opdDate;
-  final String opdTime;
+  final String? opdTime;
   final String? doctorName;
   final String? isCrossReferred;
   final String categoryName;
@@ -159,11 +158,11 @@ class Appointment {
   final String? review;
   final String? adult;
   final String? pediatric;
-  final String? walkIn;
-  final String? withAppointment;
+  final bool? walkIn;
+  final bool? withAppointment;
   final String? visitTime;
   final String? returnTime;
-  final String otherProblem;
+  final String? otherProblem;
   final DateTime createdAt;
   final DateTime updatedAt;
   final String branchImage;
@@ -178,7 +177,7 @@ class Appointment {
     this.apiBranchId,
     required this.branchName,
     required this.opdDate,
-    required this.opdTime,
+    this.opdTime,
     this.doctorName,
     this.isCrossReferred,
     required this.categoryName,
@@ -191,7 +190,7 @@ class Appointment {
     this.withAppointment,
     this.visitTime,
     this.returnTime,
-    required this.otherProblem,
+    this.otherProblem,
     required this.createdAt,
     required this.updatedAt,
     required this.branchImage,
@@ -201,31 +200,31 @@ class Appointment {
   // Factory method to create an Appointment from JSON
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
-      id: json['id'],
-      patientId: json['patient_id'],
+      id: json['id'] ?? 0,
+      patientId: json['patient_id'] ?? 0,
       apiVisitId: json['api_visitid'],
       apiRegid: json['api_regid'],
-      branchId: json['branch_id'],
+      branchId: json['branch_id'] ?? 0,
       apiBranchId: json['api_branchid'],
-      branchName: json['branchname'],
-      opdDate: DateTime.parse(json['opddate']),
+      branchName: json['branchname'] ?? '',
+      opdDate: DateTime.parse(json['opddate'] ?? DateTime.now().toString()),
       opdTime: json['opdtime'],
       doctorName: json['doctorname'],
       isCrossReferred: json['iscrossreferred'],
-      categoryName: json['categoryname'],
+      categoryName: json['categoryname'] ?? '',
       isDilated: json['isdilated'],
       fresh: json['fresh'],
       review: json['review'],
       adult: json['adult'],
       pediatric: json['peadiatric'],
-      walkIn: json['walkin'],
-      withAppointment: json['withappointment'],
+      walkIn: json['walkin'] == 1,
+      withAppointment: json['withappointment'] == 1,
       visitTime: json['visittime'],
       returnTime: json['returntime'],
       otherProblem: json['other_problem'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
-      branchImage: json['branch_image'],
+      createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toString()),
+      updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toString()),
+      branchImage: json['branch_image'] ?? '',
       branch: Branch.fromJson(json['branch']),
     );
   }
@@ -241,7 +240,7 @@ class Branch {
   final String branchEmailAddress;
   final String image;
   final String charge;
-  final int isActive;
+  final bool isActive;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -262,17 +261,17 @@ class Branch {
   // Factory method to create a Branch from JSON
   factory Branch.fromJson(Map<String, dynamic> json) {
     return Branch(
-      id: json['id'],
-      apiBranchId: json['api_branch_id'],
-      branchCode: json['branch_code'],
-      branchName: json['branch_name'],
-      branchContactNo: json['branch_contact_no'],
-      branchEmailAddress: json['branch_email_address'],
-      image: json['image'],
-      charge: json['charge'],
-      isActive: json['is_active'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      id: json['id'] ?? 0,
+      apiBranchId: json['api_branchid'] ?? 0,
+      branchCode: json['branchcode'] ?? '',
+      branchName: json['branchname'] ?? '',
+      branchContactNo: json['branchcontactno'] ?? '',
+      branchEmailAddress: json['branchemailaddress'] ?? '',
+      image: json['image'] ?? '',
+      charge: json['charge'] ?? '',
+      isActive: json['isactive'] == 1,
+      createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toString()),
+      updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toString()),
     );
   }
 }

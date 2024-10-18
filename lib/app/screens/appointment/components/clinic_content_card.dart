@@ -48,10 +48,12 @@ class ClinicContentCard extends StatelessWidget {
           return CustomCardContainer(
             radius: Dimensions.radius5,
             tap: () {
-              Get.toNamed(
-                RouteHelper.getSelectSlotRoute(),
-                arguments: dataList[i], // Pass the clinicModel as an argument
-              );
+              Get.toNamed(RouteHelper.getSelectSlotRoute(dataList[i].image, dataList[i].branchName, dataList[i].branchContactNo, dataList[i].apiBranchId.toString()));
+
+              // Get.toNamed(
+              //   RouteHelper.getSelectSlotRoute(),
+              //   arguments: dataList[i], // Pass the clinicModel as an argument
+              // );
             },
             child: Column(
               children: [
@@ -151,10 +153,12 @@ class ClinicContentCard extends StatelessWidget {
                   transparent: true,isBold: false,
                   fontSize: Dimensions.fontSize14,
                   onPressed: () {
-                    Get.toNamed(
-                      RouteHelper.getSelectSlotRoute(),
-                      arguments: dataList[i], // Pass the clinicModel as an argument
-                    );
+                    Get.toNamed(RouteHelper.getSelectSlotRoute(dataList[i].image, dataList[i].branchName, dataList[i].branchContactNo, dataList[i].apiBranchId.toString()));
+
+                    // Get.toNamed(
+                    //   RouteHelper.getSelectSlotRoute(),
+                    //   arguments: dataList[i], // Pass the clinicModel as an argument
+                    // );
                   },),
                 ),
               ],

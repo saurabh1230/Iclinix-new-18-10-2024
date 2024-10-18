@@ -26,5 +26,6 @@ class Images {
   static const String icDiabeticBanner = 'assets/images/ic_diabetic_banner.png';
   static const String icEmptyDataHolder = 'assets/icons/ic_empty_data_holder.png';
   static const String icEmptySearchHolder = 'assets/images/img_search_placeholder.png';
-
+  static const String icLogout = 'assets/icons/ic_logout.png';
+  static const String icHelpHolder = 'assets/icons/ic_help_holder.png';
 }

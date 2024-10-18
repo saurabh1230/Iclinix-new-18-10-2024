@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:iclinix/app/drawer/help_screen.dart';
 import 'package:iclinix/app/screens/appointment/booking_successful_screen.dart';
 import 'package:iclinix/app/screens/appointment/patient_details_screen.dart';
 import 'package:iclinix/app/screens/appointment/payment_screen.dart';
@@ -35,6 +36,7 @@ class RouteHelper {
   static const String clinic = '/clinic';
   static const String notification = '/notification';
   static const String search = '/search';
+  static const String help = '/help';
 
 
 
@@ -46,7 +48,10 @@ class RouteHelper {
   static String getOtpVerificationRoute(String? phoneNo,) => '$otpVerification?phoneNo=$phoneNo';
   static String getLetsBeginRoute() => letsBegin;
   static String getDashboardRoute() => dashboard;
-  static String getSelectSlotRoute() => selectSlot;
+  // static String getSelectSlotRoute() => selectSlot;
+  static String getSelectSlotRoute(
+      String? branchImg,String? branchName,
+      String? branchContactNo,String? clinicId,) => '$selectSlot?branchImg=$branchImg&branchName=$branchName&branchContactNo=$branchContactNo&clinicId=$clinicId';
   static String getAddPatientDetailsRoute(String? appointmentDate,
       String? appointmentTime,String? clinicId,) => '$patientDetails?appointmentDate=$appointmentDate&appointmentTime=$appointmentTime&clinicId=$clinicId';
   static String getPaymentMethodRoute() => paymentMethod;
@@ -55,6 +60,7 @@ class RouteHelper {
   static String getAllClinicRoute({bool isBackButton = false}) => '$clinic?isBackButton=${isBackButton.toString()}';
   static String getNotificationRoute() => notification;
   static String getSearchRoute() => search;
+   static String getHelpRoute() => help;
 
 
   /// Pages ==================>
@@ -64,10 +70,18 @@ class RouteHelper {
     GetPage(name: register, page: () =>  RegisterScreen()),
     GetPage(name: otpVerification, page: () =>  OtpVerificationScreen(phoneNo :Get.parameters['phoneNo'])),
     GetPage(name: dashboard, page: () =>  const DashboardScreen(pageIndex: 0)),
-    GetPage(
-      name: selectSlot,
-      page: () => SelectSlotScreen(clinicModel: Get.arguments as ClinicModel?), // Get the argument passed during navigation
-    ),
+    GetPage(name: selectSlot, page: () =>   SelectSlotScreen(
+      branchImg: Get.parameters['branchImg'], branchName: Get.parameters['branchName'], branchContactNo: Get.parameters['branchContactNo'],
+      clinicId: Get.parameters['clinicId'],)),
+    // GetPage(
+    //   name: selectSlot,
+    //   page: () => SelectSlotScreen(clinicModel: Get.arguments as ClinicModel?), // Get the argument passed during navigation
+    // ),
+
+    // GetPage(
+    //   name: RouteHelper.selectSlot,
+    //   page: () => SelectSlotScreen(model: Get.arguments['model'], isSearchModel: Get.arguments['isSearchModel']),
+    // ),
     // GetPage(name: selectSlot, page: () =>  SelectSlotScreen()),
     GetPage(name: letsBegin, page: () =>  LetsBeginScreen()),
     GetPage(name: patientDetails, page: () =>  PatientDetailsScreen(appointmentDate: Get.parameters['appointmentDate'],
@@ -86,6 +100,7 @@ class RouteHelper {
     GetPage(name: clinic, page: () => AppointmentScreen(isBackButton: Get.parameters['isBackButton'] == 'true')),
     GetPage(name: notification, page: () =>  const NotificationScreen()),
     GetPage(name: search, page: () =>   SearchScreen()),
+    GetPage(name: help, page: () =>   HelpScreen()),
 
 
 

@@ -54,17 +54,15 @@ class ViewAllServicesScreen extends StatelessWidget {
               ),
               itemCount: dataList!.length,
               itemBuilder: (context, i) {
-                return Expanded(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomRoundNetworkImage(image:'${AppConstants.serviceImageUrl}${dataList[i].image.toString()}',),
-                      sizedBox4(),
-                      Text(textAlign: TextAlign.center,
-                          dataList[i].name,
-                          style: openSansMedium.copyWith(fontSize:Dimensions.fontSize14,
-                              color: Theme.of(context).hintColor))
-                    ],),
-                );
+                return Column(crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CustomRoundNetworkImage(image:'${AppConstants.serviceImageUrl}${dataList[i].image.toString()}',),
+                    sizedBox4(),
+                    Text(textAlign: TextAlign.center,
+                        dataList[i].name,
+                        style: openSansMedium.copyWith(fontSize:Dimensions.fontSize14,
+                            color: Theme.of(context).hintColor))
+                  ],);
               },),),
         );
 

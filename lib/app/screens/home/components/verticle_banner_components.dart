@@ -17,7 +17,13 @@ class VerticalBannerComponents extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(onTap: () {},
+          GestureDetector(onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Refer System Currently Unavailable.'),
+              ),
+            );
+          },
               child: Image.asset(Images.imgReferHomeBanner)),
           sizedBoxDefault(),
           GestureDetector(onTap: () {

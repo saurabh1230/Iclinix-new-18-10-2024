@@ -71,7 +71,12 @@ class DiabeticScreen extends StatelessWidget {
                     ),
                     buttonText: 'Book Appointment',
                     onPressed: () {
-                      Get.toNamed(RouteHelper.getAllClinicRoute(isBackButton: true));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Diabetic Clinic currently unavailable.'),
+                        ),
+                      );
+                      // Get.toNamed(RouteHelper.getAllClinicRoute(isBackButton: true));
                     },
                   ),
                   sizedBox20(),

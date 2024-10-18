@@ -60,22 +60,24 @@ class PaymentScreen extends StatelessWidget {
                   bookingFee: '500',
                 ),
                 sizedBoxDefault(),
-
                 Obx(() {
                   return CustomRadioButton(
                     items: appointmentControl.paymentMethods,
-                    selectedValue: appointmentControl
-                        .selectedPaymentMethod.value, // Unwrap RxString
+                    selectedValue: appointmentControl.selectedPaymentMethod.value,
                     onChanged: (value) {
-                      appointmentControl.selectPaymentMethod(
-                          value!); // Update the selected payment method
-                      // Print the selected payment method
-                      print(
-                          'Selected Payment Method: ${appointmentControl.selectedPaymentMethod.value}');
+                      if (value == 'Razorpay') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Online payments are currently unavailable.'),
+                          ),
+                        );
+                      } else {
+                        // Update selected payment method
+                        appointmentControl.selectPaymentMethod(value!);
+                      }
                     },
                   );
                 }),
-
                 // sizedBoxDefault(),
                 // Text('PAY NOW',style: openSansRegular.copyWith(color: Theme.of(context).hintColor,
                 //     fontSize: Dimensions.fontSize14),),

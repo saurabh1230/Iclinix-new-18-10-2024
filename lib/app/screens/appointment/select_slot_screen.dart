@@ -12,15 +12,20 @@ import 'package:iclinix/utils/dimensions.dart';
 import 'package:iclinix/utils/sizeboxes.dart';
 import 'package:get/get.dart';
 import '../../../data/models/response/clinic_model.dart';
+import '../../../data/models/response/search_model.dart';
 import 'components/select_slot_time_component.dart';
 
 class SelectSlotScreen extends StatelessWidget {
-  final ClinicModel? clinicModel;
-   SelectSlotScreen({super.key, this.clinicModel});
+  final String? branchImg;
+  final String? branchName;
+  final String? branchContactNo;
+  final String? clinicId;
+   SelectSlotScreen({super.key, required this.branchImg, required this.branchName, required this.branchContactNo, required this.clinicId,});
   final _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+
 
     return Scaffold(
       appBar: const CustomAppBar(title: 'Select Slot',isBackButtonExist: true,
@@ -30,7 +35,10 @@ class SelectSlotScreen extends StatelessWidget {
             child: GetBuilder<AppointmentController>(builder: (appointmentControl) {
               return  Column(
                 children: [
-                   SelectSlotCard(clinicModel: clinicModel,),
+                   SelectSlotCard(
+                       img: branchImg!,
+                       branchName: branchName!,
+                       branchContactNo: branchContactNo!),
                   Padding( padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -64,7 +72,9 @@ class SelectSlotScreen extends StatelessWidget {
                           onPressed: () {
                           if(_dateController.text.isNotEmpty && appointmentControl.selectedTime!.isNotEmpty) {
                             Get.toNamed(RouteHelper.getAddPatientDetailsRoute(_dateController.text,
-                                appointmentControl.selectedTime,clinicModel!.id.toString()));
+                                appointmentControl.selectedTime.toString(),
+                                clinicId
+                                ));
                           } else {
                             showCustomSnackBar('Please Add Appointment Date and Time');
                           }

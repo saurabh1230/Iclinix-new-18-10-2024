@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iclinix/app/screens/dashboard/dashboard_screen.dart';
+import 'package:iclinix/app/widget/confirmation_dialog.dart';
 import 'package:iclinix/controller/profile_controller.dart';
+import 'package:iclinix/helper/route_helper.dart';
 import 'package:iclinix/utils/dimensions.dart';
+import 'package:iclinix/utils/images.dart';
 import 'package:iclinix/utils/styles.dart';
 import 'package:get/get.dart';
 
@@ -92,7 +95,9 @@ class CustomDrawer extends StatelessWidget {
             // ),
             Align(alignment: Alignment.centerLeft,
               child: TextButton(
-                onPressed: () {  },
+                onPressed: () {
+                  Get.toNamed(RouteHelper.getHelpRoute());
+                },
                 child: Text(
                     "Help",
                     style: openSansRegular.copyWith(fontSize: Dimensions.fontSize28,color: Theme.of(context).cardColor)
@@ -117,6 +122,27 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
             ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                onPressed: () {
+                  Get.dialog(
+                    ConfirmationDialog(
+                      icon: Images.icLogout,
+                      description: 'Are You Sure To Logout',
+                      onYesPressed: () {
+                       Get.toNamed(RouteHelper.getLoginRoute());
+                      },
+                    ),
+                  );
+                },
+                child: Text(
+                  "Log Out",
+                  style: openSansRegular.copyWith(fontSize: Dimensions.fontSize28, color: Theme.of(context).cardColor),
+                ),
+              ),
+            ),
+
           ],
         ),
       ),
@@ -130,21 +156,16 @@ class MenuBox extends StatelessWidget {
   final Widget menu;
   final Function()? onTap;
   const MenuBox({
-    Key? key,
+    super.key,
     required this.menu,
     this.padding = const EdgeInsets.all(10),
     this.icon,
     this.onTap,
-  }) : super(key: key);
-
+  });
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        if (onTap != null) {
-          this.onTap!();
-        }
-      },
+      onTap: onTap,
       child: Container(
         padding: padding,
         child: Row(

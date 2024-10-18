@@ -10,6 +10,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function? onBackPressed;
   final Widget? menuWidget;
   final Widget? drawerButton;
+  final Color? bgColor;
+  final Color? iconColor;
 
   const CustomAppBar({
     Key? key,
@@ -17,7 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onBackPressed,
     this.isBackButtonExist = false,
     this.menuWidget,
-    this.drawerButton,
+    this.drawerButton, this.bgColor, this.iconColor,
   }) : super(key: key);
 
   @override
@@ -27,18 +29,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         title!,
         style: openSansBold.copyWith(
           fontSize: Dimensions.fontSizeDefault,
-          color: Theme.of(context).disabledColor,
+          color: iconColor??  Theme.of(context).disabledColor,
         ),
       ),
       centerTitle: false,
       leading: isBackButtonExist
           ? IconButton(
               icon: const Icon(Icons.arrow_back),
-              color: Theme.of(context).primaryColor,
+              color: iconColor??  Theme.of(context).primaryColor,
               onPressed: () => Navigator.pop(context),
             )
           : drawerButton,
-      backgroundColor: Theme.of(context).cardColor,
+      backgroundColor: bgColor??  Theme.of(context).cardColor,
       elevation: 0,
       actions: menuWidget != null
           ? [

@@ -64,7 +64,13 @@ class PlansDetailsScreen extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: CustomButtonWidget(buttonText: 'Purchase Plan',onPressed: () {},
+                child: CustomButtonWidget(buttonText: 'Purchase Plan',onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Online Plans Are Currently Unavailable.'),
+                    ),
+                  );
+                },
                 color: Theme.of(context).primaryColor,),
               )
             ],

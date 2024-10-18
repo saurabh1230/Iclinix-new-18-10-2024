@@ -17,6 +17,7 @@ import 'package:iclinix/utils/styles.dart';
 import '../../../data/models/response/search_model.dart';
 import '../../../utils/themes/light_theme.dart';
 import '../../widget/custom_button_widget.dart';
+import '../appointment/select_slot_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
@@ -40,8 +41,9 @@ class SearchScreen extends StatelessWidget {
           final isLoading = clinicControl.isSearchLoading;
           return Column(
             children: [
+              sizedBoxDefault(),
               Padding(
-                padding:  EdgeInsets.only(left :Dimensions.paddingSizeDefault,
+                padding:  const EdgeInsets.only(left :Dimensions.paddingSizeDefault,
                 right: Dimensions.paddingSizeDefault,bottom: Dimensions.paddingSizeDefault),
                 child: TypeAheadFormField<SearchModel>(
                   textFieldConfiguration: TextFieldConfiguration(
@@ -58,18 +60,30 @@ class SearchScreen extends StatelessWidget {
                   ),
                   suggestionsCallback: (pattern) async {
                     if (pattern.isNotEmpty) {
-                      await clinicControl.getSearchList(_searchController
-                          .text); // Fetch search list from the API
+                      // Add a small delay before fetching data to avoid modifying state during build.
+                      await Future.delayed(Duration(milliseconds: 100));
+
+                      await clinicControl.getSearchList(_searchController.text); // Fetch search list from the API
+
+                      // Return the filtered list of clinics
                       return clinicControl.searchList!
-                          .where((item) => item.branchName!
-                              .toLowerCase()
-                              .contains(pattern.toLowerCase()))
+                          .where((item) => item.branchName!.toLowerCase().contains(pattern.toLowerCase()))
                           .toList();
                     }
                     return [];
                   },
+
+
                   itemBuilder: (context, SearchModel suggestion) {
                     return ListTile(
+                      onTap: () {
+                        Get.toNamed(RouteHelper.getSelectSlotRoute(suggestion.image, suggestion.branchName, suggestion.branchContactNo, suggestion.apiBranchId.toString()));
+
+                        // GetPage(
+                        //   name: RouteHelper.selectSlot,
+                        //   page: () => SelectSlotScreen(model: Get.arguments['model'], isSearchModel: Get.arguments['isSearchModel']),
+                        // );
+                      },
                       title: Text(
                         suggestion.branchName.toString(),
                         style: openSansRegular,
@@ -95,7 +109,7 @@ class SearchScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
                       child: Center(
                           child: EmptyDataWidget(
-                        text: 'Nothing Available',
+                        text: 'Search For Clinic',
                         image: Images.icEmptySearchHolder,
                         fontColor: Theme.of(context).disabledColor,
                       )),
@@ -112,11 +126,16 @@ class SearchScreen extends StatelessWidget {
                             return CustomCardContainer(
                               radius: Dimensions.radius5,
                               tap: () {
-                                Get.toNamed(
-                                  RouteHelper.getSelectSlotRoute(),
-                                  arguments: dataList[
-                                      i], // Pass the clinicModel as an argument
-                                );
+                                Get.toNamed(RouteHelper.getSelectSlotRoute(dataList[i].image, dataList[i].branchName, dataList[i].branchContactNo, dataList[i].apiBranchId.toString()));
+                                // GetPage(
+                                //   name: RouteHelper.selectSlot,
+                                //   page: () => SelectSlotScreen(model:dataList[i], isSearchModel: true),
+                                // );
+                                // Get.toNamed(
+                                //   RouteHelper.getSelectSlotRoute(),
+                                //   arguments: dataList[
+                                //       i], // Pass the clinicModel as an argument
+                                // );
                               },
                               child: Column(
                                 children: [
@@ -242,11 +261,13 @@ class SearchScreen extends StatelessWidget {
                                       isBold: false,
                                       fontSize: Dimensions.fontSize14,
                                       onPressed: () {
-                                        Get.toNamed(
-                                          RouteHelper.getSelectSlotRoute(),
-                                          arguments: dataList[
-                                              i], // Pass the clinicModel as an argument
-                                        );
+                                        Get.toNamed(RouteHelper.getSelectSlotRoute(dataList[i].image, dataList[i].branchName, dataList[i].branchContactNo, dataList[i].apiBranchId.toString()));
+
+                                        // Get.toNamed(
+                                        //   RouteHelper.getSelectSlotRoute(),
+                                        //   arguments: dataList[
+                                        //       i], // Pass the clinicModel as an argument
+                                        // );
                                       },
                                     ),
                                   ),

@@ -9,8 +9,10 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../data/models/response/clinic_model.dart';
 class SelectSlotCard extends StatelessWidget {
-  final ClinicModel? clinicModel;
-  const SelectSlotCard({super.key, this.clinicModel});
+  final String img;
+  final String branchName;
+  final String branchContactNo;
+  const SelectSlotCard({super.key, required this.img, required this.branchName, required this.branchContactNo});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +23,12 @@ class SelectSlotCard extends StatelessWidget {
         children: [
           CustomNetworkImageWidget(
             height: 80,width: 80,
-            image: clinicModel!.image,),
+            image: img,),
           // Image.asset('assets/images/img_select_slot_demo.png',height: 80,width: 80,),
           sizedBoxW10(),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(clinicModel!.branchName,
+              Text(branchName,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: openSansBold.copyWith(fontSize: Dimensions.fontSize14),),
@@ -41,7 +43,7 @@ class SelectSlotCard extends StatelessWidget {
                           color: Theme.of(context).primaryColor), // Different color for "resend"
                     ),
                     TextSpan(
-                      text: clinicModel!.branchContactNo,
+                      text: branchContactNo,
                       style: openSansRegular.copyWith(
                           fontSize: Dimensions.fontSize13,
                           color: Theme.of(context)
