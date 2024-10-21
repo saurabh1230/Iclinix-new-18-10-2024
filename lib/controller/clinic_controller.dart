@@ -112,5 +112,41 @@ class ClinicController extends GetxController implements GetxService {
 
 
 
+  bool _isServiceDetailsLoading = false;
+  bool get isServiceDetailsLoading => _isServiceDetailsLoading;
+
+  ServicesModel? _serviceDetails;
+  ServicesModel? get serviceDetails => _serviceDetails;
+
+  Future<ServicesModel?> getServiceDetailsApi(String? id) async {
+    _isServiceDetailsLoading = true;
+    _serviceDetails = null;
+    update();
+
+    try {
+      Response response = await clinicRepo.getServiceDetails(id);
+
+      if (response.statusCode == 200) {
+          Map<String, dynamic> responseData = response.body['serviceDetail'];
+          _serviceDetails = ServicesModel.fromJson(responseData);
+
+      } else {
+        print("Failed to serviceDetail data: ${response.statusCode}");
+        // ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      // Handle exceptions
+      print("Exception occurred: $e");
+    }
+
+    _isServiceDetailsLoading = false;
+    update();
+    return _serviceDetails;
+  }
+
+
+
+
+
 
 }

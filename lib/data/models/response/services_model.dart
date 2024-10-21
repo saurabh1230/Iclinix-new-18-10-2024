@@ -2,6 +2,7 @@ class ServicesModel {
   final int id;
   final String name;
   final String image;
+  final String description;
   final int sortOrder;
   final int status;
   final DateTime createdAt;
@@ -10,6 +11,7 @@ class ServicesModel {
   ServicesModel({
     required this.id,
     required this.name,
+    required this.description,
     required this.image,
     required this.sortOrder,
     required this.status,
@@ -23,6 +25,7 @@ class ServicesModel {
       id: json['id'],
       name: json['name'],
       image: json['image'],
+      description: json['description'],
       sortOrder: json['sort_order'],
       status: json['status'],
       createdAt: DateTime.parse(json['created_at']),
@@ -35,6 +38,7 @@ class ServicesModel {
       'id': id,
       'name': name,
       'image': image,
+      'description': description,
       'sort_order': sortOrder,
       'status': status,
       'created_at': createdAt.toIso8601String(),

@@ -204,7 +204,7 @@ class AppointmentController extends GetxController implements GetxService {
   }
 
    List<String> paymentMethods = ['Cash', 'Razorpay'];
-  var selectedPaymentMethod = ''.obs; // RxString for selected payment method
+  var selectedPaymentMethod = 'Cash'.obs; // RxString for selected payment method
   void selectPaymentMethod(String method) {
     selectedPaymentMethod.value = method; // Update the selected payment method
   }
@@ -242,6 +242,14 @@ class AppointmentController extends GetxController implements GetxService {
       _isAppointmentHistoryLoading = false;
       update();
     }
+  }
+  bool _bookingDiabeticType = false;
+  bool get bookingDiabeticType => _bookingDiabeticType;
+
+
+  void selectBookingType(bool val) {
+    _bookingDiabeticType = val;
+    update();
   }
 
 

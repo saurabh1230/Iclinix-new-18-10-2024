@@ -8,7 +8,8 @@ import 'package:iclinix/utils/images.dart';
 import 'package:iclinix/utils/sizeboxes.dart';
 import 'package:iclinix/utils/styles.dart';
 import 'package:get/get.dart';
-
+import 'package:html/parser.dart' as htmlParser;
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import '../plans_details_screen.dart';
 
 class DiabeticEyeCarePlansComponent extends StatelessWidget {
@@ -53,46 +54,79 @@ class DiabeticEyeCarePlansComponent extends StatelessWidget {
                           children: [
                             Text(
                               dataList[j].planName,
-                              style: openSansBold.copyWith(
+                              style: openSansRegular.copyWith(
                                   fontSize: Dimensions.fontSize20,
                                   color: Theme.of(context).primaryColor),
                             ),
                             sizedBox10(),
+                            HtmlWidget(
+                              dataList[j].sortDesc,
+                              textStyle: openSansRegular.copyWith(
+                                fontSize: Dimensions.fontSize12,
+                                fontWeight: FontWeight.w100,
+                                color: Theme.of(context).disabledColor,
+                              ),
+                            ),
+                            sizedBox10(),
                             Text(
-                              "Whats's Included In Your Plan",
+                              '₹ ${dataList[j].sellingPrice.toInt()}',
                               style: openSansSemiBold.copyWith(
-                                  fontSize: Dimensions.fontSize13,
-                                  color: Theme.of(context).disabledColor),
+                                  fontSize: Dimensions.fontSize20,
+                                  color: Theme.of(context).primaryColor),
                             ),
-                            ListView.builder(
-                              itemCount: dataList[j].features.length,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              itemBuilder: (_, i) {
-                                return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start, // Align bullet and text
-                                  children: [
-                                    Text(
-                                      '• ', // Bullet point as a text character
-                                      style: openSansRegular.copyWith(
-                                        fontSize: Dimensions.fontSize12,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        dataList[j].features[i].featureName,
-                                        style: openSansRegular.copyWith(
-                                          fontSize: Dimensions.fontSize12,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
+
+                            // Text(
+                            //   dataList[j].description,
+                            //   maxLines: 4,
+                            //   style: openSansRegular.copyWith(
+                            //       fontSize: Dimensions.fontSize20,
+                            //       color: Theme.of(context).primaryColor),
+                            // ),
+                            // Text(
+                            //   "Whats's Included In Your Plan",
+                            //   style: openSansSemiBold.copyWith(
+                            //       fontSize: Dimensions.fontSize13,
+                            //       color: Theme.of(context).disabledColor),
+                            // ),
+                            // ListView.builder(
+                            //   itemCount: dataList[j].features.length,
+                            //   physics: const NeverScrollableScrollPhysics(),
+                            //   padding: EdgeInsets.zero,
+                            //   shrinkWrap: true,
+                            //   itemBuilder: (_, i) {
+                            //     print('print sort descrption ${dataList[i].sortDesc}');
+                            //     return Column(
+                            //       children: [
+                            //         Row(
+                            //           crossAxisAlignment: CrossAxisAlignment.start, // Align bullet and text
+                            //           children: [
+                            //             Text(
+                            //               '• ', // Bullet point as a text character
+                            //               style: openSansRegular.copyWith(
+                            //                 fontSize: Dimensions.fontSize12,
+                            //                 color: Theme.of(context).primaryColor,
+                            //               ),
+                            //             ),
+                            //             Expanded(
+                            //               child: Text(
+                            //                 dataList[j].features[i].featureName,
+                            //                 style: openSansRegular.copyWith(
+                            //                   fontSize: Dimensions.fontSize12,
+                            //                   color: Theme.of(context).primaryColor,
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //         HtmlWidget(dataList[j].sortDesc,textStyle: openSansRegular.copyWith(
+                            //           fontSize: Dimensions.fontSize12,
+                            //           fontWeight: FontWeight.w100,
+                            //           color: Theme.of(context).disabledColor,
+                            //         ),),
+                            //       ],
+                            //     );
+                            //   },
+                            // ),
 
                             sizedBoxDefault(),
                             CustomButtonWidget(
@@ -101,7 +135,8 @@ class DiabeticEyeCarePlansComponent extends StatelessWidget {
                               isBold: false,
                               transparent: true,
                               onPressed: () {
-                                Get.to(PlansDetailsScreen(planModel: dataList[j]));
+                                Get.to(
+                                    PlansDetailsScreen(planModel: dataList[j]));
                               },
                             ),
                           ],

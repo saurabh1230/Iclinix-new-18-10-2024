@@ -17,6 +17,7 @@ class AppConstants {
   static const String serviceListUrl = "service-list";
   static const String appointmentListUrl = "appointment-history";
   static const String searchListUrl = "search";
+  static const String serviceDetails = "service/";
 
   /// image url ///
   static const String serviceImageUrl = "https://lab5.invoidea.in/iclinix/public/serviceImage/";

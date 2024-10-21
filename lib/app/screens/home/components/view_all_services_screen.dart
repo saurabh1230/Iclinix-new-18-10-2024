@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iclinix/app/widget/custom_app_bar.dart';
 import 'package:get/get.dart';
 import 'package:iclinix/controller/clinic_controller.dart';
+import 'package:iclinix/helper/route_helper.dart';
 
 import '../../../../utils/app_constants.dart';
 import '../../../../utils/dimensions.dart';
@@ -49,20 +50,26 @@ class ViewAllServicesScreen extends StatelessWidget {
                 crossAxisCount: 3,
                 crossAxisSpacing: 10.0,
                 mainAxisSpacing: 10.0,
-                mainAxisExtent: 170,
-                // childAspectRatio: 0.8,
+                // mainAxisExtent: 170,
+                childAspectRatio: 0.8,
               ),
               itemCount: dataList!.length,
               itemBuilder: (context, i) {
-                return Column(crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CustomRoundNetworkImage(image:'${AppConstants.serviceImageUrl}${dataList[i].image.toString()}',),
-                    sizedBox4(),
-                    Text(textAlign: TextAlign.center,
-                        dataList[i].name,
-                        style: openSansMedium.copyWith(fontSize:Dimensions.fontSize14,
-                            color: Theme.of(context).hintColor))
-                  ],);
+                return GestureDetector(
+                  onTap: () {
+                    Get.toNamed(RouteHelper.getServiceDetailRoute(dataList[i].id.toString(), dataList[i].name.toString()));
+                  },
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CustomRoundNetworkImage(image:'${AppConstants.serviceImageUrl}${dataList[i].image.toString()}',
+                        height: 80,width: 80,),
+                      sizedBox4(),
+                      Text(textAlign: TextAlign.center,
+                          dataList[i].name,
+                          style: openSansMedium.copyWith(fontSize:Dimensions.fontSize14,
+                              color: Theme.of(context).hintColor))
+                    ],),
+                );
               },),),
         );
 

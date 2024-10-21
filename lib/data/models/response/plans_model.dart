@@ -7,11 +7,12 @@ class PlanModel {
   int discountType;
   int duration;
   String sortDesc;
+  String description;
   String? tagLine; // Nullable because it can be null in the response
   int status;
   List<FeatureModel> features;
-  String? createdAt;
-  String? updatedAt; // Nullable because it can be null in the response
+  String? createdAt; // Nullable
+  String? updatedAt; // Nullable
 
   PlanModel({
     required this.planId,
@@ -22,6 +23,7 @@ class PlanModel {
     required this.discountType,
     required this.duration,
     required this.sortDesc,
+    required this.description,
     this.tagLine, // Nullable
     required this.status,
     required this.features,
@@ -31,21 +33,22 @@ class PlanModel {
 
   factory PlanModel.fromJson(Map<String, dynamic> json) {
     return PlanModel(
-      planId: json['plan_id'],
-      planName: json['plan_name'],
-      price: json['price'].toDouble(),
-      discount: json['discount'].toDouble(),
-      sellingPrice: json['selling_price'].toDouble(),
-      discountType: json['discount_type'],
-      duration: json['duration'],
-      sortDesc: json['sort_desc'],
-      tagLine: json['tag_line'], // Can be null, so no `!`
-      status: json['status'],
-      features: (json['features'] as List<dynamic>)
-          .map((feature) => FeatureModel.fromJson(feature))
-          .toList(),
-      createdAt: json['created_at'], // Can be null
-      updatedAt: json['update_at'], // Can be null
+      planId: json['plan_id'] ?? 0, // Default to 0 if null
+      planName: json['plan_name'] ?? '', // Default to an empty string if null
+      price: (json['price'] ?? 0).toDouble(), // Default to 0.0 if null
+      discount: (json['discount'] ?? 0).toDouble(), // Default to 0.0 if null
+      sellingPrice: (json['selling_price'] ?? 0).toDouble(), // Default to 0.0 if null
+      discountType: json['discount_type'] ?? 0, // Default to 0 if null
+      duration: json['duration'] ?? 0, // Default to 0 if null
+      sortDesc: json['sort_desc'] ?? '', // Default to an empty string if null
+      description: json['description'] ?? '',
+      tagLine: json['tag_line'], // Nullable, keep as is
+      status: json['status'] ?? 0, // Default to 0 if null
+      features: (json['features'] as List<dynamic>?)
+          ?.map((feature) => FeatureModel.fromJson(feature))
+          .toList() ?? [], // Ensure a default empty list if features is null
+      createdAt: json['created_at'], // Nullable, keep as is
+      updatedAt: json['updated_at'], // Nullable, keep as is
     );
   }
 }
@@ -65,10 +68,10 @@ class FeatureModel {
 
   factory FeatureModel.fromJson(Map<String, dynamic> json) {
     return FeatureModel(
-      id: json['id'],
-      featureName: json['feature_name'],
-      sortOrder: json['sort_order'],
-      status: json['status'],
+      id: json['id'] ?? 0, // Default to 0 if null
+      featureName: json['feature_name'] ?? '', // Default to an empty string if null
+      sortOrder: json['sort_order'] ?? 0, // Default to 0 if null
+      status: json['status'] ?? 0, // Default to 0 if null
     );
   }
 }

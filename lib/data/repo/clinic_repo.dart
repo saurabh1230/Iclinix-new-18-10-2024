@@ -23,7 +23,9 @@ class ClinicRepo {
   Future<Response> getSearchList(String? iclinix) {
     return apiClient.getData('${AppConstants.searchListUrl}?query=$iclinix',method: 'GET',);
   }
-
+  Future<Response> getServiceDetails(String? id) async {
+    return await apiClient.getData('${AppConstants.serviceDetails}$id',method: 'GET');
+  }
 
 
 }

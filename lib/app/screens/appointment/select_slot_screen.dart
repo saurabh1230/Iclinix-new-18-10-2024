@@ -53,7 +53,7 @@ class SelectSlotScreen extends StatelessWidget {
                             DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: appointmentControl.selectedDate ?? DateTime.now(),
-                              firstDate: DateTime(2000),
+                              firstDate: appointmentControl.selectedDate ?? DateTime.now(),
                               lastDate: DateTime(2100),
                             );
                             if (pickedDate != null) {

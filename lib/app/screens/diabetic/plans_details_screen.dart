@@ -6,7 +6,8 @@ import 'package:iclinix/utils/dimensions.dart';
 import 'package:iclinix/utils/sizeboxes.dart';
 import 'package:iclinix/utils/styles.dart';
 import 'package:iclinix/utils/themes/light_theme.dart';
-
+import 'package:html/parser.dart' as htmlParser;
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import '../../../data/models/response/plans_model.dart';
 
 class PlansDetailsScreen extends StatelessWidget {
@@ -82,38 +83,48 @@ class PlansDetailsScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
           child: Column(
             children: [
-              CustomDecoratedContainer(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Tag Line:',style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,),),
-                      Text(planModel!.tagLine.toString(),style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,
-                      color: Theme.of(context).hintColor),),
-                    ],
-                  )),
+              // CustomDecoratedContainer(
+              //     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Text(planModel!.tagLine.toString(),style: openSansBold.copyWith(fontSize: Dimensions.fontSize14,
+              //         color: Theme.of(context).disabledColor,
+              //         ),),
+              //       ],
+              //     )),
               sizedBoxDefault(),
               CustomDecoratedContainer(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Description:',style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,),),
-                      Text(planModel!.sortDesc.toString(),style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,
-                          color: Theme.of(context).hintColor),)
+                      Text(planModel!.tagLine.toString(),style: openSansBold.copyWith(fontSize: Dimensions.fontSize14,
+                        color: Theme.of(context).disabledColor,
+                      ),),
+                      // Text(planModel!.sortDesc.toString(),style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,
+                      //     color: Theme.of(context).hintColor),),
+                      // Text('Description:',style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,),),
+                      HtmlWidget(planModel!.description.toString(),textStyle: openSansRegular.copyWith(
+                        fontSize: Dimensions.fontSize12,
+                        fontWeight: FontWeight.w100,
+                        color: Theme.of(context).disabledColor,
+                      ),),
+                      // Text(planModel!.sortDesc.toString(),style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,
+                      //     color: Theme.of(context).hintColor),)
                     ],
                   )),
               sizedBoxDefault(),
-              CustomDecoratedContainer(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Features:',style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,),),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: planModel!.features.length,
-                          itemBuilder: (_,i) {
-                        return Text('• ${planModel!.features[i].featureName}',style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,
-                            color: Theme.of(context).hintColor),);
-                      })
-                    ],
-                  )),
+              // CustomDecoratedContainer(
+              //     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Text('Features:',style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,),),
+              //         ListView.builder(
+              //           shrinkWrap: true,
+              //           physics: const NeverScrollableScrollPhysics(),
+              //           itemCount: planModel!.features.length,
+              //             itemBuilder: (_,i) {
+              //           return Text('• ${planModel!.features[i].featureName}',style: openSansRegular.copyWith(fontSize: Dimensions.fontSize14,
+              //               color: Theme.of(context).hintColor),);
+              //         })
+              //       ],
+              //     )),
             ],
           ),
         ),

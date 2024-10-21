@@ -67,24 +67,31 @@ class NeedForHelpComponent extends StatelessWidget {
                     ),
                     itemCount: dataList.length,
                     itemBuilder: (context, i) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CustomRoundNetworkImage(
-                            image:
-                            '${AppConstants.serviceImageUrl}${dataList[i].image.toString()}',
-                            height: 80,width: 80,
-                          ),
-                          sizedBox4(),
-                          Text(
-                            textAlign: TextAlign.center,
-                            dataList[i].name,
-                            style: openSansMedium.copyWith(
-                              fontSize: Dimensions.fontSize14,
-                              color: Theme.of(context).hintColor,
+                      return GestureDetector(
+                        onTap: () {
+                          print('chck');
+                          Get.toNamed(RouteHelper.getServiceDetailRoute(dataList[i].id.toString(), dataList[i].name.toString()));
+
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CustomRoundNetworkImage(
+                              image:
+                              '${AppConstants.serviceImageUrl}${dataList[i].image.toString()}',
+                              height: 80,width: 80,
                             ),
-                          )
-                        ],
+                            sizedBox4(),
+                            Text(
+                              textAlign: TextAlign.center,
+                              dataList[i].name,
+                              style: openSansMedium.copyWith(
+                                fontSize: Dimensions.fontSize14,
+                                color: Theme.of(context).hintColor,
+                              ),
+                            )
+                          ],
+                        ),
                       );
                     },
                   ),

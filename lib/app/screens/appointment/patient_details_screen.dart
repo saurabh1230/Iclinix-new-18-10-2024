@@ -137,6 +137,13 @@ class PatientDetailsScreen extends StatelessWidget {
                   !appointmentControl.isNewPatientEnabled ?
                   Obx(() {
                     final patients = appointmentControl.patientList ?? [];
+
+                    // Set the default selected patient to the first one if no patient is selected yet
+                    if (patients.isNotEmpty && appointmentControl.selectedPatient.value.isEmpty) {
+                      final firstPatient = patients.first;
+                      appointmentControl.selectPatient(firstPatient.id!, '${firstPatient.firstName} ${firstPatient.lastName}');
+                    }
+
                     return CustomRadioButton(
                       items: patients.map((patient) {
                         return '${patient.firstName} ${patient.lastName}';
@@ -148,6 +155,7 @@ class PatientDetailsScreen extends StatelessWidget {
                               (patient) => '${patient.firstName} ${patient.lastName}' == value!,
                         );
 
+                        // Update the selected patient in the controller
                         appointmentControl.selectPatient(selectedPatient.id!, value!);
 
                         // Print the selected patient ID
@@ -156,7 +164,8 @@ class PatientDetailsScreen extends StatelessWidget {
                     );
                   })
 
-                : Column( crossAxisAlignment: CrossAxisAlignment.start,
+
+                      : Column( crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             sizedBox10(),
                             CustomTextField(
@@ -377,6 +386,8 @@ class PatientDetailsScreen extends StatelessWidget {
                           print(
                               'Print selectedPatientId  ${appointmentControl.selectedPatientId.value.toString()}');
 
+                          print('print bool ${appointmentControl.bookingDiabeticType}');
+
                           AppointmentModel appointmentModel = AppointmentModel(
                             patientId: appointmentControl.selectedPatientId.value.toString(),
                             firstName: _firstnameController.text,
@@ -394,6 +405,7 @@ class PatientDetailsScreen extends StatelessWidget {
                             branchId: clinicId.toString(),
                             initial: appointmentControl.selectedInitial,
                             includePatientType: appointmentControl.isNewPatientEnabled,
+                            type: appointmentControl.bookingDiabeticType == true ? "2" : "1"
                           );
 
                           Get.toNamed(RouteHelper.getPaymentMethodRoute(), arguments: appointmentModel);

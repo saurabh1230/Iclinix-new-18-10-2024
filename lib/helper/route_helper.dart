@@ -11,6 +11,7 @@ import 'package:iclinix/app/screens/auth/otp_verification_screen.dart';
 import 'package:iclinix/app/screens/auth/register_screen.dart';
 import 'package:iclinix/app/screens/dashboard/dashboard_screen.dart';
 import 'package:iclinix/app/screens/home/components/view_all_services_screen.dart';
+import 'package:iclinix/app/screens/home/service_details_screen.dart';
 import 'package:iclinix/app/screens/notification/notification_screen.dart';
 import 'package:iclinix/app/screens/onboard/splash.dart';
 import 'package:iclinix/app/screens/search/search_screen.dart';
@@ -37,6 +38,7 @@ class RouteHelper {
   static const String notification = '/notification';
   static const String search = '/search';
   static const String help = '/help';
+  static const String serviceDetail = '/service-detail';
 
 
 
@@ -61,6 +63,7 @@ class RouteHelper {
   static String getNotificationRoute() => notification;
   static String getSearchRoute() => search;
    static String getHelpRoute() => help;
+   static String getServiceDetailRoute(String? id,String? title,) => '$serviceDetail?id=$id&title=$title';
 
 
   /// Pages ==================>
@@ -101,6 +104,9 @@ class RouteHelper {
     GetPage(name: notification, page: () =>  const NotificationScreen()),
     GetPage(name: search, page: () =>   SearchScreen()),
     GetPage(name: help, page: () =>   HelpScreen()),
+    GetPage(name: serviceDetail, page: () =>  ServiceDetailsScreen(id: Get.parameters['id'],
+      title: Get.parameters['title'],
+      )),
 
 
 

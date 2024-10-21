@@ -78,7 +78,7 @@ class CustomDrawer extends StatelessWidget {
                 },
                 child: Text(
                     "History",
-                    style: openSansRegular.copyWith(fontSize: Dimensions.fontSize28,color: Theme.of(context).cardColor)
+                    style: openSansRegular.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).cardColor)
                 ),
               ),
             ),
@@ -99,8 +99,8 @@ class CustomDrawer extends StatelessWidget {
                   Get.toNamed(RouteHelper.getHelpRoute());
                 },
                 child: Text(
-                    "Help",
-                    style: openSansRegular.copyWith(fontSize: Dimensions.fontSize28,color: Theme.of(context).cardColor)
+                    "Contact Us",
+                    style: openSansRegular.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).cardColor)
                 ),
               ),
             ),
@@ -109,7 +109,7 @@ class CustomDrawer extends StatelessWidget {
                 onPressed: () {},
                 child: Text(
                     "Privacy Policy",
-                    style: openSansRegular.copyWith(fontSize: Dimensions.fontSize28,color: Theme.of(context).cardColor)
+                    style: openSansRegular.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).cardColor)
                 ),
               ),
             ),
@@ -118,7 +118,7 @@ class CustomDrawer extends StatelessWidget {
                 onPressed: () {},
                 child: Text(
                     "Terms & Condition",
-                    style: openSansRegular.copyWith(fontSize: Dimensions.fontSize28,color: Theme.of(context).cardColor)
+                    style: openSansRegular.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).cardColor)
                 ),
               ),
             ),
@@ -138,7 +138,7 @@ class CustomDrawer extends StatelessWidget {
                 },
                 child: Text(
                   "Log Out",
-                  style: openSansRegular.copyWith(fontSize: Dimensions.fontSize28, color: Theme.of(context).cardColor),
+                  style: openSansRegular.copyWith(fontSize: Dimensions.fontSize18, color: Theme.of(context).cardColor),
                 ),
               ),
             ),

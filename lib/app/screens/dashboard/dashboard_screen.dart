@@ -8,6 +8,7 @@ import 'package:iclinix/app/screens/appointment/appointment_screen.dart';
 import 'package:iclinix/app/screens/dashboard/widgets/nav_bar_item.dart';
 import 'package:iclinix/app/screens/health/health_records_screen.dart';
 import 'package:iclinix/app/screens/home/home_screen.dart';
+import 'package:iclinix/controller/appointment_controller.dart';
 import 'package:iclinix/controller/auth_controller.dart';
 import 'package:iclinix/controller/profile_controller.dart';
 import 'package:iclinix/utils/dimensions.dart';
@@ -67,14 +68,14 @@ class DashboardScreenState extends State<DashboardScreen> {
         if(_pageIndex != 0) {
           _setPage(0);
           return false;
-        }else {
+        } else {
           return true;
         }
       },
       child: WillPopScope(
         onWillPop: Get.find<AuthController>().handleOnWillPop,
         child: Scaffold(
-          // extendBody: true,
+          extendBody: true,
           resizeToAvoidBottomInset: false,
           bottomNavigationBar: Container(
             margin: const EdgeInsets.all(Dimensions.paddingSizeDefault),
@@ -86,7 +87,10 @@ class DashboardScreenState extends State<DashboardScreen> {
             child: Row(children: [
               BottomNavItem(img: Images.icHome, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home',),
               BottomNavItem(img: Images.icDiabetic, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Diabetic',),
-              BottomNavItem(img: Images.icAppointment, isSelected: _pageIndex == 2, tap: () => _setPage(2), title: 'Appointment',),
+              BottomNavItem(img: Images.icAppointment, isSelected: _pageIndex == 2, tap: () {
+                Get.find<AppointmentController>().selectBookingType(false);
+                _setPage(2);
+              }, title: 'Appointment',),
               BottomNavItem(img: Images.icRecords, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Records',),
               BottomNavItem(img:Images.icProfile, isSelected: _pageIndex == 4, tap: () {
                 _setPage(4);

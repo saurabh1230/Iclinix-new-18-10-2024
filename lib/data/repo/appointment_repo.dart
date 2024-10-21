@@ -40,6 +40,7 @@ class AppointmentRepo {
       if (appointment.includePatientType && appointment.eyeProblem != null) 'eye_problem': appointment.eyeProblem,
       "other_problem": appointment.otherProblem,
       if (appointment.includePatientType && appointment.patientType != null) 'patient_type': appointment.patientType,
+      "type" :appointment.type
     };
 
     // Print the request body for debugging

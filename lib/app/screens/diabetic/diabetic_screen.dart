@@ -48,43 +48,49 @@ class DiabeticScreen extends StatelessWidget {
             })
         ),
         body: GetBuilder<AuthController>(builder: (appointControl) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Schedule Appointment',
-                    style: openSansBold.copyWith(fontSize: Dimensions.fontSizeDefault),
-                  ),
-                  sizedBox10(),
-                  Image.asset(Images.icDiabeticBanner),
-                  sizedBox20(),
-                  CustomButtonWidget(
-                    useGradient: true,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xff67D7C3), Color(0xff19BB94)],
-                      stops: [0, 1],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
+          return GetBuilder<AppointmentController>(builder: (appointControl) {
+          return  SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Schedule Appointment',
+                      style: openSansBold.copyWith(fontSize: Dimensions.fontSizeDefault),
                     ),
-                    buttonText: 'Book Appointment',
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Diabetic Clinic currently unavailable.'),
-                        ),
-                      );
-                      // Get.toNamed(RouteHelper.getAllClinicRoute(isBackButton: true));
-                    },
-                  ),
-                  sizedBox20(),
-                  const DiabeticEyeCarePlansComponent(),
-                ],
+                    sizedBox10(),
+                    Image.asset(Images.icDiabeticBanner),
+                    sizedBox20(),
+                    CustomButtonWidget(
+                      useGradient: true,
+                      gradient: const LinearGradient(
+                        colors: [Color(0xff67D7C3), Color(0xff19BB94)],
+                        stops: [0, 1],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                      buttonText: 'Book Appointment',
+                      onPressed: () {
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   const SnackBar(
+                        //     content: Text('Diabetic Clinic currently unavailable.'),
+                        //   ),
+                        // );
+                        appointControl.selectBookingType(true);
+                        Get.toNamed(RouteHelper.getAllClinicRoute(isBackButton: true));
+                      },
+                    ),
+                    sizedBox20(),
+                    const DiabeticEyeCarePlansComponent(),
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          });
+
+
+
         }),
       ),
     );
