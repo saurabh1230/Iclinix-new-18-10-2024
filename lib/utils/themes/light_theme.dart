@@ -30,3 +30,4 @@ const Color blueColor = Color(0xff115878);
 const Color skyColor = Color(0xff46C8D0);
 const Color darkBlueColor = Color(0xff517DA5);
 const Color darkPinkColor = Color(0xffBC6868);
+const Color yellowColor = Color(0xffFFAC33);

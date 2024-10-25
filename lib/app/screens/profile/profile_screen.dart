@@ -240,7 +240,7 @@ class ProfileScreen extends StatelessWidget {
                               },
                               hintText: 'Date of Birth',
                               isCalenderIcon: true,
-                              editText: true,
+                              // editText: true,
                             ),
                             sizedBox10(),
 

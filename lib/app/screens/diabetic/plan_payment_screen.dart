@@ -3,6 +3,7 @@ import 'package:iclinix/app/screens/appointment/components/booking_summary_widge
 import 'package:iclinix/app/widget/common_widgets.dart';
 import 'package:iclinix/app/widget/custom_app_bar.dart';
 import 'package:iclinix/app/widget/custom_button_widget.dart';
+import 'package:iclinix/app/widget/custom_containers.dart';
 import 'package:iclinix/app/widget/custom_textfield.dart';
 import 'package:iclinix/controller/appointment_controller.dart';
 import 'package:iclinix/controller/auth_controller.dart';
@@ -15,11 +16,12 @@ import 'package:get/get.dart';
 
 import '../../widget/group_radio_button.dart';
 
-class PaymentScreen extends StatelessWidget {
-  final AppointmentModel appointmentModel;
+class PlanPaymentScreen extends StatelessWidget {
+  final String? patientId;
+  final String? planId;
 
 
-  PaymentScreen({super.key, required this.appointmentModel,});
+  PlanPaymentScreen({super.key, this.patientId, this.planId, });
 
   final _referralController = TextEditingController();
 
@@ -53,13 +55,19 @@ class PaymentScreen extends StatelessWidget {
                   hintText: 'Apply Referral Code',
                 ),
                 sizedBoxDefault(),
-                BookingSummaryWidget(
-                  patientName:
-                      '${appointmentModel.firstName}${appointmentModel.lastName}',
-                  appointmentDate: '${appointmentModel.appointmentDate}',
-                  appointmentTime: '${appointmentModel.appointmentTime}',
-                  bookingFee: '500',
-                ),
+              // CustomDecoratedContainer(
+              //   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text('Booking Summary',style: openSansMedium.copyWith(fontSize: Dimensions.fontSizeDefault,
+              //           color: Theme.of(context).primaryColor),),
+              //       // sizedBox10(),
+              //       Text('Booking Summary',style: openSansMedium.copyWith(fontSize: Dimensions.fontSizeDefault,
+              //           color: Theme.of(context).primaryColor),),
+              //
+              //
+              //     ],
+              //   ),
+              // ),
                 sizedBoxDefault(),
                 Obx(() {
                   return CustomRadioButton(
@@ -89,14 +97,14 @@ class PaymentScreen extends StatelessWidget {
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
           child: SingleChildScrollView(
-            child: CustomButtonWidget(
-              buttonText: 'Confirm Booking',
+            child: !appointmentControl.isPurchasePlanLoading ?  CustomButtonWidget(
+              buttonText: 'Purchase Plan',
               onPressed: () {
-                appointmentControl.bookAppointmentApi(appointmentModel);
+                appointmentControl.purchasePlanApi(patientId,planId,'cod');
               },
               fontSize: Dimensions.fontSize14,
               isBold: false,
-            ),
+            ) :const Center(child: CircularProgressIndicator())
           ),
         ),
       );

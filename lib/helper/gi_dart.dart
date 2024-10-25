@@ -8,9 +8,12 @@ import 'package:iclinix/data/api/api_client.dart';
 import 'package:iclinix/data/repo/appointment_repo.dart';
 import 'package:iclinix/data/repo/auth_repo.dart';
 import 'package:iclinix/data/repo/clinic_repo.dart';
+import 'package:iclinix/data/repo/diabetic_repo.dart';
 import 'package:iclinix/data/repo/profile_repo.dart';
 import 'package:iclinix/utils/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../controller/diabetic_controller.dart';
 
 
 Future<void>   init() async {
@@ -26,6 +29,7 @@ Future<void>   init() async {
   Get.lazyPut(() => ProfileRepo(apiClient: Get.find()));
   Get.lazyPut(() => AppointmentRepo(apiClient: Get.find()));
   Get.lazyPut(() => ClinicRepo(apiClient: Get.find()));
+  Get.lazyPut(() => DiabeticRepo(apiClient: Get.find()));
 
 
 
@@ -34,6 +38,7 @@ Future<void>   init() async {
   Get.lazyPut(() => AppointmentController(appointmentRepo:  Get.find(), apiClient: Get.find()));
   Get.lazyPut(() => ClinicController(clinicRepo:  Get.find(), apiClient: Get.find()));
   Get.lazyPut(() => ProfileController(profileRepo: Get.find(), apiClient: Get.find()));
+  Get.lazyPut(() => DiabeticController(diabeticRepo: Get.find(), apiClient: Get.find()));
 
 
 

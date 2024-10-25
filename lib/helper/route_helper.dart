@@ -10,6 +10,9 @@ import 'package:iclinix/app/screens/auth/login_screen.dart';
 import 'package:iclinix/app/screens/auth/otp_verification_screen.dart';
 import 'package:iclinix/app/screens/auth/register_screen.dart';
 import 'package:iclinix/app/screens/dashboard/dashboard_screen.dart';
+import 'package:iclinix/app/screens/diabetic/add_plan_patient_details.dart';
+import 'package:iclinix/app/screens/diabetic/diabetic_dashboard.dart';
+import 'package:iclinix/app/screens/diabetic/payment_successful_screen.dart';
 import 'package:iclinix/app/screens/home/components/view_all_services_screen.dart';
 import 'package:iclinix/app/screens/home/service_details_screen.dart';
 import 'package:iclinix/app/screens/notification/notification_screen.dart';
@@ -17,6 +20,7 @@ import 'package:iclinix/app/screens/onboard/splash.dart';
 import 'package:iclinix/app/screens/search/search_screen.dart';
 
 import '../app/screens/appointment/appointment_screen.dart';
+import '../app/screens/diabetic/plan_payment_screen.dart';
 import '../data/models/body/appointment_model.dart';
 import '../data/models/response/clinic_model.dart';
 
@@ -39,6 +43,10 @@ class RouteHelper {
   static const String search = '/search';
   static const String help = '/help';
   static const String serviceDetail = '/service-detail';
+  static const String planPatientDetails = '/plan-patient-details';
+  static const String diabeticDashboard = '/diabetic-dashboard';
+  static const String planPayment = '/plan-payment';
+  static const String planPaymentSuccessful = '/plan-payment-successful';
 
 
 
@@ -64,7 +72,11 @@ class RouteHelper {
   static String getSearchRoute() => search;
    static String getHelpRoute() => help;
    static String getServiceDetailRoute(String? id,String? title,) => '$serviceDetail?id=$id&title=$title';
-
+  static String getAddPlanPatientDetailsRoute(String? planId) => '$planPatientDetails?planId=$planId';
+  static String getDiabeticDashboardRoute() => diabeticDashboard;
+  static String getPlanPaymentRoute(String? patientId,String? planId,) => '$planPayment?patientId=$patientId&planId=$planId';
+  // static String getPlanPaymentRoute() => planPayment;
+  static String getPlanPaymentSuccessfulRoute() => planPaymentSuccessful;
 
   /// Pages ==================>
   static List<GetPage> routes = [
@@ -107,7 +119,10 @@ class RouteHelper {
     GetPage(name: serviceDetail, page: () =>  ServiceDetailsScreen(id: Get.parameters['id'],
       title: Get.parameters['title'],
       )),
-
+    GetPage(name: planPatientDetails, page: () =>   AddPlanPatientDetails(planId: Get.parameters['planId'],)),
+    GetPage(name: diabeticDashboard, page: () =>   DiabeticDashboard()),
+    GetPage(name: planPayment, page: () =>  PlanPaymentScreen(patientId : Get.parameters['patientId'],planId: Get.parameters['planId'],)),
+    GetPage(name: planPaymentSuccessful, page: () =>   PlanBookingSuccessfulScreen()),
 
 
 

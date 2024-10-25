@@ -6,6 +6,7 @@ class AppConstants {
   static const String fontFamily = 'OpenSans';
 
   /// Api Url ///
+
   static const String sendOtpUrl = "authenticate";
   static const String verifyOtpUrl = "verify-otp";
   static const String updateProfileUrl = "update/my-profile";
@@ -18,6 +19,11 @@ class AppConstants {
   static const String appointmentListUrl = "appointment-history";
   static const String searchListUrl = "search";
   static const String serviceDetails = "service/";
+  static const String addPatientDetails = "add-patient";
+  static const String subscriptionCheckout = "subscription-checkout";
+  static const String dailySugarCheckup = "daily-checkup";
+  static const String diabeticDashboard = "dashboard";
+  static const String healthCheckup = "update-body-data";
 
   /// image url ///
   static const String serviceImageUrl = "https://lab5.invoidea.in/iclinix/public/serviceImage/";
@@ -30,6 +36,7 @@ class AppConstants {
 
   // Shared Key
   static const String theme = 'theme';
+  static const String subscription = 'subscription';
   static const String intro = 'intro';
   static const String token = 'token';
 

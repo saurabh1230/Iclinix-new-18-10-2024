@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:iclinix/app/widget/custom_snackbar.dart';
 import 'package:iclinix/data/api/api_client.dart';
+import 'package:iclinix/data/models/response/add_patient_model.dart';
 import 'package:iclinix/data/models/response/appointment_history_model.dart';
 import 'package:iclinix/data/models/response/patients_model.dart';
 import 'package:iclinix/data/models/response/plans_model.dart';
@@ -27,6 +28,7 @@ class AppointmentController extends GetxController implements GetxService {
     formattedDate = SimpleDateConverter.formatDateToCustomFormat(selectedDate!);
     update();
   }
+  String selectedValue = '';
 
   String? selectedTime;
   List<String> timeSlot = [
@@ -114,6 +116,17 @@ class AppointmentController extends GetxController implements GetxService {
     update();
   }
 
+  bool _isPlanNewPatientEnabled = true;
+  bool get isPlanNewPatientEnabled => _isPlanNewPatientEnabled;
+  void togglePlanNewPatientSelection([bool? value]) {
+    _isPlanNewPatientEnabled = value ?? !_isPlanNewPatientEnabled; // If value is provided, set it. Otherwise, toggle.
+    update();
+  }
+
+  // void togglePlanNewPatientSelection() {
+  //   _isPlanNewPatientEnabled = !_isPlanNewPatientEnabled;
+  //   update();
+  // }
   List<PlanModel>? _planList;
   List<PlanModel>? get planList => _planList;
 
@@ -251,6 +264,70 @@ class AppointmentController extends GetxController implements GetxService {
     _bookingDiabeticType = val;
     update();
   }
+
+  Future<void> addPatientApi(
+      AddPatientModel addPatient,
+      ) async {
+    _isLoading = true;
+    update();
+
+    Response response = await appointmentRepo.addPatientDetails(addPatient);
+    if(response.statusCode == 200) {
+      var responseData = response.body;
+      if(responseData["message"]  == "Patient added successfully") {
+        _isPlanNewPatientEnabled = false;
+        getPatientList();
+        _isLoading = false;
+        update();
+        return showCustomSnackBar('Added Successfully', isError: true);
+      } else {
+        _isLoading = false;
+        update();
+
+
+      }
+      _isLoading = false;
+      update();
+    } else {
+      _isLoading = false;
+      update();
+    }
+
+
+    _isLoading = false;
+    update();
+  }
+
+  bool _isPurchasePlanLoading = false;
+  bool get isPurchasePlanLoading => _isPurchasePlanLoading;
+  Future<void> purchasePlanApi(String? patientId, String? planId, String? paymentMethod) async {
+    _isPurchasePlanLoading = true;
+    update();
+    Response response = await appointmentRepo.purchasePlanApi(patientId,planId,paymentMethod);
+    if(response.statusCode == 200) {
+      var responseData = response.body;
+      if(responseData["message"]  == "Subscription created successfully") {
+        // Get.toNamed(RouteHelper.getPlanPaymentSuccessfulRoute());
+        _isPurchasePlanLoading = false;
+        update();
+        return Get.toNamed(RouteHelper.getPlanPaymentSuccessfulRoute());
+        // return showCustomSnackBar('Added Successfully', );
+      } else {
+        showCustomSnackBar(responseData["message"], isError: true);
+        _isPurchasePlanLoading = false;
+        update();
+      }
+      _isPurchasePlanLoading = false;
+      update();
+    } else {
+      _isPurchasePlanLoading = false;
+      update();
+    }
+    _isPurchasePlanLoading = false;
+    update();
+  }
+
+
 
 
 }

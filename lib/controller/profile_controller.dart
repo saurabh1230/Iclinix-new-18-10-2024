@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:iclinix/app/widget/custom_snackbar.dart';
+import 'package:iclinix/controller/auth_controller.dart';
 import 'package:iclinix/data/models/response/user_data.dart';
 import 'package:iclinix/helper/route_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -183,14 +184,21 @@ class ProfileController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = response.body;
       ApiResponse apiResponse = ApiResponse.fromJson(responseData);
+
       _userData = apiResponse.userData;
       _patientData = apiResponse.patientData;
+      bool isSubscriptionActive = responseData['subscriptionArray']['status'] == 'active';
+      await Get.find<AuthController>().saveSubscriptionStatus(isSubscriptionActive);
+
     } else {
+      // Handle the error response if needed
     }
+
     _userDataLoading = false;
     update();
     return ApiResponse(userData: _userData, patientData: _patientData); // Return the combined response
   }
+
 
 
 

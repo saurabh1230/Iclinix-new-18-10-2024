@@ -118,6 +118,16 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  Future<void> saveSubscriptionStatus(bool isActive) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSubscriptionActive', isActive);
+  }
+
+
+  Future<bool> getSubscriptionStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isSubscriptionActive') ?? false;
+  }
 
   Future<void> verifyOtpApi(String? phoneNo, String? otp) async {
     if (phoneNo == null || otp == null) {
@@ -141,16 +151,26 @@ class AuthController extends GetxController implements GetxService {
         'otp': otp,
       });
 
-
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200 || response.statusCode == 201) {
         String responseString = await response.stream.bytesToString();
         var responseData = json.decode(responseString);
+
         if (responseData.containsKey('token')) {
           authRepo.saveUserToken(responseData['token']);
           print('Token saved: ${responseData['token']}');
 
           var user = responseData['user'];
+          var subscription = responseData['subscription'];
+
+          // Save subscription status in SharedPreferences
+          bool isSubscriptionActive = false;
+          if (subscription is Map<String, dynamic> && subscription['status'] == 'active') {
+            isSubscriptionActive = true;
+          }
+          await saveSubscriptionStatus(isSubscriptionActive);
+
+          // Navigate based on the user's first name
           if (user != null) {
             if (user.containsKey('first_name') && user['first_name'] != null && user['first_name'].isNotEmpty) {
               Get.toNamed(RouteHelper.getDashboardRoute());
@@ -174,5 +194,6 @@ class AuthController extends GetxController implements GetxService {
       update();
     }
   }
+
 
 }

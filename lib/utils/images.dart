@@ -28,4 +28,6 @@ class Images {
   static const String icEmptySearchHolder = 'assets/images/img_search_placeholder.png';
   static const String icLogout = 'assets/icons/ic_logout.png';
   static const String icHelpHolder = 'assets/icons/ic_help_holder.png';
+  static const String icDiabeticBg = 'assets/icons/ic_diabetic_renew_bg.png';
+  static const String icPdfLogo = 'assets/icons/ic_pdf_logo.png';
 }

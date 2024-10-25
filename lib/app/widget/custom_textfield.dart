@@ -35,6 +35,7 @@ class CustomTextField extends StatefulWidget {
   final Function()? onTap;
   final bool isCalenderIcon;
   final int? maxLength; // New property for maximum character limit
+  final String? suffixText;
 
   const CustomTextField({
     super.key,
@@ -66,7 +67,7 @@ class CustomTextField extends StatefulWidget {
     this.validation,
     this.onTap,
     this.isCalenderIcon = false,
-    this.maxLength, // Initialize new property
+    this.maxLength, this.suffixText, // Initialize new property
   });
 
   @override
@@ -205,10 +206,7 @@ class CustomTextFieldState extends State<CustomTextField> {
                 : widget.editText
                 ? Container(
               width: 60,
-              child: Icon(
-                widget.isCalenderIcon ? Icons.calendar_month : Icons.edit,
-                color: Theme.of(context).primaryColor,
-              ),
+              child: Center(child: Text(widget.suffixText ??'mg/dL',)),
             )
                 : null,
           ),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iclinix/app/screens/appointment/appointment_screen.dart';
 import 'package:iclinix/app/screens/dashboard/widgets/nav_bar_item.dart';
+import 'package:iclinix/app/screens/diabetic/diabetic_dashboard.dart';
 import 'package:iclinix/app/screens/health/health_records_screen.dart';
 import 'package:iclinix/app/screens/home/home_screen.dart';
 import 'package:iclinix/controller/appointment_controller.dart';
@@ -29,43 +30,43 @@ class DashboardScreen extends StatefulWidget {
 class DashboardScreenState extends State<DashboardScreen> {
   PageController? _pageController;
   int _pageIndex = 0;
-  late List<Widget> _screens;
-  // Timer _timer;
-  // int _orderCount;
+  late List<Widget> _screens = []; // Initialize with an empty list
 
   @override
   void initState() {
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<ProfileController>().userDataApi();
     });
 
-    super.initState();
-
     _pageIndex = widget.pageIndex;
-
     _pageController = PageController(initialPage: widget.pageIndex);
 
+    // Initialize the subscription status and screen list asynchronously
+    _initializeScreens();
+  }
+
+  Future<void> _initializeScreens() async {
+    bool isSubscriptionActive = await Get.find<AuthController>().getSubscriptionStatus();
+
+    // Set the screen list based on subscription status
     _screens = [
       const HomeScreen(),
-       DiabeticScreen(),
-       AppointmentScreen(isBackButton: false,),
-       HealthRecordsScreen(),
+      isSubscriptionActive ? DiabeticDashboard() : DiabeticScreen(),
+      AppointmentScreen(isBackButton: false),
+      HealthRecordsScreen(),
       ProfileScreen(),
     ];
 
-    Future.delayed(const Duration(seconds: 1), () {
-      setState(() {});
-    });
-
-
+    setState(() {}); // Update the UI after initializing screens
   }
-
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if(_pageIndex != 0) {
+        if (_pageIndex != 0) {
           _setPage(0);
           return false;
         } else {
@@ -82,29 +83,29 @@ class DashboardScreenState extends State<DashboardScreen> {
             padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize8),
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(Dimensions.radius20)
+              borderRadius: BorderRadius.circular(Dimensions.radius20),
             ),
             child: Row(children: [
-              BottomNavItem(img: Images.icHome, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home',),
-              BottomNavItem(img: Images.icDiabetic, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Diabetic',),
+              BottomNavItem(img: Images.icHome, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home'),
+              BottomNavItem(img: Images.icDiabetic, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Diabetic'),
               BottomNavItem(img: Images.icAppointment, isSelected: _pageIndex == 2, tap: () {
                 Get.find<AppointmentController>().selectBookingType(false);
                 _setPage(2);
-              }, title: 'Appointment',),
-              BottomNavItem(img: Images.icRecords, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Records',),
-              BottomNavItem(img:Images.icProfile, isSelected: _pageIndex == 4, tap: () {
-                _setPage(4);
-              }, title: 'Profile',),
+              }, title: 'Appointment'),
+              BottomNavItem(img: Images.icRecords, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Records'),
+              BottomNavItem(img: Images.icProfile, isSelected: _pageIndex == 4, tap: () => _setPage(4), title: 'Profile'),
             ]),
           ),
-          body: PageView.builder(
+          body: _screens.isNotEmpty // Check if screens have been initialized
+              ? PageView.builder(
             controller: _pageController,
             itemCount: _screens.length,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return _screens[index];
             },
-          ),
+          )
+              : const Center(child: CircularProgressIndicator()), // Show loading indicator while initializing
         ),
       ),
     );
@@ -117,3 +118,5 @@ class DashboardScreenState extends State<DashboardScreen> {
     });
   }
 }
+
+

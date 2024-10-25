@@ -64,6 +64,7 @@ class SelectSlotScreen extends StatelessWidget {
                           hintText: 'Select',
                           isCalenderIcon: true,
                           editText: true,
+                          suffixText: '',
                         ),
                         sizedBox20(),
                         SelectSlotTimeComponent(),

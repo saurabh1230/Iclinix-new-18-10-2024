@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iclinix/app/widget/custom_app_bar.dart';
 import 'package:iclinix/app/widget/custom_button_widget.dart';
 import 'package:iclinix/app/widget/custom_containers.dart';
+import 'package:iclinix/helper/route_helper.dart';
 import 'package:iclinix/utils/dimensions.dart';
 import 'package:iclinix/utils/sizeboxes.dart';
 import 'package:iclinix/utils/styles.dart';
@@ -9,7 +10,7 @@ import 'package:iclinix/utils/themes/light_theme.dart';
 import 'package:html/parser.dart' as htmlParser;
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import '../../../data/models/response/plans_model.dart';
-
+import 'package:get/get.dart';
 class PlansDetailsScreen extends StatelessWidget {
   final PlanModel? planModel;
   const PlansDetailsScreen({super.key, this.planModel});
@@ -66,11 +67,12 @@ class PlansDetailsScreen extends StatelessWidget {
               ),
               Expanded(
                 child: CustomButtonWidget(buttonText: 'Purchase Plan',onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Online Plans Are Currently Unavailable.'),
-                    ),
-                  );
+                  Get.toNamed(RouteHelper.getAddPlanPatientDetailsRoute(planModel!.planId.toString()));
+                  // ScaffoldMessenger.ofcontext).showSnackBar(
+                  //   const SnackBar(
+                  //     content: Text('Online Plans Are Currently Unavailable.'),
+                  //   ),
+                  // );
                 },
                 color: Theme.of(context).primaryColor,),
               )
