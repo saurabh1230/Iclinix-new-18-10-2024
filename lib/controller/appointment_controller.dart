@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:iclinix/app/widget/custom_snackbar.dart';
+import 'package:iclinix/controller/auth_controller.dart';
 import 'package:iclinix/data/api/api_client.dart';
 import 'package:iclinix/data/models/response/add_patient_model.dart';
 import 'package:iclinix/data/models/response/appointment_history_model.dart';
@@ -10,6 +11,7 @@ import 'package:iclinix/helper/date_converter.dart';
 import 'package:iclinix/helper/route_helper.dart';
 
 import '../data/models/body/appointment_model.dart';
+import 'profile_controller.dart';
 
 class AppointmentController extends GetxController implements GetxService {
   final AppointmentRepo appointmentRepo;
@@ -303,26 +305,22 @@ class AppointmentController extends GetxController implements GetxService {
   Future<void> purchasePlanApi(String? patientId, String? planId, String? paymentMethod) async {
     _isPurchasePlanLoading = true;
     update();
-    Response response = await appointmentRepo.purchasePlanApi(patientId,planId,paymentMethod);
-    if(response.statusCode == 200) {
+
+    Response response = await appointmentRepo.purchasePlanApi(patientId, planId, paymentMethod);
+    if (response.statusCode == 200) {
       var responseData = response.body;
-      if(responseData["message"]  == "Subscription created successfully") {
-        // Get.toNamed(RouteHelper.getPlanPaymentSuccessfulRoute());
-        _isPurchasePlanLoading = false;
-        update();
-        return Get.toNamed(RouteHelper.getPlanPaymentSuccessfulRoute());
-        // return showCustomSnackBar('Added Successfully', );
+      if (responseData["message"] == "Subscription created successfully") {
+        // Fetch user data to update the subscription status
+        await Get.find<AuthController>().userDataApi();
+        // Navigate to the successful payment route
+        Get.toNamed(RouteHelper.getPlanPaymentSuccessfulRoute());
       } else {
         showCustomSnackBar(responseData["message"], isError: true);
-        _isPurchasePlanLoading = false;
-        update();
       }
-      _isPurchasePlanLoading = false;
-      update();
     } else {
-      _isPurchasePlanLoading = false;
-      update();
+      // showCustomSnackBar('Error occurred: ${response.reasonPhrase}', isError: true);
     }
+
     _isPurchasePlanLoading = false;
     update();
   }

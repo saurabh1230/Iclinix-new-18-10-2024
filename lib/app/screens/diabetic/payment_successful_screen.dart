@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iclinix/app/widget/custom_button_widget.dart';
 import 'package:iclinix/app/widget/custom_containers.dart';
+import 'package:iclinix/controller/auth_controller.dart';
 import 'package:iclinix/controller/profile_controller.dart';
 import 'package:iclinix/helper/date_converter.dart';
 import 'package:iclinix/helper/route_helper.dart';
@@ -44,7 +45,8 @@ class PlanBookingSuccessfulScreen extends StatelessWidget {
                   isBold: false,
                   fontSize: Dimensions.fontSize14,
                   onPressed: () {
-                    Get.find<ProfileController>().userDataApi();
+                    Get.find<AuthController>().userDataApi();
+                    // Get.toNamed(RouteHelper.getInitialRoute());
                     Get.toNamed(RouteHelper.getDashboardRoute());
                   },),
 

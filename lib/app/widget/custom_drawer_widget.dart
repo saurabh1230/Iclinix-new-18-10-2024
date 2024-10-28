@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iclinix/app/screens/dashboard/dashboard_screen.dart';
 import 'package:iclinix/app/widget/confirmation_dialog.dart';
+import 'package:iclinix/controller/auth_controller.dart';
 import 'package:iclinix/controller/profile_controller.dart';
 import 'package:iclinix/helper/route_helper.dart';
 import 'package:iclinix/utils/dimensions.dart';
@@ -23,7 +24,7 @@ class CustomDrawer extends StatelessWidget {
         //         .image,
         //   ),
         // ),
-        GetBuilder<ProfileController>(builder: (controller) {
+        GetBuilder<AuthController>(builder: (controller) {
           return Expanded(
             child: Padding(
               padding: const EdgeInsets.all(0),

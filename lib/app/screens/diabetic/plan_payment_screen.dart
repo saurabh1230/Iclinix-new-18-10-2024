@@ -20,9 +20,7 @@ class PlanPaymentScreen extends StatelessWidget {
   final String? patientId;
   final String? planId;
 
-
   PlanPaymentScreen({super.key, this.patientId, this.planId, });
-
   final _referralController = TextEditingController();
 
   @override

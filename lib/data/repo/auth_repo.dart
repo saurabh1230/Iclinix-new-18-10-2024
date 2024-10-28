@@ -39,6 +39,10 @@ class AuthRepo {
     return await apiClient.postData(AppConstants.verifyOtpUrl, {"mobile": phoneNo, "otp" : otp});
   }
 
+  Future<Response> getUserData() async {
+    return await apiClient.getData(AppConstants.myProfileUrl,method: 'GET');
+  }
+
 
 
 

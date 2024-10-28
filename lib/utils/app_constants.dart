@@ -39,6 +39,7 @@ class AppConstants {
   static const String subscription = 'subscription';
   static const String intro = 'intro';
   static const String token = 'token';
+  static const String savedSubscription = 'savedSubscription';
 
 
 }

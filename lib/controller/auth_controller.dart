@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get.dart';
 import 'package:iclinix/app/widget/custom_snackbar.dart';
+import 'package:iclinix/data/models/response/user_data.dart';
 import 'package:iclinix/data/repo/auth_repo.dart';
 import 'package:iclinix/helper/route_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -155,21 +156,17 @@ class AuthController extends GetxController implements GetxService {
       if (response.statusCode == 200 || response.statusCode == 201) {
         String responseString = await response.stream.bytesToString();
         var responseData = json.decode(responseString);
-
         if (responseData.containsKey('token')) {
           authRepo.saveUserToken(responseData['token']);
           print('Token saved: ${responseData['token']}');
-
           var user = responseData['user'];
           var subscription = responseData['subscription'];
-
           // Save subscription status in SharedPreferences
           bool isSubscriptionActive = false;
           if (subscription is Map<String, dynamic> && subscription['status'] == 'active') {
             isSubscriptionActive = true;
           }
           await saveSubscriptionStatus(isSubscriptionActive);
-
           // Navigate based on the user's first name
           if (user != null) {
             if (user.containsKey('first_name') && user['first_name'] != null && user['first_name'].isNotEmpty) {
@@ -193,6 +190,42 @@ class AuthController extends GetxController implements GetxService {
       _isLoginLoading = false;
       update();
     }
+  }
+
+
+  bool _userDataLoading = false;
+  bool get userDataLoading => _userDataLoading;
+
+
+  UserData? _userData;
+  PatientData? _patientData;
+
+  UserData? get userData => _userData;
+  PatientData? get patientData => _patientData;
+
+  Future<ApiResponse?> userDataApi() async {
+    _userDataLoading = true;
+    _userData = null;
+    _patientData = null;
+    update();
+
+    Response response = await authRepo.getUserData();
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseData = response.body;
+      ApiResponse apiResponse = ApiResponse.fromJson(responseData);
+
+      _userData = apiResponse.userData;
+      _patientData = apiResponse.patientData;
+      bool isSubscriptionActive = responseData['subscriptionArray']['status'] == 'active';
+      await saveSubscriptionStatus(isSubscriptionActive);
+
+    } else {
+      // Handle the error response if needed
+    }
+
+    _userDataLoading = false;
+    update();
+    return ApiResponse(userData: _userData, patientData: _patientData); // Return the combined response
   }
 
 

@@ -37,20 +37,17 @@ class DashboardScreenState extends State<DashboardScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<ProfileController>().userDataApi();
+      Get.find<AuthController>().userDataApi();
     });
-
     _pageIndex = widget.pageIndex;
     _pageController = PageController(initialPage: widget.pageIndex);
-
-    // Initialize the subscription status and screen list asynchronously
     _initializeScreens();
   }
 
+
+
   Future<void> _initializeScreens() async {
     bool isSubscriptionActive = await Get.find<AuthController>().getSubscriptionStatus();
-
-    // Set the screen list based on subscription status
     _screens = [
       const HomeScreen(),
       isSubscriptionActive ? DiabeticDashboard() : DiabeticScreen(),
@@ -58,8 +55,7 @@ class DashboardScreenState extends State<DashboardScreen> {
       HealthRecordsScreen(),
       ProfileScreen(),
     ];
-
-    setState(() {}); // Update the UI after initializing screens
+    setState(() {});
   }
 
   @override

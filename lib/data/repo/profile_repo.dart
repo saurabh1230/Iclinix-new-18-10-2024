@@ -33,9 +33,9 @@ class ProfileRepo {
     });
   }
 
-  Future<Response> getUserData() async {
-    return await apiClient.getData(AppConstants.myProfileUrl,method: 'GET');
-  }
+  // Future<Response> getUserData() async {
+  //   return await apiClient.getData(AppConstants.myProfileUrl,method: 'GET');
+  // }
 
 
 

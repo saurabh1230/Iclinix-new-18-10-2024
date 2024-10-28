@@ -74,8 +74,8 @@ class ProfileController extends GetxController implements GetxService {
     return 'diabetes name == ${selectedDiabetes == 'No' ? '0' : '1'}';
   }
   void initializeDiabetes() {
-    if (patientData != null) {
-      selectedDiabetes = patientData!.diabetesProblem == 1 ? 'Yes' : 'No';
+    if (Get.find<AuthController>().patientData != null) {
+      selectedDiabetes = Get.find<AuthController>().patientData!.diabetesProblem == 1 ? 'Yes' : 'No';
     } else {
       selectedDiabetes = 'No'; // Fallback
     }
@@ -96,8 +96,8 @@ class ProfileController extends GetxController implements GetxService {
   }
 
   void initializeGlasses() {
-    if (patientData != null) {
-      selectedGlasses = patientData!.eyeProblem == 1 ? 'Yes' : 'No';
+    if (Get.find<AuthController>().patientData != null) {
+      selectedGlasses = Get.find<AuthController>().patientData!.eyeProblem == 1 ? 'Yes' : 'No';
     } else {
       selectedGlasses = 'No'; // Fallback
     }
@@ -118,8 +118,8 @@ class ProfileController extends GetxController implements GetxService {
   }
 
   void initializeBp() {
-    if (patientData != null) {
-      selectedBp = patientData!.bpProblem == 1 ? 'Yes' : 'No';
+    if (Get.find<AuthController>().patientData != null) {
+      selectedBp = Get.find<AuthController>().patientData!.bpProblem == 1 ? 'Yes' : 'No';
     } else {
       selectedBp = 'No'; // Fallback
     }
@@ -164,40 +164,40 @@ class ProfileController extends GetxController implements GetxService {
   }
 
 
-  bool _userDataLoading = false;
-  bool get userDataLoading => _userDataLoading;
-
-
-  UserData? _userData;
-  PatientData? _patientData;
-
-  UserData? get userData => _userData;
-  PatientData? get patientData => _patientData;
-
-  Future<ApiResponse?> userDataApi() async {
-    _userDataLoading = true;
-    _userData = null;
-    _patientData = null;
-    update();
-
-    Response response = await profileRepo.getUserData();
-    if (response.statusCode == 200) {
-      Map<String, dynamic> responseData = response.body;
-      ApiResponse apiResponse = ApiResponse.fromJson(responseData);
-
-      _userData = apiResponse.userData;
-      _patientData = apiResponse.patientData;
-      bool isSubscriptionActive = responseData['subscriptionArray']['status'] == 'active';
-      await Get.find<AuthController>().saveSubscriptionStatus(isSubscriptionActive);
-
-    } else {
-      // Handle the error response if needed
-    }
-
-    _userDataLoading = false;
-    update();
-    return ApiResponse(userData: _userData, patientData: _patientData); // Return the combined response
-  }
+  // bool _userDataLoading = false;
+  // bool get userDataLoading => _userDataLoading;
+  //
+  //
+  // UserData? _userData;
+  // PatientData? _patientData;
+  //
+  // UserData? get userData => _userData;
+  // PatientData? get patientData => _patientData;
+  //
+  // Future<ApiResponse?> userDataApi() async {
+  //   _userDataLoading = true;
+  //   _userData = null;
+  //   _patientData = null;
+  //   update();
+  //
+  //   Response response = await profileRepo.getUserData();
+  //   if (response.statusCode == 200) {
+  //     Map<String, dynamic> responseData = response.body;
+  //     ApiResponse apiResponse = ApiResponse.fromJson(responseData);
+  //
+  //     _userData = apiResponse.userData;
+  //     _patientData = apiResponse.patientData;
+  //     bool isSubscriptionActive = responseData['subscriptionArray']['status'] == 'active';
+  //     await Get.find<AuthController>().saveSubscriptionStatus(isSubscriptionActive);
+  //
+  //   } else {
+  //     // Handle the error response if needed
+  //   }
+  //
+  //   _userDataLoading = false;
+  //   update();
+  //   return ApiResponse(userData: _userData, patientData: _patientData); // Return the combined response
+  // }
 
 
 

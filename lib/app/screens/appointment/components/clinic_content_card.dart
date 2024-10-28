@@ -4,6 +4,7 @@ import 'package:iclinix/app/widget/custom_button_widget.dart';
 import 'package:iclinix/app/widget/custom_card_container.dart';
 import 'package:iclinix/app/widget/custom_image_widget.dart';
 import 'package:iclinix/app/widget/empty_data_widget.dart';
+import 'package:iclinix/app/widget/loading_widget.dart';
 import 'package:iclinix/controller/clinic_controller.dart';
 import 'package:iclinix/helper/route_helper.dart';
 import 'package:iclinix/utils/dimensions.dart';
@@ -37,7 +38,7 @@ class ClinicContentCard extends StatelessWidget {
             )),
       )
           : isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: LoadingWidget())
           :
         ListView.separated(
         itemCount: dataList!.length,

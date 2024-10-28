@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<ProfileController>().userDataApi();
+      Get.find<AuthController>().userDataApi();
     });
   }
   @override
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 fontSize: Dimensions.fontSize12),
                                           ),
                                           Text(
-                                            "Hello ${Get.find<ProfileController>().userData?.firstName ?? 'User'}",
+                                            "Hello ${Get.find<AuthController>().userData?.firstName ?? 'User'}",
                                             style: openSansBold.copyWith(
                                               color: Theme.of(context).disabledColor,
                                               fontSize: Dimensions.fontSizeDefault,
