@@ -25,7 +25,7 @@ class PlanResourceModel {
   final int type;
   final String name;
   final String sortDescription;
-  final String ytUrl;
+  final String? ytUrl; // Change to String?
   final String file;
   final String fileUrl;
 
@@ -34,7 +34,7 @@ class PlanResourceModel {
     required this.type,
     required this.name,
     required this.sortDescription,
-    required this.ytUrl,
+    this.ytUrl, // Optional parameter
     required this.file,
     required this.fileUrl,
   });
@@ -45,12 +45,13 @@ class PlanResourceModel {
       type: json['type'],
       name: json['name'],
       sortDescription: json['sort_description'],
-      ytUrl: json['yt_url'],
-      file: json['file'],
-      fileUrl: json['file_url'],
+      ytUrl: json['yt_url'], // This can be null
+      file: json['file'] ?? '', // Default to empty string if null
+      fileUrl: json['file_url'] ?? '', // Default to empty string if null
     );
   }
 }
+
 
 
 // PlanDetailsModel.dart

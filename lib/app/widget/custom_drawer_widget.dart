@@ -1,11 +1,15 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:iclinix/app/screens/dashboard/dashboard_screen.dart';
 import 'package:iclinix/app/widget/confirmation_dialog.dart';
+import 'package:iclinix/app/widget/custom_image_widget.dart';
 import 'package:iclinix/controller/auth_controller.dart';
 import 'package:iclinix/controller/profile_controller.dart';
 import 'package:iclinix/helper/route_helper.dart';
 import 'package:iclinix/utils/dimensions.dart';
 import 'package:iclinix/utils/images.dart';
+import 'package:iclinix/utils/sizeboxes.dart';
 import 'package:iclinix/utils/styles.dart';
 import 'package:get/get.dart';
 
@@ -31,13 +35,36 @@ class CustomDrawer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    controller.userData != null
-                        ? '${controller.userData!.firstName}\n${controller.userData!.lastName}'
-                        : 'Iclinix',
-                    style: openSansSemiBold.copyWith(fontSize: Dimensions.fontSize30,
-                    color: Colors.white),
+                  Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(() => const DashboardScreen(pageIndex: 4));
+                        },
+                        child: Container(padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                          height: 70,width: 70,clipBehavior: Clip.hardEdge,
+                          decoration:  const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle
+                          ),
+                          child: Image.asset(Images.icProfilePlaceholder,
+                            height: 60,width: 60,fit: BoxFit.cover,),
+                        ),
+                      ),
+                      sizedBox10(),
+                      Text(
+                        controller.userData != null
+                            ? '${controller.userData!.firstName}\n${controller.userData!.lastName}'
+                            : 'Iclinix',
+                        style: openSansSemiBold.copyWith(fontSize: Dimensions.fontSize30,
+                        color: Colors.white),
+                      ),
+
+                    ],
                   ),
+                  // Image.network(height: 80,width: 80,
+                  //     controller.userData!.image.toString()),
                 ],
               ),
             ),
@@ -63,7 +90,7 @@ class CustomDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _thumbnailPart(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _line,
             // TextButton(
             //   onPressed: () {  },
@@ -78,7 +105,7 @@ class CustomDrawer extends StatelessWidget {
                   Get.to(() => const DashboardScreen(pageIndex: 3));
                 },
                 child: Text(
-                    "History",
+                    "Appointment",
                     style: openSansRegular.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).cardColor)
                 ),
               ),

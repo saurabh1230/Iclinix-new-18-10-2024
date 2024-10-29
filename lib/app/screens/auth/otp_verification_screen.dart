@@ -198,6 +198,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               }
                             },
                           ),
+                          sizedBox10(),
 
                         ],
                       ),

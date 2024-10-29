@@ -37,23 +37,26 @@ class PlansDetailsScreen extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: Row(crossAxisAlignment: CrossAxisAlignment.end,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Column(
-                      children: [
-                        Text('${planModel!.discount.toInt()}% off',
-                        style: openSansRegular.copyWith(color: greenColor,fontSize: Dimensions.fontSize12),),
-                        Text(
-                          '₹ ${planModel!.price.toInt()}',
-                          style: openSansSemiBold.copyWith(
-                            fontSize: Dimensions.fontSize20,
-                            decoration: TextDecoration.lineThrough,
+                    // Check if the discount is greater than 0
+                    if (planModel!.discount > 0)
+                      Column(
+                        children: [
+                          Text(
+                            '${planModel!.discount.toInt()}% off',
+                            style: openSansRegular.copyWith(color: greenColor, fontSize: Dimensions.fontSize12),
                           ),
-                        ),
-
-
-                      ],
-                    ),
+                          Text(
+                            '₹ ${planModel!.price.toInt()}',
+                            style: openSansSemiBold.copyWith(
+                              fontSize: Dimensions.fontSize20,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                        ],
+                      ),
                     sizedBoxW10(),
                     Text(
                       '₹ ${planModel!.sellingPrice.toInt()}',
@@ -65,6 +68,7 @@ class PlansDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
+
               Expanded(
                 child: CustomButtonWidget(buttonText: 'Purchase Plan',onPressed: () {
                   Get.toNamed(RouteHelper.getAddPlanPatientDetailsRoute(planModel!.planId.toString()));

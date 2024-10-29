@@ -74,7 +74,6 @@ class DiabeticEyeCarePlansComponent extends StatelessWidget {
                                   fontSize: Dimensions.fontSize20,
                                   color: Theme.of(context).primaryColor),
                             ),
-
                             // Text(
                             //   dataList[j].description,
                             //   maxLines: 4,

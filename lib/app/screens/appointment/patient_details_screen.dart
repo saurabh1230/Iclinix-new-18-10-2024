@@ -244,22 +244,18 @@ class PatientDetailsScreen extends StatelessWidget {
                               controller: _dateController,
                               readOnly: true,
                               onTap: () async {
+                                DateTime initialDate = DateTime.now().isAfter(DateTime(2018))
+                                    ? DateTime(2018)
+                                    : DateTime.now();
                                 DateTime? pickedDate = await showDatePicker(
                                   context: context,
-                                  initialDate:
-                                      appointmentControl.selectedDobDate ??
-                                          DateTime.now(),
-                                  firstDate: DateTime(1900), // Minimum date
-                                  lastDate: DateTime
-                                      .now(), // Prevents future date selection
+                                  initialDate: appointmentControl.selectedDobDate ?? initialDate,
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime(2018),
                                 );
-
-                                if (pickedDate != null &&
-                                    pickedDate.isBefore(DateTime.now())) {
+                                if (pickedDate != null && pickedDate.isBefore(DateTime(2018))) {
                                   appointmentControl.updateDobDate(pickedDate);
-                                  _dateController.text = appointmentControl
-                                      .formattedDobDate
-                                      .toString();
+                                  _dateController.text = appointmentControl.formattedDobDate.toString();
                                 } else {
                                   _dateController.clear();
                                 }
@@ -268,13 +264,13 @@ class PatientDetailsScreen extends StatelessWidget {
                                 if (value == null || value.isEmpty) {
                                   return 'Please select a date of birth.';
                                 }
-
                                 DateTime selectedDate = DateTime.parse(value);
                                 if (selectedDate.isAfter(DateTime.now())) {
                                   return 'Date of birth cannot be in the future.';
                                 }
                                 return null;
                               },
+                              suffixText: '',
                               hintText: 'PATIENT DOB',
                               isCalenderIcon: true,
                               editText: true,

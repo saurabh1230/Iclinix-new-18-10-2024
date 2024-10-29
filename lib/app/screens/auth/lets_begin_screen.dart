@@ -122,12 +122,18 @@ class LetsBeginScreen extends StatelessWidget {
                                 controller: _dateController,
                                 readOnly: true,
                                 onTap: () async {
+                                  DateTime initialDate = authControl.selectedDate ?? DateTime(2018); // Default to 2018 if null
+                                  if (initialDate.isAfter(DateTime(2018))) {
+                                    initialDate = DateTime(2018); // Ensure initial date is not after 2018
+                                  }
+
                                   DateTime? pickedDate = await showDatePicker(
                                     context: context,
-                                    initialDate: authControl.selectedDate ?? DateTime.now(),
+                                    initialDate: initialDate,
                                     firstDate: DateTime(1940),
-                                    lastDate: DateTime.now(),
+                                    lastDate: DateTime(2018),
                                   );
+
                                   if (pickedDate != null) {
                                     authControl.updateDate(pickedDate);
                                     _dateController.text = authControl.formattedDate.toString();
@@ -142,13 +148,17 @@ class LetsBeginScreen extends StatelessWidget {
                                     if (selectedDate.isAfter(today)) {
                                       return 'Date of Birth cannot be in the future.';
                                     }
+                                    if (selectedDate.isAfter(DateTime(2018))) {
+                                      return 'Date of Birth cannot be after 2018.';
+                                    }
                                     return null;
                                   }
                                 },
                                 hintText: 'Date of Birth',
                                 isCalenderIcon: true,
-                                // editText: true,
                               ),
+
+
 
                               sizedBox10(),
                               CustomDropdownField(

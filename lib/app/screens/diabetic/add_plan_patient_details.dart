@@ -217,22 +217,20 @@ class AddPlanPatientDetails extends StatelessWidget {
                         controller: _dateController,
                         readOnly: true,
                         onTap: () async {
+                          DateTime initialDate = appointmentControl.selectedDobDate ?? DateTime.now();
+                          DateTime lastDate = DateTime(2018);
+                          if (initialDate.isAfter(lastDate)) {
+                            initialDate = lastDate;
+                          }
                           DateTime? pickedDate = await showDatePicker(
                             context: context,
-                            initialDate:
-                            appointmentControl.selectedDobDate ??
-                                DateTime.now(),
+                            initialDate: initialDate,
                             firstDate: DateTime(1900), // Minimum date
-                            lastDate: DateTime
-                                .now(), // Prevents future date selection
+                            lastDate: lastDate, // Prevents future date selection
                           );
-
-                          if (pickedDate != null &&
-                              pickedDate.isBefore(DateTime.now())) {
+                          if (pickedDate != null && pickedDate.isBefore(DateTime.now())) {
                             appointmentControl.updateDobDate(pickedDate);
-                            _dateController.text = appointmentControl
-                                .formattedDobDate
-                                .toString();
+                            _dateController.text = appointmentControl.formattedDobDate.toString();
                           } else {
                             _dateController.clear();
                           }
@@ -246,7 +244,7 @@ class AddPlanPatientDetails extends StatelessWidget {
                             return 'Date of birth cannot be in the future.';
                           }
                           return null;
-                          },
+                        },
                         hintText: 'PATIENT DOB',
                         isCalenderIcon: true,
                         // editText: true,

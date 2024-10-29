@@ -26,7 +26,6 @@ class DiabeticDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Get.find<DiabeticController>().getSugarCheckUpHistory();
       Get.find<DiabeticController>().getDiabeticDashboard();
     });
     return SliderDrawerWidget(
@@ -50,7 +49,7 @@ class DiabeticDashboard extends StatelessWidget {
               children: [
                 IconButton(
                     onPressed: () {
-                      drawerKey.currentState!.toggleDrawer();
+                      // drawerKey.currentState!.toggleDrawer();
                     },
                     icon: Icon(
                       Icons.message_outlined,
@@ -102,7 +101,9 @@ class DiabeticDashboard extends StatelessWidget {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: "10 Days",
+                                      text: diabeticControl.planDetails != null
+                                          ? "${diabeticControl.planDetails!.duration.toString()} Month"
+                                          : "N/A", // Provide a fallback value if planDetails is null
                                       style: openSansSemiBold.copyWith(
                                         fontSize: Dimensions.fontSizeDefault,
                                         color: yellowColor,
@@ -111,6 +112,7 @@ class DiabeticDashboard extends StatelessWidget {
                                   ],
                                 ),
                               ),
+
                             ],
                           ),
                         ),
@@ -144,8 +146,8 @@ class DiabeticDashboard extends StatelessWidget {
                         fontSize: Dimensions.fontSize14,
                         transparent: true,
                       ),
-                      sizedBoxDefault(),
-                      const RoutineComponent(),
+                      // sizedBoxDefault(),
+                      // const RoutineComponent(),
                       sizedBoxDefault(),
                       // const CurrentMedicationComponent(),
                       // sizedBoxDefault(),

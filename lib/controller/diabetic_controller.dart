@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iclinix/app/widget/custom_snackbar.dart';
 import 'package:iclinix/data/api/api_client.dart';
@@ -6,6 +8,11 @@ import 'package:iclinix/data/models/response/sugar_checkup_model.dart';
 import 'package:iclinix/data/repo/diabetic_repo.dart';
 import 'package:iclinix/helper/date_converter.dart';
 
+import '../data/models/response/user_data.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
 
 
 
@@ -106,15 +113,24 @@ class DiabeticController extends GetxController implements GetxService {
     return '${selectedBp == 'No' ? '0' : '1'}';
   }
 
+  String extractVideoId(String url) {
+    // Use RegExp to extract the video ID from the URL
+    final RegExp regExp = RegExp(
+      r'(?<=v=|\/)([0-9A-Za-z_-]{11})',
+      caseSensitive: false,
+    );
+    final match = regExp.firstMatch(url);
+    return match != null ? match.group(0) ?? '' : '';
+  }
+
   bool _isDailySugarCheckupLoading = false;
   bool get isDailySugarCheckupLoading => _isDailySugarCheckupLoading;
 
-  Future<void> addSugarApi(String? beforeMeal, String? afterBreakFast, String? afterLunch,
-      String? afterDinner, String? randomEntry,String? checkingDate) async {
+  Future<void> addSugarApi(String? beforeMeal, String? afterBreakFast, String? afterLunch, String? afterDinner, String? randomEntry,String? checkingDate) async {
     _isDailySugarCheckupLoading = true;
     update();
-    Response response = await diabeticRepo.dailySugarCheckUpRepo(beforeMeal,afterBreakFast,afterLunch,
-        afterDinner,randomEntry,checkingDate
+    Response response = await diabeticRepo.dailySugarCheckUpRepo(
+        beforeMeal,afterBreakFast,afterLunch, afterDinner,randomEntry,checkingDate
     );
     if(response.statusCode == 200) {
       var responseData = response.body;
@@ -134,7 +150,6 @@ class DiabeticController extends GetxController implements GetxService {
       _isDailySugarCheckupLoading = false;
       update();
     }
-
     _isDailySugarCheckupLoading = false;
     update();
   }
@@ -170,40 +185,78 @@ class DiabeticController extends GetxController implements GetxService {
 
 
   List<SugarChartModel>? _sugarChartList;
-  PlanDetailsModel? _planDetails;
+
   DietPlanModel? _dietPlan;
 
 
   List<SugarChartModel>? get sugarChartList => _sugarChartList;
-  PlanDetailsModel? get planDetails => _planDetails;
+
   DietPlanModel? get dietPlan => _dietPlan;
+
+  PlanDetailsModel? _planDetails;
+  PlanDetailsModel? get planDetails => _planDetails;
+
+  List<PlanResourceModel> videoResources = [];
+  List<PlanResourceModel> imageResources = [];
+  List<PlanResourceModel> pdfResources = [];
+  List<PlanResourceModel> textResources = [];
 
   Future<void> getDiabeticDashboard() async {
     _isDailySugarCheckupLoading = true;
     update();
-
     try {
       Response response = await diabeticRepo.fetchDashboardDataRepo();
       if (response.statusCode == 200) {
         print("Full API Response: ${response.body}");
         var data = response.body['data'];
-        // Parse monthlySugerValues
-        if (data != null && data.containsKey('monthlySugerValues')) {
-          List<dynamic> monthlyValues = data['monthlySugerValues'];
-          _sugarChartList = monthlyValues
-              .map((json) => SugarChartModel.fromJson(json as Map<String, dynamic>))
-              .toList();
-          print("Sugar Checkup List fetched successfully: $_sugarChartList");
+        if (data != null) {
+          if (data.containsKey('monthlySugerValues')) {
+            List<dynamic> monthlyValues = data['monthlySugerValues'];
+            _sugarChartList = monthlyValues
+                .map((json) => SugarChartModel.fromJson(json as Map<String, dynamic>))
+                .toList();
+            print("Sugar Checkup List fetched successfully: $_sugarChartList");
+          } else {
+            print("No monthlySugerValues key found in the response.");
+            _sugarChartList = [];
+          }
+          if (data.containsKey('planDetails')) {
+            var planDetailsData = data['planDetails'];
+            if (planDetailsData != null) {
+              videoResources.clear();
+              imageResources.clear();
+              pdfResources.clear();
+              textResources.clear();
+              _planDetails = PlanDetailsModel.fromJson(planDetailsData);
+
+              // Categorize resources directly from the API response
+              for (var resourceData in planDetailsData['plan_resources']) {
+                final PlanResourceModel resource = PlanResourceModel.fromJson(resourceData);
+                switch (resource.type) {
+                  case 1:
+                    videoResources.add(resource);
+                    break;
+                  case 2:
+                    imageResources.add(resource);
+                    break;
+                  case 3:
+                    pdfResources.add(resource);
+                    break;
+                  case 4:
+                    textResources.add(resource);
+                    print('check textResources lenght ${textResources.length}');
+                    break;
+                  default:
+                    print("Unknown resource type: ${resource.type}");
+                }
+              }
+            }
+          }
+         else {
+            print("No planDetails key found in the response.");
+          }
         } else {
-          print("No monthlySugerValues key found in the response.");
-          _sugarChartList = [];
-        }
-        // Parse planDetails
-        if (data != null && data.containsKey('planDetails')) {
-          _planDetails = PlanDetailsModel.fromJson(data['planDetails']);
-          print("Plan details fetched successfully: $_planDetails");
-        } else {
-          print("No planDetails key found in the response.");
+          print("No data found in the response.");
         }
       } else {
         print("Error fetching dashboard data. Status code: ${response.statusCode}");
@@ -215,6 +268,8 @@ class DiabeticController extends GetxController implements GetxService {
       update();
     }
   }
+
+
 
   Future<void> addHealthApi(String? height, String? weight, String? waistCircumference,
       String? hipCircumference, String? duraDiabetes) async {
@@ -243,6 +298,99 @@ class DiabeticController extends GetxController implements GetxService {
     _isDailySugarCheckupLoading = false;
     update();
   }
+
+
+
+  bool _userDataLoading = false;
+  bool get userDataLoading => _userDataLoading;
+
+
+  UserData? _userData;
+  PatientData? _patientData;
+
+  UserData? get userData => _userData;
+  PatientData? get patientData => _patientData;
+
+  bool _isResourceDetailsLoading = false;
+  bool get isResourceDetailsLoading => _isResourceDetailsLoading;
+
+  PlanResourceModel? _resourceDetail;
+  PlanResourceModel? get resourceDetail => _resourceDetail;
+
+  Future<PlanResourceModel?> getResourceDetailsApi(String id) async {
+    _isResourceDetailsLoading = true;
+    _resourceDetail = null;
+    update();
+
+    try {
+      Response response = await diabeticRepo.fetchResourceContentRepo(id);
+      if (response.statusCode == 200) {
+        final data = response.body['data'];
+        _resourceDetail = PlanResourceModel.fromJson(data);
+      } else {
+        // Handle non-200 status codes
+        print("Failed to resourceDetail data: ${response.statusCode}");
+        // ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      // Handle exceptions
+      print("Exception occurred: $e");
+    }
+    _isResourceDetailsLoading = false;
+    update();
+    return _resourceDetail;
+  }
+
+
+
+  Future<void> downloadImage(String url, String imageName) async {
+    if (await Permission.storage.isDenied) {
+      PermissionStatus status = await Permission.storage.request();
+      if (!status.isGranted) {
+        // If permission is denied, show a dialog
+        Get.defaultDialog(
+          title: "Permission Required",
+          content: const Text("Please enable storage permission to download the image."),
+          actions: [
+            TextButton(
+              onPressed: () => openAppSettings(),
+              child: const Text("Open Settings"),
+            ),
+            TextButton(
+              onPressed: () => Get.back(),
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+        return;
+      }
+    }
+
+    // Continue to download if permission is granted
+    if (await Permission.storage.isGranted) {
+      try {
+        final response = await http.get(Uri.parse(url));
+        if (response.statusCode == 200) {
+          final directory = await getExternalStorageDirectory();
+          final filePath = '${directory!.path}/$imageName.jpg';
+          final file = File(filePath);
+          await file.writeAsBytes(response.bodyBytes);
+          Get.snackbar("Download", "Image saved to $filePath",
+              snackPosition: SnackPosition.BOTTOM);
+        } else {
+          Get.snackbar("Download Failed", "Unable to download image",
+              snackPosition: SnackPosition.BOTTOM);
+        }
+      } catch (e) {
+        Get.snackbar("Error", "Failed to save image: $e",
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    } else {
+      Get.snackbar("Permission Denied", "Storage permission is required",
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
 
 
 

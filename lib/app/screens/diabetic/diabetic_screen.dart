@@ -88,9 +88,6 @@ class DiabeticScreen extends StatelessWidget {
               ),
             );
           });
-
-
-
         }),
       ),
     );

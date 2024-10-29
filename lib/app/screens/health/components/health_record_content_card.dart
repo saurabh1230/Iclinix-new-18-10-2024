@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iclinix/app/widget/custom_image_widget.dart';
 import 'package:iclinix/app/widget/empty_data_widget.dart';
+import 'package:iclinix/app/widget/loading_widget.dart';
 import 'package:iclinix/controller/appointment_controller.dart';
 import 'package:iclinix/helper/date_converter.dart';
 import 'package:iclinix/utils/dimensions.dart';
@@ -17,13 +18,10 @@ class HealthRecordContentCard extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<AppointmentController>().getAppointmentHistory();
     });
-
     return GetBuilder<AppointmentController>(builder: (appointmentControl) {
       final appointmentHistoryList = appointmentControl.appointmentHistoryList;
-      final isListEmpty =
-          appointmentHistoryList == null || appointmentHistoryList.isEmpty;
+      final isListEmpty = appointmentHistoryList == null || appointmentHistoryList.isEmpty;
       final isLoading = appointmentControl.isAppointmentHistoryLoading;
-
       if (isListEmpty && !isLoading) {
         return Padding(
           padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
@@ -36,10 +34,8 @@ class HealthRecordContentCard extends StatelessWidget {
           ),
         );
       } else if (isLoading) {
-        return const Center(child: CircularProgressIndicator());
+        return const Center(child: LoadingWidget());
       }
-
-      // Build list of appointments
       return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -47,7 +43,6 @@ class HealthRecordContentCard extends StatelessWidget {
         itemBuilder: (_, i) {
           final appointment = appointmentHistoryList[i];
           final patientAppointments = appointment.patientAppointments;
-
           return Padding(
             padding: const EdgeInsets.symmetric(
                 horizontal: Dimensions.paddingSizeDefault),
@@ -184,7 +179,7 @@ class HealthRecordContentCard extends StatelessWidget {
                           );
                         },
                       )
-                    : Text(''),
+                    : const Text(''),
               ],
             ),
           );

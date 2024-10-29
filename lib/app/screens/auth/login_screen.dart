@@ -111,7 +111,6 @@ class LoginScreen extends StatelessWidget {
                         //   ),
                         // ),
                         sizedBox30(),
-
                         GetBuilder<AuthController>(builder: (authControl) {
                           return  authControl.isLoginLoading ?
                           const Center(child: CircularProgressIndicator()) :
@@ -123,8 +122,8 @@ class LoginScreen extends StatelessWidget {
                               }
                             },
                           );
-
-                        })
+                        }),
+                        sizedBox10(),
 
 
                       ],
