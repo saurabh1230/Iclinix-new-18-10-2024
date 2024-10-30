@@ -89,8 +89,6 @@ class AddSugarLevelsDialog extends StatelessWidget {
                       suffixText: '',
                     ),
                     sizedBoxDefault(),
-                    // Use Obx to observe the loading state
-
                        diabeticControl.isDailySugarCheckupLoading
                           ? const Center(child: CircularProgressIndicator())
                           : Row(
