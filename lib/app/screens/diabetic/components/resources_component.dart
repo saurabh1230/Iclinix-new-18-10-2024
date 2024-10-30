@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iclinix/app/widget/custom_button_widget.dart';
+import 'package:iclinix/app/widget/custom_containers.dart';
 import 'package:iclinix/app/widget/custom_image_widget.dart';
 import 'package:iclinix/controller/diabetic_controller.dart';
 import 'package:iclinix/helper/route_helper.dart';
@@ -9,6 +11,8 @@ import 'package:iclinix/utils/styles.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
+
+import '../../../../data/models/response/diabetic_dashboard_detail_model.dart';
 
 class ResourcesComponent extends StatelessWidget {
   const ResourcesComponent({super.key});
@@ -25,6 +29,8 @@ class ResourcesComponent extends StatelessWidget {
       final isImageListEmpty = dataImage.isEmpty;
       final dataPdf = controller.pdfResources;
       final isPdfListEmpty = dataPdf.isEmpty;
+      final dataDietPlan = controller.dietPlan;
+      final isDataDietPlanListEmpty = data.isEmpty;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -33,7 +39,6 @@ class ResourcesComponent extends StatelessWidget {
             style: openSansSemiBold,
           ),
           sizedBoxDefault(),
-
           if (isSugarLoading)
             const Center(child: CircularProgressIndicator())
           else if (isListEmpty && isReadingListEmpty && isImageListEmpty && isPdfListEmpty)
@@ -42,6 +47,7 @@ class ResourcesComponent extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (!isDataDietPlanListEmpty) _buildDietPlanContent(context, controller, dataDietPlan),
                 if (!isListEmpty) _buildVideoContent(context, controller, data),
                 sizedBoxDefault(),
                 if (!isReadingListEmpty) _buildReadingContent(context, controller, dataReading),
@@ -139,7 +145,7 @@ class ResourcesComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Reading Content',
+          'Articles',
           style: openSansRegular.copyWith(
             fontSize: Dimensions.fontSize14,
             color: Theme.of(context).disabledColor.withOpacity(0.60),
@@ -174,42 +180,29 @@ class ResourcesComponent extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              dataReading[i].name,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: openSansMedium.copyWith(
-                                fontSize: Dimensions.fontSize13,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Read',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: openSansBold.copyWith(
-                                fontSize: Dimensions.fontSize14,
-                                decoration: TextDecoration.underline,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        dataReading[i].name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: openSansMedium.copyWith(
+                          fontSize: Dimensions.fontSize13,
+                        ),
                       ),
+
                       Text(
                         dataReading[i].sortDescription,
-                        maxLines: 10,
+                        maxLines: 7,
                         overflow: TextOverflow.ellipsis,
                         style: openSansMedium.copyWith(
                           fontSize: Dimensions.fontSize13,
                           color: Theme.of(context).disabledColor.withOpacity(0.40),
                         ),
                       ),
+                      Spacer(),
+                      CustomButtonWidget(buttonText: 'Read',
+                      height: 38,fontSize: Dimensions.fontSize14,
+                      onPressed: () {},isBold: false,
+                      transparent: true,),
                     ],
                   ),
                 ),
@@ -227,7 +220,7 @@ class ResourcesComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Image Content',
+          'Gallery',
           style: openSansRegular.copyWith(
             fontSize: Dimensions.fontSize14,
             color: Theme.of(context).disabledColor.withOpacity(0.60),
@@ -274,19 +267,19 @@ class ResourcesComponent extends StatelessWidget {
                           fontSize: Dimensions.fontSize13,
                         ),
                       ),
-                      TextButton(
-                        onPressed: () => controller.downloadImage(dataImage[i].fileUrl, dataImage[i].name),
-                        child: Text(
-                          'Download',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: openSansBold.copyWith(
-                            fontSize: Dimensions.fontSize14,
-                            decoration: TextDecoration.underline,
-                            color: Colors.redAccent,
-                          ),
-                        ),
-                      ),
+                      // TextButton(
+                      //   onPressed: () => controller.downloadImage(dataImage[i].fileUrl, dataImage[i].name),
+                      //   child: Text(
+                      //     'Download',
+                      //     maxLines: 1,
+                      //     overflow: TextOverflow.ellipsis,
+                      //     style: openSansBold.copyWith(
+                      //       fontSize: Dimensions.fontSize14,
+                      //       decoration: TextDecoration.underline,
+                      //       color: Colors.redAccent,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -382,6 +375,51 @@ class ResourcesComponent extends StatelessWidget {
       ],
     );
   }
+
+
+  Widget _buildDietPlanContent(BuildContext context, DiabeticController controller, DietPlanModel? dietPlan) {
+    if (dietPlan == null) {
+      return const SizedBox(); // Or any placeholder if no diet plan is available
+    }
+
+    return CustomDecoratedContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Text(
+                  'Diet Plan',
+                  style: openSansBold.copyWith(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  'Download',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: openSansBold.copyWith(
+                    fontSize: Dimensions.fontSize14,
+                    color: Colors.redAccent,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const Divider(),
+          CustomNetworkImageWidget(image: dietPlan.excerciseChart),
+          CustomNetworkImageWidget(image: dietPlan.dietchart),
+        ],
+      ),
+    );
+  }
+
+
 
   void _launchURL(String url) async {
     if (!await launch(url)) throw 'Could not launch $url';

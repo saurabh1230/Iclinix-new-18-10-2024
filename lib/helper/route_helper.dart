@@ -11,6 +11,7 @@ import 'package:iclinix/app/screens/auth/otp_verification_screen.dart';
 import 'package:iclinix/app/screens/auth/register_screen.dart';
 import 'package:iclinix/app/screens/dashboard/dashboard_screen.dart';
 import 'package:iclinix/app/screens/diabetic/add_plan_patient_details.dart';
+import 'package:iclinix/app/screens/diabetic/chat_screen.dart';
 import 'package:iclinix/app/screens/diabetic/diabetic_dashboard.dart';
 import 'package:iclinix/app/screens/diabetic/payment_successful_screen.dart';
 import 'package:iclinix/app/screens/diabetic/resource_details_screen.dart';
@@ -49,7 +50,7 @@ class RouteHelper {
   static const String planPayment = '/plan-payment';
   static const String planPaymentSuccessful = '/plan-payment-successful';
   static const String resourcesDetails = '/resources-details';
-
+  static const String chat = '/chat';
 
 
   /// Routes ==================>
@@ -80,6 +81,7 @@ class RouteHelper {
   // static String getPlanPaymentRoute() => planPayment;
   static String getPlanPaymentSuccessfulRoute() => planPaymentSuccessful;
   static String getResourcesDetailsRoute(String? id,String? name,) => '$resourcesDetails?id=$id&name=$name';
+  static String getChatRoute() => chat;
 
 
   /// Pages ==================>
@@ -119,16 +121,16 @@ class RouteHelper {
     GetPage(name: clinic, page: () => AppointmentScreen(isBackButton: Get.parameters['isBackButton'] == 'true')),
     GetPage(name: notification, page: () =>  const NotificationScreen()),
     GetPage(name: search, page: () =>   SearchScreen()),
-    GetPage(name: help, page: () =>   HelpScreen()),
+    GetPage(name: help, page: () =>   const HelpScreen()),
     GetPage(name: serviceDetail, page: () =>  ServiceDetailsScreen(id: Get.parameters['id'],
       title: Get.parameters['title'],
       )),
     GetPage(name: planPatientDetails, page: () =>   AddPlanPatientDetails(planId: Get.parameters['planId'],)),
     GetPage(name: diabeticDashboard, page: () =>   DiabeticDashboard()),
     GetPage(name: planPayment, page: () =>  PlanPaymentScreen(patientId : Get.parameters['patientId'],planId: Get.parameters['planId'],)),
-    GetPage(name: planPaymentSuccessful, page: () =>   PlanBookingSuccessfulScreen()),
+    GetPage(name: planPaymentSuccessful, page: () =>   const PlanBookingSuccessfulScreen()),
     GetPage(name: resourcesDetails, page: () =>  ResourceDetailsScreen(id : Get.parameters['id'],name: Get.parameters['name'],)),
-
+    GetPage(name: chat, page: () =>  const ChatScreen())
 
 
 

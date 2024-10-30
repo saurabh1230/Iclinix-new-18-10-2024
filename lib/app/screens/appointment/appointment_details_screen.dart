@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iclinix/app/widget/custom_app_bar.dart';
 import 'package:iclinix/data/models/response/appointment_history_model.dart';
+import 'package:iclinix/utils/dimensions.dart';
+import 'package:iclinix/utils/styles.dart';
+import 'package:iclinix/utils/themes/light_theme.dart';
 
 class AppointmentDetailsScreen extends StatelessWidget {
   final AppointmentHistoryModel appointmentHistoryModel;
@@ -53,7 +56,10 @@ class AppointmentDetailsScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        style: openSansBold.copyWith(
+          fontSize: Dimensions.fontSize20,
+          color: primaryColor
+        ),
       ),
     );
   }
@@ -64,8 +70,15 @@ class AppointmentDetailsScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Expanded(child: Text(value, textAlign: TextAlign.end)),
+          Text(label, style: openSansSemiBold.copyWith(
+            fontSize: Dimensions.fontSizeDefault,
+            color: primaryColor
+          )),
+          Expanded(child: Text(value, textAlign: TextAlign.end,
+            style: openSansRegular.copyWith(
+              fontSize: Dimensions.fontSize14,color: Colors.black.withOpacity(0.60)
+            ),
+          )),
         ],
       ),
     );

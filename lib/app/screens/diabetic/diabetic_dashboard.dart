@@ -8,6 +8,7 @@ import 'package:flutter_slide_drawer/flutter_slide_widget.dart';
 import 'package:iclinix/app/widget/custom_button_widget.dart';
 import 'package:iclinix/app/widget/custom_drawer_widget.dart';
 import 'package:iclinix/controller/diabetic_controller.dart';
+import 'package:iclinix/helper/route_helper.dart';
 import 'package:iclinix/utils/dimensions.dart';
 import 'package:iclinix/utils/images.dart';
 import 'package:iclinix/utils/sizeboxes.dart';
@@ -49,7 +50,7 @@ class DiabeticDashboard extends StatelessWidget {
               children: [
                 IconButton(
                     onPressed: () {
-                      // drawerKey.currentState!.toggleDrawer();
+                      Get.toNamed(RouteHelper.getChatRoute());
                     },
                     icon: Icon(
                       Icons.message_outlined,
@@ -121,14 +122,32 @@ class DiabeticDashboard extends StatelessWidget {
                       const Text('Today’s Blood Sugar Parameters',
                           style: openSansSemiBold),
                       sizedBoxDefault(),
-                      CustomButtonWidget(
-                        buttonText: '+ Add Blood Sugar Level',
-                        onPressed: () {
-                          Get.dialog(AddSugarLevelsDialog());
-                        },
-                        isBold: false,
-                        fontSize: Dimensions.fontSize14,
-                        transparent: true,
+                      Row(
+                        children: [
+                          Flexible(
+                            child: CustomButtonWidget(
+                              buttonText: 'Blood Sugar Level',
+                              onPressed: () {
+                                Get.dialog(AddSugarLevelsDialog());
+                              },
+                              isBold: false,
+                              fontSize: Dimensions.fontSize14,
+                              transparent: true,
+                            ),
+                          ),
+                          sizedBoxW15(),
+                          Flexible(
+                            child: CustomButtonWidget(
+                              buttonText: 'Health Parameters',
+                              onPressed: () {
+                                Get.dialog(AddHealthParameterDialog());
+                              },
+                              isBold: false,
+                              fontSize: Dimensions.fontSize14,
+                              transparent: true,
+                            ),
+                          ),
+                        ],
                       ),
                       sizedBoxDefault(),
 
@@ -137,15 +156,7 @@ class DiabeticDashboard extends StatelessWidget {
                         SugarChart(),
                       ],
                       sizedBoxDefault(),
-                      CustomButtonWidget(
-                        buttonText: '+ Add Health Parameters',
-                        onPressed: () {
-                          Get.dialog(AddHealthParameterDialog());
-                        },
-                        isBold: false,
-                        fontSize: Dimensions.fontSize14,
-                        transparent: true,
-                      ),
+                      
                       // sizedBoxDefault(),
                       // const RoutineComponent(),
                       sizedBoxDefault(),

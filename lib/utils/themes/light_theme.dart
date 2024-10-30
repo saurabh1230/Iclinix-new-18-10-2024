@@ -23,7 +23,7 @@ ThemeData light = ThemeData(
       )),
   textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: const Color(0xFF0F84B8))), colorScheme: const ColorScheme.light(primary: Color(0xFF0F84B8), secondary: Color(0xFF0F84B8)).copyWith(error: const Color(0xFF0F84B8)).copyWith(background: const Color(0xFF0F84B8)),
 );
-
+const Color primaryColor = Color(0xFF0F84B8);
 const Color redColor = Color(0xffB43642);
 const Color greenColor = Color(0xff6D9C0A);
 const Color blueColor = Color(0xff115878);

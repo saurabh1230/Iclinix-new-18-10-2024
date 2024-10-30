@@ -35,6 +35,13 @@ class DiabeticController extends GetxController implements GetxService {
   }
   String selectedValue = '';
 
+  bool showHistory = false;
+
+  void toggleShowHistory(bool value) {
+    showHistory = value;
+    update();
+  }
+
   String? selectedTime;
   List<String> timeSlot = [
     '12:30',
@@ -186,13 +193,13 @@ class DiabeticController extends GetxController implements GetxService {
 
   List<SugarChartModel>? _sugarChartList;
 
-  DietPlanModel? _dietPlan;
+
 
 
   List<SugarChartModel>? get sugarChartList => _sugarChartList;
 
   DietPlanModel? get dietPlan => _dietPlan;
-
+  DietPlanModel? _dietPlan;
   PlanDetailsModel? _planDetails;
   PlanDetailsModel? get planDetails => _planDetails;
 
@@ -206,31 +213,46 @@ class DiabeticController extends GetxController implements GetxService {
     update();
     try {
       Response response = await diabeticRepo.fetchDashboardDataRepo();
+
       if (response.statusCode == 200) {
-        print("Full API Response: ${response.body}");
         var data = response.body['data'];
+
         if (data != null) {
-          if (data.containsKey('monthlySugerValues')) {
+          // Process monthly sugar values if they exist
+          if (data.containsKey('monthlySugerValues') && data['monthlySugerValues'] != null) {
             List<dynamic> monthlyValues = data['monthlySugerValues'];
             _sugarChartList = monthlyValues
                 .map((json) => SugarChartModel.fromJson(json as Map<String, dynamic>))
                 .toList();
             print("Sugar Checkup List fetched successfully: $_sugarChartList");
           } else {
-            print("No monthlySugerValues key found in the response.");
             _sugarChartList = [];
+            print("No monthlySugerValues key found in the response.");
           }
-          if (data.containsKey('planDetails')) {
-            var planDetailsData = data['planDetails'];
-            if (planDetailsData != null) {
-              videoResources.clear();
-              imageResources.clear();
-              pdfResources.clear();
-              textResources.clear();
-              _planDetails = PlanDetailsModel.fromJson(planDetailsData);
 
-              // Categorize resources directly from the API response
-              for (var resourceData in planDetailsData['plan_resources']) {
+          // Process diet plan
+          if (data.containsKey('dietPlan') && data['dietPlan'] != null) {
+            _dietPlan = DietPlanModel.fromJson(data['dietPlan'] as Map<String, dynamic>);
+            print("Diet Plan fetched successfully: $_dietPlan");
+          } else {
+            _dietPlan = null;
+            print("No dietPlan key found in the response.");
+          }
+
+          // Process plan details and resources
+          if (data.containsKey('planDetails') && data['planDetails'] != null) {
+            var planDetailsData = data['planDetails'];
+            _planDetails = PlanDetailsModel.fromJson(planDetailsData);
+
+            // Clear previous resources
+            videoResources.clear();
+            imageResources.clear();
+            pdfResources.clear();
+            textResources.clear();
+
+            // Categorize resources by type
+            if (planDetailsData.containsKey('attachedPlanResources') && planDetailsData['attachedPlanResources'] != null) {
+              for (var resourceData in planDetailsData['attachedPlanResources']) {
                 final PlanResourceModel resource = PlanResourceModel.fromJson(resourceData);
                 switch (resource.type) {
                   case 1:
@@ -244,15 +266,16 @@ class DiabeticController extends GetxController implements GetxService {
                     break;
                   case 4:
                     textResources.add(resource);
-                    print('check textResources lenght ${textResources.length}');
                     break;
                   default:
                     print("Unknown resource type: ${resource.type}");
                 }
               }
+              print('Text Resources Length: ${textResources.length}');
+            } else {
+              print("No attachedPlanResources found in planDetails.");
             }
-          }
-         else {
+          } else {
             print("No planDetails key found in the response.");
           }
         } else {

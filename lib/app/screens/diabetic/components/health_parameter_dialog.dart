@@ -148,6 +148,8 @@ class AddHealthParameterDialog extends StatelessWidget {
                     },
                   ),
                   sizedBoxDefault(),
+                  controller.isDailySugarCheckupLoading ?
+                  const Center(child: CircularProgressIndicator()) :
                   Row(
                     children: [
                       Flexible(

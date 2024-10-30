@@ -45,7 +45,6 @@ class DashboardScreenState extends State<DashboardScreen> {
   }
 
 
-
   Future<void> _initializeScreens() async {
     bool isSubscriptionActive = await Get.find<AuthController>().getSubscriptionStatus();
     _screens = [
