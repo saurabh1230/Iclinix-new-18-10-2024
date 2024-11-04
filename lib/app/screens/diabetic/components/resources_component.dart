@@ -5,6 +5,7 @@ import 'package:iclinix/app/widget/custom_containers.dart';
 import 'package:iclinix/app/widget/custom_image_widget.dart';
 import 'package:iclinix/controller/diabetic_controller.dart';
 import 'package:iclinix/helper/route_helper.dart';
+import 'package:iclinix/utils/app_constants.dart';
 import 'package:iclinix/utils/dimensions.dart';
 import 'package:iclinix/utils/sizeboxes.dart';
 import 'package:iclinix/utils/styles.dart';
@@ -201,7 +202,10 @@ class ResourcesComponent extends StatelessWidget {
                       Spacer(),
                       CustomButtonWidget(buttonText: 'Read',
                       height: 38,fontSize: Dimensions.fontSize14,
-                      onPressed: () {},isBold: false,
+                      onPressed: () {
+                        Get.toNamed(RouteHelper.getResourcesDetailsRoute(dataReading[i].id.toString(), dataReading[i].name.toString()));
+
+                      },isBold: false,
                       transparent: true,),
                     ],
                   ),
@@ -228,17 +232,18 @@ class ResourcesComponent extends StatelessWidget {
         ),
         sizedBox10(),
         SizedBox(
-          height: 250,
+          height: 200,
           child: ListView.separated(
             itemCount: dataImage.length,
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             scrollDirection: Axis.horizontal,
             itemBuilder: (_, i) {
+              print('${AppConstants.resourcesImageUrl}${dataImage[i].file}');
               return GestureDetector(
                 onTap: () {
                   showImageViewer(
-                    context, Image.network(dataImage[i].fileUrl).image,
+                    context, Image.network('${AppConstants.resourcesImageUrl}${dataImage[i].file}').image,
                     swipeDismissible: true,
                     doubleTapZoomable: true,
                   );
@@ -256,9 +261,9 @@ class ResourcesComponent extends StatelessWidget {
                     children: [
                       CustomNetworkImageWidget(
                         height: 150,
-                        image: dataImage[i].fileUrl,
+                        image: '${AppConstants.resourcesImageUrl}${dataImage[i].file}',
                       ),
-                      sizedBox4(),
+                      sizedBox10(),
                       Text(
                         dataImage[i].name,
                         maxLines: 2,

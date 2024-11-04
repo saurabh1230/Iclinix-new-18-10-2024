@@ -29,6 +29,7 @@ class AppConstants {
   /// image url ///
   static const String serviceImageUrl = "https://lab5.invoidea.in/iclinix/public/serviceImage/";
   static const String branchImageUrl = "https://lab5.invoidea.in/iclinix/public/branch_image/";
+  static const String resourcesImageUrl = "https://lab5.invoidea.in/iclinix/public/diabetic_resource/";
 
 
 

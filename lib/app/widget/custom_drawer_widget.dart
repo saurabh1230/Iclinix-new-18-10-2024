@@ -57,7 +57,9 @@ class CustomDrawer extends StatelessWidget {
                         controller.userData != null
                             ? '${controller.userData!.firstName}\n${controller.userData!.lastName}'
                             : 'Iclinix',
+                        textAlign: TextAlign.center,
                         style: openSansSemiBold.copyWith(fontSize: Dimensions.fontSize30,
+
                         color: Colors.white),
                       ),
 
