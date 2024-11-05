@@ -83,6 +83,7 @@ class PlanPaymentScreen extends StatelessWidget {
                         appointmentControl.selectPaymentMethod(value!);
                       }
                     },
+
                   );
                 }),
                 // sizedBoxDefault(),

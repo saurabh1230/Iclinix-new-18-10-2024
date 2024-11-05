@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:iclinix/utils/sizeboxes.dart';
-import 'package:iclinix/utils/styles.dart';
 import '../../utils/dimensions.dart';
 import '../../utils/themes/light_theme.dart';
+import '../../utils/sizeboxes.dart';
+import '../../utils/styles.dart';
 
 class CustomTextField extends StatefulWidget {
   final String hintText;
@@ -30,11 +30,11 @@ class CustomTextField extends StatefulWidget {
   final double iconSize;
   final bool isRequired;
   final bool readOnly;
-  final bool editText; // New property to show edit text suffix
+  final bool editText; // Property to show edit text suffix
   final FormFieldValidator<String>? validation;
   final Function()? onTap;
-  final bool isCalenderIcon;
-  final int? maxLength; // New property for maximum character limit
+  final bool isCalenderIcon; // New property for calendar icon
+  final int? maxLength; // Property for max character limit
   final String? suffixText;
 
   const CustomTextField({
@@ -67,7 +67,8 @@ class CustomTextField extends StatefulWidget {
     this.validation,
     this.onTap,
     this.isCalenderIcon = false,
-    this.maxLength, this.suffixText, // Initialize new property
+    this.maxLength,
+    this.suffixText,
   });
 
   @override
@@ -85,7 +86,9 @@ class CustomTextFieldState extends State<CustomTextField> {
         widget.showTitle
             ? Text(
           widget.hintText,
-          // Adjust style as needed
+          style: openSansRegular.copyWith(
+            fontSize: Dimensions.fontSize12
+          ), // Adjust style as needed
         )
             : const SizedBox(),
         SizedBox(height: widget.showTitle ? 5 : 0),
@@ -98,9 +101,7 @@ class CustomTextFieldState extends State<CustomTextField> {
           focusNode: widget.focusNode,
           style: const TextStyle(fontSize: 16), // Adjust text style as needed
           textInputAction: widget.inputAction,
-          keyboardType: widget.isAmount
-              ? TextInputType.number
-              : widget.inputType,
+          keyboardType: widget.isAmount ? TextInputType.number : widget.inputType,
           cursorColor: Theme.of(context).primaryColor,
           textCapitalization: widget.capitalization,
           enabled: widget.isEnabled,
@@ -111,32 +112,24 @@ class CustomTextFieldState extends State<CustomTextField> {
               : widget.isNumber
               ? [
             FilteringTextInputFormatter.allow(RegExp(r'\d')),
-            LengthLimitingTextInputFormatter(widget.maxLength ?? 10), // Set maxLength if provided
+            LengthLimitingTextInputFormatter(widget.maxLength ?? 10),
           ]
               : widget.isPhone
-              ? [
-            FilteringTextInputFormatter.allow(RegExp('[0-9+]')),
-          ]
+              ? [FilteringTextInputFormatter.allow(RegExp('[0-9+]'))]
               : null,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(
-                style: widget.showBorder
-                    ? BorderStyle.solid
-                    : BorderStyle.none,
+                style: widget.showBorder ? BorderStyle.solid : BorderStyle.none,
                 width: 0.3,
-                color: Theme.of(context)
-                    .primaryColorDark
-                    .withOpacity(0.80),
+                color: Theme.of(context).primaryColorDark.withOpacity(0.80),
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(
-                style: widget.showBorder
-                    ? BorderStyle.solid
-                    : BorderStyle.none,
+                style: widget.showBorder ? BorderStyle.solid : BorderStyle.none,
                 width: 1,
                 color: Theme.of(context).primaryColor,
               ),
@@ -144,20 +137,18 @@ class CustomTextFieldState extends State<CustomTextField> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(
-                style: widget.showBorder
-                    ? BorderStyle.solid
-                    : BorderStyle.none,
+                style: widget.showBorder ? BorderStyle.solid : BorderStyle.none,
                 width: 0.3,
-                color: Theme.of(context)
-                    .primaryColorDark
-                    .withOpacity(0.80),
+                color: Theme.of(context).primaryColorDark.withOpacity(0.80),
               ),
             ),
             isDense: true,
             hintText: widget.hintText,
-            errorStyle: openSansRegular.copyWith(fontSize: Dimensions.fontSize12, color: redColor),
+            errorStyle: openSansRegular.copyWith(
+                fontSize: Dimensions.fontSize12, color: Colors.red),
             fillColor: Theme.of(context).cardColor,
-            hintStyle: openSansRegular.copyWith(fontSize: Dimensions.fontSize14, color: Theme.of(context).hintColor),
+            hintStyle: openSansRegular.copyWith(
+                fontSize: Dimensions.fontSize14, color: Theme.of(context).hintColor),
             filled: true,
             prefixIcon: widget.isPhone
                 ? SizedBox(
@@ -203,10 +194,20 @@ class CustomTextFieldState extends State<CustomTextField> {
               ),
               onPressed: _toggle,
             )
+                : widget.isCalenderIcon
+                ? GestureDetector(
+              onTap: () {
+                // Add calendar functionality here, like opening a date picker
+              },
+              child: Icon(
+                Icons.calendar_month,
+                color: Theme.of(context).primaryColor,
+              ),
+            )
                 : widget.editText
                 ? Container(
               width: 60,
-              child: Center(child: Text(widget.suffixText ??'mg/dL',)),
+              child: Center(child: Text(widget.suffixText ?? 'mg/dL')),
             )
                 : null,
           ),

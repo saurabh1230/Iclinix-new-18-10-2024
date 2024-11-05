@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:iclinix/app/screens/appointment/appointment_screen.dart';
@@ -70,37 +71,44 @@ class DashboardScreenState extends State<DashboardScreen> {
       },
       child: WillPopScope(
         onWillPop: Get.find<AuthController>().handleOnWillPop,
-        child: Scaffold(
-          extendBody: true,
-          resizeToAvoidBottomInset: false,
-          bottomNavigationBar: Container(
-            margin: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-            padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(Dimensions.radius20),
+        child: SafeArea(
+          child: Scaffold(
+            extendBody: true,
+            resizeToAvoidBottomInset: false,
+            bottomNavigationBar: Container(
+              margin: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+              padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(Dimensions.radius20),
+              ),
+              child: Row(children: [
+                BottomNavItem(img: Images.icHome, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home'),
+                BottomNavItem(img: Images.icDiabetic, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Diabetic'),
+                BottomNavItem(img: Images.icAppointment, isSelected: _pageIndex == 2, tap: () {
+                  Get.find<AppointmentController>().selectBookingType(false);
+                  _setPage(2);
+                }, title: 'Appointment'),
+                BottomNavItem(img: Images.icRecords, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Records'),
+                BottomNavItem(img: Images.icProfile, isSelected: _pageIndex == 4, tap: () => _setPage(4), title: 'Profile'),
+              ]),
             ),
-            child: Row(children: [
-              BottomNavItem(img: Images.icHome, isSelected: _pageIndex == 0, tap: () => _setPage(0), title: 'Home'),
-              BottomNavItem(img: Images.icDiabetic, isSelected: _pageIndex == 1, tap: () => _setPage(1), title: 'Diabetic'),
-              BottomNavItem(img: Images.icAppointment, isSelected: _pageIndex == 2, tap: () {
-                Get.find<AppointmentController>().selectBookingType(false);
-                _setPage(2);
-              }, title: 'Appointment'),
-              BottomNavItem(img: Images.icRecords, isSelected: _pageIndex == 3, tap: () => _setPage(3), title: 'Records'),
-              BottomNavItem(img: Images.icProfile, isSelected: _pageIndex == 4, tap: () => _setPage(4), title: 'Profile'),
-            ]),
+            body: AnnotatedRegion<SystemUiOverlayStyle>(
+              value  : SystemUiOverlayStyle.light.copyWith(
+                statusBarColor: Theme.of(context).primaryColor,
+              ),
+              child: _screens.isNotEmpty // Check if screens have been initialized
+                  ? PageView.builder(
+                controller: _pageController,
+                itemCount: _screens.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return _screens[index];
+                },
+              )
+                  : const Center(child: CircularProgressIndicator()),
+            ), // Show loading indicator while initializing
           ),
-          body: _screens.isNotEmpty // Check if screens have been initialized
-              ? PageView.builder(
-            controller: _pageController,
-            itemCount: _screens.length,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return _screens[index];
-            },
-          )
-              : const Center(child: CircularProgressIndicator()), // Show loading indicator while initializing
         ),
       ),
     );

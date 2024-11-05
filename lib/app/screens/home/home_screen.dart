@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SliverAppBar(
                     automaticallyImplyLeading: false,
                     pinned: true,
-                    expandedHeight: 110.0,
+                    expandedHeight: 140.0,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Container(
                         decoration:  BoxDecoration(
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                           child: Column(
                             children: [
-                             sizedBox30(),
+                             sizedBox20(),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,

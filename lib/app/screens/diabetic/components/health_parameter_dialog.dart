@@ -7,6 +7,8 @@ import 'package:iclinix/utils/dimensions.dart';
 import 'package:iclinix/utils/sizeboxes.dart';
 import 'package:get/get.dart';
 
+import '../../../../utils/styles.dart';
+
 class AddHealthParameterDialog extends StatelessWidget {
   AddHealthParameterDialog({super.key});
 
@@ -43,6 +45,10 @@ class AddHealthParameterDialog extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text('Add Health Data',
+                    style: openSansSemiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                        color: Theme.of(context).primaryColor),),
+                  sizedBoxDefault(),
                   BloodSugarInput(
                     title: 'Weight',
                     hintText: 'Weight',

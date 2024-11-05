@@ -29,13 +29,13 @@ class BloodSugarInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: openSansSemiBold.copyWith(
-            fontSize: Dimensions.fontSize14,
-            color: Theme.of(context).disabledColor.withOpacity(0.30),
-          ),
-        ),
+        // Text(
+        //   title,
+        //   style: openSansSemiBold.copyWith(
+        //     fontSize: Dimensions.fontSize14,
+        //     color: Theme.of(context).disabledColor.withOpacity(0.30),
+        //   ),
+        // ),
         sizedBoxDefault(), // Assuming you have a custom SizedBox widget
         CustomTextField(
           readOnly: readOnly, // Pass the readOnly parameter to CustomTextField

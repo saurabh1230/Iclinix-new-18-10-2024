@@ -24,14 +24,22 @@ class DiabeticController extends GetxController implements GetxService {
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+  @override
+  void onInit() {
+    super.onInit();
+    formattedDate = SimpleDateConverter.formatDateToCustomFormat(selectedDate);
+  }
 
-  DateTime? selectedDate;
+
+  DateTime selectedDate = DateTime.now(); // Default to current date
   String? formattedDate;
+
+
 
   void updateDate(DateTime newDate) {
     selectedDate = newDate;
-    formattedDate = SimpleDateConverter.formatDateToCustomFormat(selectedDate!);
-    update();
+    formattedDate = SimpleDateConverter.formatDateToCustomFormat(selectedDate);
+    update(); // Trigger GetX update to refresh UI if necessary
   }
   String selectedValue = '';
 

@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iclinix/app/screens/dashboard/dashboard_screen.dart';
 import 'package:iclinix/app/widget/confirmation_dialog.dart';
@@ -35,32 +36,55 @@ class CustomDrawer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  Row(
                     children: [
                       GestureDetector(
                         onTap: () {
                           Get.to(() => const DashboardScreen(pageIndex: 4));
                         },
                         child: Container(padding: const EdgeInsets.all(Dimensions.paddingSize10),
-                          height: 70,width: 70,clipBehavior: Clip.hardEdge,
+                          height: 60,width: 60,clipBehavior: Clip.hardEdge,
                           decoration:  const BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle
                           ),
                           child: Image.asset(Images.icProfilePlaceholder,
-                            height: 60,width: 60,fit: BoxFit.cover,),
+                            height: 50,width: 50,fit: BoxFit.cover,),
                         ),
                       ),
-                      sizedBox10(),
-                      Text(
-                        controller.userData != null
-                            ? '${controller.userData!.firstName}\n${controller.userData!.lastName}'
-                            : 'Iclinix',
-                        textAlign: TextAlign.center,
-                        style: openSansSemiBold.copyWith(fontSize: Dimensions.fontSize30,
+                      sizedBoxW15(),
+                      Flexible(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              controller.userData != null
+                                  ? '${controller.userData!.firstName} ${controller.userData!.lastName}'
+                                  : 'Iclinix',
+                              style: openSansSemiBold.copyWith(fontSize: Dimensions.fontSize18
+                                  ,
 
-                        color: Colors.white),
+                              color: Colors.white),
+                            ),
+                            GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                Get.to(() => const DashboardScreen(pageIndex: 4));
+                              },
+                              child: Row(
+                                children: [
+                                  Text('Edit Profile',
+                                    style: openSansLight.copyWith(fontSize: Dimensions.fontSize13,
+                                        color: Colors.white.withOpacity(0.80),),
+                                  ),
+                                  sizedBoxW5(),
+                                  Icon(Icons.edit_square ,
+                                    size:  Dimensions.fontSizeDefault,
+                                    color:  Colors.white.withOpacity(0.80), )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
 
                     ],
@@ -89,7 +113,8 @@ class CustomDrawer extends StatelessWidget {
         color: Theme.of(context).primaryColor,
         padding: const EdgeInsets.all(25),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _thumbnailPart(),
             const SizedBox(height: 20),
@@ -107,7 +132,7 @@ class CustomDrawer extends StatelessWidget {
                   Get.to(() => const DashboardScreen(pageIndex: 3));
                 },
                 child: Text(
-                    "Appointment",
+                    "Appointments",
                     style: openSansRegular.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).cardColor)
                 ),
               ),

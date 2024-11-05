@@ -3,6 +3,7 @@ import 'package:iclinix/app/screens/appointment/appointment_details_screen.dart'
 import 'package:iclinix/app/widget/custom_app_bar.dart';
 import 'package:flutter_slide_drawer/flutter_slide_widget.dart';
 import 'package:iclinix/app/widget/custom_button_widget.dart';
+import 'package:iclinix/app/widget/custom_containers.dart';
 import 'package:iclinix/app/widget/custom_drawer_widget.dart';
 import 'package:iclinix/app/widget/custom_image_widget.dart';
 import 'package:iclinix/app/widget/empty_data_widget.dart';
@@ -83,134 +84,145 @@ class HealthRecordsScreen extends StatelessWidget {
                           itemCount: patientAppointments.length,
                           itemBuilder: (_, j) {
                             final patientAppointment = patientAppointments[j];
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${AppointmentDateTimeConverter.formatDate(patientAppointment.opdDate.toString())} - ${patientAppointment.opdTime.toString()}',
-                                  style: openSansBold.copyWith(
-                                    fontSize: Dimensions.fontSize13,
-                                    color: Theme.of(context).primaryColor,
+                            return CustomDecoratedContainer(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${AppointmentDateTimeConverter.formatDate(patientAppointment.opdDate.toString())} - ${patientAppointment.opdTime.toString()}',
+                                    style: openSansBold.copyWith(
+                                      fontSize: Dimensions.fontSize13,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
                                   ),
-                                ),
-                                sizedBox20(),
-                                GestureDetector(onTap: () {
-                                  Get.to(AppointmentDetailsScreen(appointmentHistoryModel: appointmentHistoryList[i],));
-
-                                },
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  sizedBox20(),
+                                  Column(
                                     children: [
-                                      CustomNetworkImageWidget(
-                                        height: 80,
-                                        width: 80,
-                                        image: patientAppointment.branchImage,
-                                      ),
-                                      sizedBoxW10(),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            RichText(
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: "Branch: ",
-                                                    style: openSansRegular.copyWith(
-                                                      fontSize: Dimensions.fontSize12,
-                                                      color: Theme.of(context).primaryColor,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: patientAppointment.branchName,
-                                                    style: openSansBold.copyWith(
-                                                      fontSize: Dimensions.fontSize13,
-                                                      color: Theme.of(context).disabledColor.withOpacity(0.70),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            sizedBox10(),
-                                            RichText(
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: "Patient: ",
-                                                    style: openSansRegular.copyWith(
-                                                      fontSize: Dimensions.fontSize12,
-                                                      color: Theme.of(context).primaryColor,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: '${appointment.firstName} ${appointment.lastName}',
-                                                    style: openSansBold.copyWith(
-                                                      fontSize: Dimensions.fontSize13,
-                                                      color: Theme.of(context).disabledColor.withOpacity(0.70),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            sizedBox10(),
-                                            RichText(
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: "Patient Id: ",
-                                                    style: openSansRegular.copyWith(
-                                                      fontSize: Dimensions.fontSize12,
-                                                      color: Theme.of(context).primaryColor,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: patientAppointment.patientId.toString(),
-                                                    style: openSansBold.copyWith(
-                                                      fontSize: Dimensions.fontSize13,
-                                                      color: Theme.of(context).disabledColor.withOpacity(0.70),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            sizedBox10(),
-                                            Align(
-                                              alignment: Alignment.centerRight,
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  Get.to(AppointmentDetailsScreen(appointmentHistoryModel: appointmentHistoryList[i],));
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context).primaryColor ,
-                                                    borderRadius: BorderRadius.circular(Dimensions.radius10),
-                                                  ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Text(
-                                                      'View Details',
-                                                      style: openSansSemiBold.copyWith(
-                                                        fontSize: Dimensions.fontSize14,
-                                                        color: Theme.of(context).cardColor,
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          CustomNetworkImageWidget(
+                                            height: 80,
+                                            width: 80,
+                                            image: patientAppointment.branchImage,
+                                          ),
+                                          sizedBoxW10(),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                RichText(
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Branch: ",
+                                                        style: openSansRegular.copyWith(
+                                                          fontSize: Dimensions.fontSize12,
+                                                          color: Theme.of(context).primaryColor,
+                                                        ),
                                                       ),
-                                                    ),
+                                                      TextSpan(
+                                                        text: patientAppointment.branchName,
+                                                        style: openSansBold.copyWith(
+                                                          fontSize: Dimensions.fontSize13,
+                                                          color: Theme.of(context).disabledColor.withOpacity(0.70),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                                sizedBox10(),
+                                                RichText(
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Patient: ",
+                                                        style: openSansRegular.copyWith(
+                                                          fontSize: Dimensions.fontSize12,
+                                                          color: Theme.of(context).primaryColor,
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: '${appointment.firstName} ${appointment.lastName}',
+                                                        style: openSansBold.copyWith(
+                                                          fontSize: Dimensions.fontSize13,
+                                                          color: Theme.of(context).disabledColor.withOpacity(0.70),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                sizedBox10(),
+                                                RichText(
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "Patient Id: ",
+                                                        style: openSansRegular.copyWith(
+                                                          fontSize: Dimensions.fontSize12,
+                                                          color: Theme.of(context).primaryColor,
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: patientAppointment.patientId.toString(),
+                                                        style: openSansBold.copyWith(
+                                                          fontSize: Dimensions.fontSize13,
+                                                          color: Theme.of(context).disabledColor.withOpacity(0.70),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                sizedBox10(),
+
+                                                // Align(
+                                                //   alignment: Alignment.centerRight,
+                                                //   child: GestureDetector(
+                                                //     onTap: () {
+                                                //       Get.to(AppointmentDetailsScreen(appointmentHistoryModel: appointmentHistoryList[i],));
+                                                //     },
+                                                //     child: Container(
+                                                //       decoration: BoxDecoration(
+                                                //         color: Theme.of(context).primaryColor ,
+                                                //         borderRadius: BorderRadius.circular(Dimensions.radius10),
+                                                //       ),
+                                                //       child: Padding(
+                                                //         padding: const EdgeInsets.all(8.0),
+                                                //         child: Text(
+                                                //           'View Details',
+                                                //           style: openSansSemiBold.copyWith(
+                                                //             fontSize: Dimensions.fontSize14,
+                                                //             color: Theme.of(context).cardColor,
+                                                //           ),
+                                                //         ),
+                                                //       ),
+                                                //     ),
+                                                //   ),
+                                                // )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
+                                      sizedBoxDefault(),
+                                      CustomButtonWidget(buttonText: 'View Details',
+                                        onPressed: () {
+                                          Get.to(AppointmentDetailsScreen(appointmentHistoryModel: appointmentHistoryList[i],));
+                                        },
+                                        height: 40,
+                                        isBold: false,
+                                        fontSize: Dimensions.paddingSizeDefault,
+                                        color: Theme.of(context).primaryColor,)
                                     ],
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             );
                           }, separatorBuilder: (BuildContext context, int index) => sizedBox10(),
                         )

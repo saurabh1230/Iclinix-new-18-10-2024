@@ -28,6 +28,9 @@ class CustomDropdownField extends StatelessWidget {
         if (showTitle)
           Text(
             hintText,
+            style:   openSansRegular.copyWith(
+              fontSize: Dimensions.fontSize12
+          ), //,
           ),
         SizedBox(height: showTitle ? 5 : 0),
         DropdownButtonFormField<String>(

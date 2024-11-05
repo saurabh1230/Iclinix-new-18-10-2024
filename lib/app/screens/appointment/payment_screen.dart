@@ -27,7 +27,7 @@ class PaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<AppointmentController>(builder: (appointmentControl) {
       return Scaffold(
-        appBar:  CustomAppBar(
+        appBar:  const CustomAppBar(
             isBackButtonExist: true,
             title: 'Payment Method',
             menuWidget: Row(
@@ -76,6 +76,7 @@ class PaymentScreen extends StatelessWidget {
                         // Update selected payment method
                         appointmentControl.selectPaymentMethod(value!);
                       }
+
                     },
                   );
                 }),

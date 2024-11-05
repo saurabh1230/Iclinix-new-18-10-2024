@@ -30,4 +30,6 @@ class Images {
   static const String icHelpHolder = 'assets/icons/ic_help_holder.png';
   static const String icDiabeticBg = 'assets/icons/ic_diabetic_renew_bg.png';
   static const String icPdfLogo = 'assets/icons/ic_pdf_logo.png';
+  static const String icCash = 'assets/icons/ic_cash.png';
+  static const String icRazorpay = 'assets/icons/ic_razorpay.png';
 }

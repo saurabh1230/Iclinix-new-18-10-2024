@@ -63,8 +63,7 @@ class PatientDetailsScreen extends StatelessWidget {
                   Text(
                     'Doctor Consultation Appointment',
                     style: openSansRegular.copyWith(
-                        color:
-                            Theme.of(context).disabledColor.withOpacity(0.70),
+                        color: Theme.of(context).disabledColor.withOpacity(0.70),
                         fontSize: Dimensions.fontSize14),
                   ),
                   sizedBox10(),
@@ -215,8 +214,11 @@ class PatientDetailsScreen extends StatelessWidget {
                               showTitle: true, // Set to true to show title
                             ),
                             sizedBox10(),
-                            const Text(
+                             Text(
                               'ENTER PHONE',
+                              style: openSansRegular.copyWith(
+                                  fontSize: Dimensions.fontSize12
+                              ), //,
                             ),
                             const SizedBox(height: 5),
                             CustomTextField(
@@ -236,8 +238,11 @@ class PatientDetailsScreen extends StatelessWidget {
                               },
                             ),
                             sizedBox10(),
-                            const Text(
+                             Text(
                               'PATIENT DOB',
+                                style: openSansRegular.copyWith(
+                                    fontSize: Dimensions.fontSize12
+                                ),
                             ),
                             const SizedBox(height: 5),
                             CustomTextField(
@@ -325,24 +330,24 @@ class PatientDetailsScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                  sizedBox10(),
-                  const Text(
-                    'WRITE YOUR APPOINTMENT DETAILS (optional)',
-                  ),
-                  const SizedBox(height: 5),
-                  CustomTextField(
-                    maxLines: 3,
-                    controller: _otherProblemController,
-                    hintText: "Other Info",
-                    // validation: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return 'Please enter your Phone No';
-                    //   } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                    //     return 'Please enter a valid 10-digit Phone No';
-                    //   }
-                    //   return null;
-                    // },
-                  ),
+                  // sizedBox10(),
+                  // const Text(
+                  //   'WRITE YOUR APPOINTMENT DETAILS (optional)',
+                  // ),
+                  // const SizedBox(height: 5),
+                  // CustomTextField(
+                  //   maxLines: 3,
+                  //   controller: _otherProblemController,
+                  //   hintText: "Other Info",
+                  //   // validation: (value) {
+                  //   //   if (value == null || value.isEmpty) {
+                  //   //     return 'Please enter your Phone No';
+                  //   //   } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                  //   //     return 'Please enter a valid 10-digit Phone No';
+                  //   //   }
+                  //   //   return null;
+                  //   // },
+                  // ),
                 ],
               ),
             ),

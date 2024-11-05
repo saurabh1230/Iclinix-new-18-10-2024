@@ -9,6 +9,7 @@ import 'package:iclinix/data/models/response/plans_model.dart';
 import 'package:iclinix/data/repo/appointment_repo.dart';
 import 'package:iclinix/helper/date_converter.dart';
 import 'package:iclinix/helper/route_helper.dart';
+import 'package:iclinix/utils/images.dart';
 
 import '../data/models/body/appointment_model.dart';
 import 'profile_controller.dart';
@@ -22,13 +23,22 @@ class AppointmentController extends GetxController implements GetxService {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  DateTime? selectedDate;
+  @override
+  void onInit() {
+    super.onInit();
+    formattedDate = SimpleDateConverter.formatDateToCustomFormat(selectedDate);
+  }
+
+
+  DateTime selectedDate = DateTime.now(); // Default to current date
   String? formattedDate;
+
+
 
   void updateDate(DateTime newDate) {
     selectedDate = newDate;
-    formattedDate = SimpleDateConverter.formatDateToCustomFormat(selectedDate!);
-    update();
+    formattedDate = SimpleDateConverter.formatDateToCustomFormat(selectedDate);
+    update(); // Trigger GetX update to refresh UI if necessary
   }
   String selectedValue = '';
 
@@ -107,10 +117,10 @@ class AppointmentController extends GetxController implements GetxService {
   }
 
   String getBpStatus() {
-    return '${selectedBp == 'No' ? '0' : '1'}';
+    return selectedBp == 'No' ? '0' : '1';
   }
 
-  bool _isNewPatientEnabled = true;
+  bool _isNewPatientEnabled = false;
   bool get isNewPatientEnabled => _isNewPatientEnabled;
 
   void toggleNewPatientSelection(bool isNewPatient) {
@@ -219,6 +229,7 @@ class AppointmentController extends GetxController implements GetxService {
   }
 
    List<String> paymentMethods = ['Cash', 'Razorpay'];
+  List<String> paymentImages= [Images.icCash, Images.icRazorpay];
   var selectedPaymentMethod = 'Cash'.obs; // RxString for selected payment method
   void selectPaymentMethod(String method) {
     selectedPaymentMethod.value = method; // Update the selected payment method

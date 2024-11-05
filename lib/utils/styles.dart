@@ -33,3 +33,8 @@ const openSansExtraBold = TextStyle(
   fontWeight: FontWeight.w800,
   fontSize: Dimensions.fontSizeDefault,
 );
+const openSansLight= TextStyle(
+  fontFamily: AppConstants.fontFamily,
+  fontWeight: FontWeight.w200,
+  fontSize: Dimensions.fontSizeDefault,
+);

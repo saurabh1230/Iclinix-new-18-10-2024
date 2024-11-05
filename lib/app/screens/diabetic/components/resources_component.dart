@@ -181,6 +181,7 @@ class ResourcesComponent extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Text(
                         dataReading[i].name,
                         maxLines: 2,
@@ -199,7 +200,7 @@ class ResourcesComponent extends StatelessWidget {
                           color: Theme.of(context).disabledColor.withOpacity(0.40),
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       CustomButtonWidget(buttonText: 'Read',
                       height: 38,fontSize: Dimensions.fontSize14,
                       onPressed: () {

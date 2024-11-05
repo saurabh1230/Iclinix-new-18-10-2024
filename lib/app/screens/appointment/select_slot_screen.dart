@@ -11,6 +11,7 @@ import 'package:iclinix/helper/route_helper.dart';
 import 'package:iclinix/utils/dimensions.dart';
 import 'package:iclinix/utils/sizeboxes.dart';
 import 'package:get/get.dart';
+import 'package:iclinix/utils/styles.dart';
 import '../../../data/models/response/clinic_model.dart';
 import '../../../data/models/response/search_model.dart';
 import 'components/select_slot_time_component.dart';
@@ -33,6 +34,7 @@ class SelectSlotScreen extends StatelessWidget {
       body: GetBuilder<ProfileController>(builder: (profileControl) {
         return SingleChildScrollView(
             child: GetBuilder<AppointmentController>(builder: (appointmentControl) {
+              _dateController.text = appointmentControl.formattedDate!;
               return  Column(
                 children: [
                    SelectSlotCard(
@@ -42,7 +44,6 @@ class SelectSlotScreen extends StatelessWidget {
                   Padding( padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         sizedBoxDefault(),
                         const Text('APPOINTMENT DATE',),
                         const SizedBox(height: 5),
@@ -52,8 +53,8 @@ class SelectSlotScreen extends StatelessWidget {
                           onTap: () async {
                             DateTime? pickedDate = await showDatePicker(
                               context: context,
-                              initialDate: appointmentControl.selectedDate ?? DateTime.now(),
-                              firstDate: appointmentControl.selectedDate ?? DateTime.now(),
+                              initialDate:  DateTime.now(),
+                              firstDate:  DateTime.now(),
                               lastDate: DateTime(2100),
                             );
                             if (pickedDate != null) {
@@ -69,40 +70,43 @@ class SelectSlotScreen extends StatelessWidget {
                         sizedBox20(),
                         SelectSlotTimeComponent(),
                         sizedBox30(),
-                        CustomButtonWidget(buttonText: 'Continue',
+                        CustomButtonWidget(
+                          buttonText: 'Continue',
                           onPressed: () {
-                          if(_dateController.text.isNotEmpty && appointmentControl.selectedTime!.isNotEmpty) {
-                            Get.toNamed(RouteHelper.getAddPatientDetailsRoute(_dateController.text,
+                            if (_dateController.text.isNotEmpty &&
+                                appointmentControl.selectedTime != null &&
+                                appointmentControl.selectedTime!.isNotEmpty) {
+                              Get.toNamed(RouteHelper.getAddPatientDetailsRoute(
+                                _dateController.text,
                                 appointmentControl.selectedTime.toString(),
-                                clinicId
-                                ));
-                          } else {
-                            showCustomSnackBar('Please Add Appointment Date and Time');
-                          }
+                                clinicId,
+                              ));
+                            } else {
+                              showCustomSnackBar('Please Add Appointment Date and Time');
+                            }
+                          },
+                        ),
 
-                          },),
+                        // CustomButtonWidget(buttonText: 'Continue',
+                        //   onPressed: () {
+                        //   if(_dateController.text.isNotEmpty && appointmentControl.selectedTime!.isNotEmpty) {
+                        //     Get.toNamed(RouteHelper.getAddPatientDetailsRoute(_dateController.text,
+                        //         appointmentControl.selectedTime.toString(),
+                        //         clinicId
+                        //         ));
+                        //   } else {
+                        //     showCustomSnackBar('Please Add Appointment Date and Time');
+                        //   }
+                        //   },),
                         sizedBox40(),
-
-
-
                       ],
                     ),
                   ),
-
-
                 ],
               );
             })
-
-
-
-
         );
       }),
-
-
-
-
     );
   }
 }
