@@ -11,7 +11,7 @@ import 'package:iclinix/app/screens/auth/otp_verification_screen.dart';
 import 'package:iclinix/app/screens/auth/register_screen.dart';
 import 'package:iclinix/app/screens/dashboard/dashboard_screen.dart';
 import 'package:iclinix/app/screens/diabetic/add_plan_patient_details.dart';
-import 'package:iclinix/app/screens/diabetic/chat_screen.dart';
+import 'package:iclinix/app/screens/chat/chat_screen.dart';
 import 'package:iclinix/app/screens/diabetic/diabetic_dashboard.dart';
 import 'package:iclinix/app/screens/diabetic/payment_successful_screen.dart';
 import 'package:iclinix/app/screens/diabetic/resource_details_screen.dart';
@@ -130,7 +130,7 @@ class RouteHelper {
     GetPage(name: planPayment, page: () =>  PlanPaymentScreen(patientId : Get.parameters['patientId'],planId: Get.parameters['planId'],)),
     GetPage(name: planPaymentSuccessful, page: () =>   const PlanBookingSuccessfulScreen()),
     GetPage(name: resourcesDetails, page: () =>  ResourceDetailsScreen(id : Get.parameters['id'],name: Get.parameters['name'],)),
-    GetPage(name: chat, page: () =>  const ChatScreen())
+    GetPage(name: chat, page: () =>   ChatScreen())
 
 
 

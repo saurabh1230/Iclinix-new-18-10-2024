@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:iclinix/app/screens/appointment/appointment_details_screen.dart';
-import 'package:iclinix/app/widget/custom_app_bar.dart';
 import 'package:flutter_slide_drawer/flutter_slide_widget.dart';
-import 'package:iclinix/app/widget/custom_button_widget.dart';
-import 'package:iclinix/app/widget/custom_containers.dart';
 import 'package:iclinix/app/widget/custom_drawer_widget.dart';
-import 'package:iclinix/app/widget/custom_image_widget.dart';
-import 'package:iclinix/app/widget/empty_data_widget.dart';
+
 import 'package:iclinix/app/widget/loading_widget.dart';
 import 'package:iclinix/controller/appointment_controller.dart';
-import 'package:iclinix/helper/date_converter.dart';
-import 'package:iclinix/utils/dimensions.dart';
-import 'package:iclinix/utils/images.dart';
-import 'package:iclinix/utils/sizeboxes.dart';
-import 'package:iclinix/utils/styles.dart';
 import 'package:get/get.dart';
-import 'package:iclinix/utils/themes/light_theme.dart';
+
+import '../../../helper/date_converter.dart';
+import '../../../utils/dimensions.dart';
+import '../../../utils/images.dart';
+import '../../../utils/sizeboxes.dart';
+import '../../../utils/styles.dart';
+import '../../widget/custom_app_bar.dart';
+import '../../widget/custom_button_widget.dart';
+import '../../widget/custom_containers.dart';
+import '../../widget/custom_image_widget.dart';
+import '../../widget/empty_data_widget.dart';
+import '../appointment/appointment_details_screen.dart';
+
 
 class HealthRecordsScreen extends StatelessWidget {
   HealthRecordsScreen({super.key});
@@ -31,7 +33,12 @@ class HealthRecordsScreen extends StatelessWidget {
       final appointmentHistoryList = appointmentControl.appointmentHistoryList;
       final isListEmpty = appointmentHistoryList == null || appointmentHistoryList.isEmpty;
       final isLoading = appointmentControl.isAppointmentHistoryLoading;
-
+      // if (isLoading) {
+      //   LoadingDialog.showLoading(message: "Please wait...");
+      // } else {
+      //   // Dismiss loading dialog when loading is complete
+      //   LoadingDialog.hideLoading();
+      // }
       return SliderDrawerWidget(
         key: drawerKey,
         option: SliderDrawerOption(
@@ -42,9 +49,7 @@ class HealthRecordsScreen extends StatelessWidget {
           direction: SliderDrawerDirection.LTR,
         ),
         drawer: const CustomDrawer(),
-        body: isLoading
-            ? const LoadingWidget()
-            : Stack(
+        body: Stack(
           children: [
             Scaffold(
               appBar: CustomAppBar(

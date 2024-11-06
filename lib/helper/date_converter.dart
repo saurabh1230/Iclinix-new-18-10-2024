@@ -145,3 +145,11 @@ class AppointmentDateTimeConverter {
     }
   }
 }
+
+
+class SimpleTimeConverter {
+  // Converts DateTime to a custom time format with AM/PM
+  static String formatTimeToCustomFormat(DateTime dateTime) {
+    return DateFormat('hh:mm a').format(dateTime); // Format as "hh:mm AM/PM"
+  }
+}

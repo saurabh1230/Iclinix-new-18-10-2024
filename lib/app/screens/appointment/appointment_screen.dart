@@ -28,7 +28,12 @@ class AppointmentScreen extends StatelessWidget {
       final dataList = clinicControl.clinicList;
       final isLoading = clinicControl.isClinicLoading;
       final isListEmpty = dataList == null || dataList.isEmpty;
-
+      // if (isLoading) {
+      //   LoadingDialog.showLoading(message: "Please wait...");
+      // } else {
+      //   // Dismiss loading dialog when loading is complete
+      //   LoadingDialog.hideLoading();
+      // }
       return SliderDrawerWidget(
         key: drawerKey,
         drawer: const CustomDrawer(),
@@ -78,7 +83,7 @@ class AppointmentScreen extends StatelessWidget {
                 separatorBuilder: (BuildContext context, int index) => sizedBoxDefault(),
               ),
             ),
-            if (isLoading) const LoadingWidget(),
+
           ],
         ),
       );

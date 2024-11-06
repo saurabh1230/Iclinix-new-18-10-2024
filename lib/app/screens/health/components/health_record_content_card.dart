@@ -22,7 +22,7 @@ class HealthRecordContentCard extends StatelessWidget {
       final appointmentHistoryList = appointmentControl.appointmentHistoryList;
       final isListEmpty = appointmentHistoryList == null || appointmentHistoryList.isEmpty;
       final isLoading = appointmentControl.isAppointmentHistoryLoading;
-      if (isListEmpty && !isLoading) {
+      if (isListEmpty ) {
         return Padding(
           padding: const EdgeInsets.only(top: Dimensions.paddingSize100),
           child: Center(
@@ -33,13 +33,11 @@ class HealthRecordContentCard extends StatelessWidget {
             ),
           ),
         );
-      } else if (isLoading) {
-        return const Center(child: LoadingWidget());
       }
       return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: appointmentHistoryList!.length,
+        itemCount: appointmentHistoryList.length,
         itemBuilder: (_, i) {
           final appointment = appointmentHistoryList[i];
           final patientAppointments = appointment.patientAppointments;

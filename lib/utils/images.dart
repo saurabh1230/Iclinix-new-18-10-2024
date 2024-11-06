@@ -32,4 +32,5 @@ class Images {
   static const String icPdfLogo = 'assets/icons/ic_pdf_logo.png';
   static const String icCash = 'assets/icons/ic_cash.png';
   static const String icRazorpay = 'assets/icons/ic_razorpay.png';
+  static const String icChat = 'assets/icons/ic_chat.png';
 }

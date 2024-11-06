@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../utils/dimensions.dart';
-import '../../utils/themes/light_theme.dart';
-import '../../utils/sizeboxes.dart';
 import '../../utils/styles.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -34,6 +32,7 @@ class CustomTextField extends StatefulWidget {
   final FormFieldValidator<String>? validation;
   final Function()? onTap;
   final bool isCalenderIcon; // New property for calendar icon
+  final bool isClockIcon; // New property for clock icon
   final int? maxLength; // Property for max character limit
   final String? suffixText;
 
@@ -67,6 +66,7 @@ class CustomTextField extends StatefulWidget {
     this.validation,
     this.onTap,
     this.isCalenderIcon = false,
+    this.isClockIcon = false, // Initialize the new property
     this.maxLength,
     this.suffixText,
   });
@@ -87,7 +87,7 @@ class CustomTextFieldState extends State<CustomTextField> {
             ? Text(
           widget.hintText,
           style: openSansRegular.copyWith(
-            fontSize: Dimensions.fontSize12
+            fontSize: Dimensions.fontSize12,
           ), // Adjust style as needed
         )
             : const SizedBox(),
@@ -201,6 +201,16 @@ class CustomTextFieldState extends State<CustomTextField> {
               },
               child: Icon(
                 Icons.calendar_month,
+                color: Theme.of(context).primaryColor,
+              ),
+            )
+                : widget.isClockIcon
+                ? GestureDetector(
+              onTap: () {
+                // Add clock functionality here, like opening a time picker
+              },
+              child: Icon(
+                Icons.access_time,
                 color: Theme.of(context).primaryColor,
               ),
             )

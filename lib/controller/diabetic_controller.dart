@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iclinix/app/widget/custom_snackbar.dart';
+import 'package:iclinix/app/widget/loading_widget.dart';
 import 'package:iclinix/data/api/api_client.dart';
 import 'package:iclinix/data/models/response/diabetic_dashboard_detail_model.dart';
 import 'package:iclinix/data/models/response/sugar_checkup_model.dart';
@@ -28,6 +29,8 @@ class DiabeticController extends GetxController implements GetxService {
   void onInit() {
     super.onInit();
     formattedDate = SimpleDateConverter.formatDateToCustomFormat(selectedDate);
+    formattedTime = SimpleTimeConverter.formatTimeToCustomFormat(bpSelectedTime);
+    generateUniqueSugarCheckOptions();
   }
 
 
@@ -41,6 +44,25 @@ class DiabeticController extends GetxController implements GetxService {
     formattedDate = SimpleDateConverter.formatDateToCustomFormat(selectedDate);
     update(); // Trigger GetX update to refresh UI if necessary
   }
+
+  DateTime bpSelectedTime = DateTime.now(); // Default to current time
+  String? formattedTime;
+
+
+
+  void updateTime(DateTime newTime) {
+    bpSelectedTime = newTime;
+    formattedTime = SimpleTimeConverter.formatTimeToCustomFormat(bpSelectedTime);
+    update(); // Trigger GetX update to refresh UI if necessary
+  }
+
+  void updateTimeOfDay(TimeOfDay newTimeOfDay) {
+    final now = DateTime.now();
+    // Convert TimeOfDay to DateTime by using the current date
+    bpSelectedTime = DateTime(now.year, now.month, now.day, newTimeOfDay.hour, newTimeOfDay.minute);
+    formattedTime = SimpleTimeConverter.formatTimeToCustomFormat(bpSelectedTime);
+    update(); // Trigger GetX update to refresh UI if necessary
+  }
   String selectedValue = '';
 
   bool showHistory = false;
@@ -49,6 +71,28 @@ class DiabeticController extends GetxController implements GetxService {
     showHistory = value;
     update();
   }
+
+  var isHealthDataTabActive = true.obs; // Default to Health Data Tab
+  void toggleTab(bool isHealthData) {
+    isHealthDataTabActive.value = isHealthData;
+  }
+
+  var selectedSugarCheck = '';  // Initialize as an empty string
+  final List<String> sugarCheckOptions = ['Post Breakfast', 'Post Lunch', 'Post Dinner', 'Bedtime'];
+  late List<String> uniqueSugarCheckOptions = [];  // Initialize as empty list
+
+
+
+  void generateUniqueSugarCheckOptions() {
+    uniqueSugarCheckOptions = sugarCheckOptions.toSet().toList();  // Remove duplicates
+  }
+
+  void updateSugarCheck(String val) {
+    selectedSugarCheck = val;
+    update();  // Use GetX to update state
+  }
+
+  var hbA1cPercentage = 5.7.obs;
 
   String? selectedTime;
   List<String> timeSlot = [
@@ -218,6 +262,7 @@ class DiabeticController extends GetxController implements GetxService {
 
   Future<void> getDiabeticDashboard() async {
     _isDailySugarCheckupLoading = true;
+    LoadingDialog.showLoading(message: "Please wait...");
     update();
     try {
       Response response = await diabeticRepo.fetchDashboardDataRepo();
@@ -296,10 +341,10 @@ class DiabeticController extends GetxController implements GetxService {
       print("Error fetching diabetic dashboard data: $error");
     } finally {
       _isDailySugarCheckupLoading = false;
+      LoadingDialog.hideLoading();
       update();
     }
   }
-
 
 
   Future<void> addHealthApi(String? height, String? weight, String? waistCircumference,

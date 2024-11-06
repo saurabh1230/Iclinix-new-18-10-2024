@@ -68,9 +68,7 @@ class ProfileScreen extends StatelessWidget {
                     authControl.userData!.lastName.toString();
                 _dateController.text = authControl.patientData!.dob.toString();
               }
-              return authControl.userDataLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : SingleChildScrollView(
+              return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: Dimensions.paddingSizeDefault),
@@ -308,7 +306,6 @@ class ProfileScreen extends StatelessWidget {
                           onChanged: (String? newValue) {
                             if (newValue != null) {
                               profileControl.updateGlasses(newValue);
-                              print(profileControl.selectedGlasses);
                             }
                           },
                           showTitle: true,

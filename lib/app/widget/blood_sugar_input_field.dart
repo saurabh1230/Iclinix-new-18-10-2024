@@ -29,6 +29,7 @@ class BloodSugarInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        sizedBox5(),
         // Text(
         //   title,
         //   style: openSansSemiBold.copyWith(
@@ -36,7 +37,7 @@ class BloodSugarInput extends StatelessWidget {
         //     color: Theme.of(context).disabledColor.withOpacity(0.30),
         //   ),
         // ),
-        sizedBoxDefault(), // Assuming you have a custom SizedBox widget
+        // sizedBoxDefault(), // Assuming you have a custom SizedBox widget
         CustomTextField(
           readOnly: readOnly, // Pass the readOnly parameter to CustomTextField
           inputType: TextInputType.number,

@@ -9,6 +9,8 @@ import 'package:iclinix/utils/sizeboxes.dart';
 import 'package:get/get.dart';
 import 'package:iclinix/utils/styles.dart';
 
+import '../../../widget/custom_dropdown_field.dart';
+
 class AddSugarLevelsDialog extends StatelessWidget {
   AddSugarLevelsDialog({super.key});
 
@@ -142,6 +144,12 @@ class AddSugarLevelsDialog extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      sizedBox20(),
+                      Text(
+                        'Test Date',
+                        style: openSansRegular.copyWith(fontSize: Dimensions.fontSize12),
+                      ),
+                      sizedBox5(),
                       CustomTextField(
                         controller: _dateController,
                         readOnly: true,
@@ -173,35 +181,121 @@ class AddSugarLevelsDialog extends StatelessWidget {
                         suffixText: '',
                       ),
                       sizedBox10(),
+                      Text(
+                        'Fasting Blood Sugar',
+                        style:   openSansRegular.copyWith(
+                            fontSize: Dimensions.fontSize12
+                        ), //,
+                      ),
                       BloodSugarInput(
-                        title: 'Blood Sugar Before Meal',
-                        hintText: 'Blood Sugar Before Meal',
+                        title: 'Fasting Blood Sugar',
+                        hintText: 'Fasting Blood Sugar',
                         controller: beforeMealController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select Fasting Blood Sugar ';
+                          }
+                          return null;
+                        },
                       ),
                       sizedBox10(),
-                      BloodSugarInput(
-                        title: 'Blood Sugar After Breakfast',
-                        hintText: 'Blood Sugar After Meal',
-                        controller: afterBreakfastController,
+                      CustomDropdownField(
+                        hintText: 'Postprandial Sugars',
+                        selectedValue: diabeticControl.selectedSugarCheck.isEmpty ? null : diabeticControl.selectedSugarCheck,
+                        options: diabeticControl.uniqueSugarCheckOptions,  // Use the unique options list here
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            diabeticControl.updateSugarCheck(newValue);
+                            print(diabeticControl.selectedSugarCheck);
+                          }
+                        },
+
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select Postprandial Sugar ';
+                          }
+                          return null;
+                        },
+
+                        showTitle: true, // Set to true to show title
                       ),
                       sizedBox10(),
-                      BloodSugarInput(
-                        title: 'Blood Sugar After Lunch',
-                        hintText: 'Blood Sugar After Meal',
-                        controller: afterLunchController,
+                      diabeticControl.selectedSugarCheck.isEmpty ? const SizedBox() :
+                      Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            diabeticControl.selectedSugarCheck,
+                            style:   openSansRegular.copyWith(
+                                fontSize: Dimensions.fontSize12
+                            ), //,
+                          ),
+                          BloodSugarInput(
+                            title:  diabeticControl.selectedSugarCheck,
+                            hintText:  diabeticControl.selectedSugarCheck,
+                            controller: beforeMealController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please select Blood Sugar ';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
                       ),
                       sizedBox10(),
-                      BloodSugarInput(
-                        title: 'Blood Sugar After Dinner',
-                        hintText: 'Blood Sugar After Meal',
-                        controller: afterDinnerController,
+                    Text(
+                      'HbA1c %',
+                      style: openSansRegular.copyWith(
+                          fontSize: Dimensions.fontSize12
                       ),
-                      sizedBox10(),
-                      BloodSugarInput(
-                        title: 'Blood Sugar Random Entry',
-                        hintText: 'Blood Sugar Random Entry',
-                        controller: randomEntryController,
-                      ),
+                    ),
+                      Obx(() {
+                        return Slider(
+                          value: diabeticControl.hbA1cPercentage.value,
+                          min: 5.0,  // Minimum HbA1c level
+                          max: 7.0,  // Maximum HbA1c level
+                          divisions: 20, // Allow 1 decimal precision by dividing into 20 steps
+                          label: diabeticControl.hbA1cPercentage.value.toStringAsFixed(1), // Show 1 decimal
+                          onChanged: (double newValue) {
+                            diabeticControl.hbA1cPercentage.value = newValue;  // Update the HbA1c percentage
+                          },
+                        );
+                      }),
+                      Obx(() {
+                        return Text(
+                          'Selected Percentage: ${diabeticControl.hbA1cPercentage.value} %',
+                          style: openSansRegular.copyWith(
+                              fontSize: Dimensions.fontSize12
+                          ),
+                        );
+                      }),
+
+
+
+
+                      // BloodSugarInput(
+                      //   title: 'Blood Sugar After Breakfast',
+                      //   hintText: 'Blood Sugar After Meal',
+                      //   controller: afterBreakfastController,
+                      // ),
+                      // sizedBox10(),
+                      // BloodSugarInput(
+                      //   title: 'Blood Sugar After Lunch',
+                      //   hintText: 'Blood Sugar After Meal',
+                      //   controller: afterLunchController,
+                      // ),
+                      // sizedBox10(),
+                      // BloodSugarInput(
+                      //   title: 'Blood Sugar After Dinner',
+                      //   hintText: 'Blood Sugar After Meal',
+                      //   controller: afterDinnerController,
+                      // ),
+                      // sizedBox10(),
+                      // BloodSugarInput(
+                      //   title: 'Blood Sugar Random Entry',
+                      //   hintText: 'Blood Sugar Random Entry',
+                      //   controller: randomEntryController,
+                      // ),
 
                       sizedBoxDefault(),
                       sizedBoxDefault(),
@@ -228,8 +322,7 @@ class AddSugarLevelsDialog extends StatelessWidget {
                               isBold: false,
                               fontSize: Dimensions.fontSize14,
                               onPressed: () {
-                                if (_formKey.currentState!
-                                    .validate()) {
+                                if (_formKey.currentState!.validate()) {
                                   diabeticControl.addSugarApi(
                                     beforeMealController.text,
                                     afterBreakfastController.text,

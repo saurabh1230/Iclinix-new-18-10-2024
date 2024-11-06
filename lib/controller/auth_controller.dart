@@ -11,6 +11,7 @@ import 'package:iclinix/data/repo/auth_repo.dart';
 import 'package:iclinix/helper/route_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import '../app/widget/loading_widget.dart';
 import '../helper/date_converter.dart';
 
 class AuthController extends GetxController implements GetxService {
@@ -204,6 +205,7 @@ class AuthController extends GetxController implements GetxService {
   PatientData? get patientData => _patientData;
 
   Future<ApiResponse?> userDataApi() async {
+    LoadingDialog.showLoading(message: "Please wait...");
     _userDataLoading = true;
     _userData = null;
     _patientData = null;
@@ -224,6 +226,7 @@ class AuthController extends GetxController implements GetxService {
     }
 
     _userDataLoading = false;
+    LoadingDialog.hideLoading();
     update();
     return ApiResponse(userData: _userData, patientData: _patientData); // Return the combined response
   }

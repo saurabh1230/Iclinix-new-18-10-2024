@@ -13,6 +13,7 @@ import 'package:iclinix/app/screens/home/home_screen.dart';
 import 'package:iclinix/controller/appointment_controller.dart';
 import 'package:iclinix/controller/auth_controller.dart';
 import 'package:iclinix/controller/profile_controller.dart';
+import 'package:iclinix/helper/route_helper.dart';
 import 'package:iclinix/utils/dimensions.dart';
 import 'package:iclinix/utils/images.dart';
 
@@ -73,6 +74,13 @@ class DashboardScreenState extends State<DashboardScreen> {
         onWillPop: Get.find<AuthController>().handleOnWillPop,
         child: SafeArea(
           child: Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Get.toNamed(RouteHelper.getChatRoute());
+              },
+              child: Image.asset(Images.icChat,
+              height: 28,width: 28,),
+            ),
             extendBody: true,
             resizeToAvoidBottomInset: false,
             bottomNavigationBar: Container(

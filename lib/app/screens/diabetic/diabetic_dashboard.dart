@@ -7,6 +7,7 @@ import 'package:iclinix/app/widget/custom_app_bar.dart';
 import 'package:flutter_slide_drawer/flutter_slide_widget.dart';
 import 'package:iclinix/app/widget/custom_button_widget.dart';
 import 'package:iclinix/app/widget/custom_drawer_widget.dart';
+import 'package:iclinix/controller/appointment_controller.dart';
 import 'package:iclinix/controller/diabetic_controller.dart';
 import 'package:iclinix/helper/route_helper.dart';
 import 'package:iclinix/utils/dimensions.dart';
@@ -48,15 +49,15 @@ class DiabeticDashboard extends StatelessWidget {
             }),
             menuWidget: Row(
               children: [
-                IconButton(
-                    onPressed: () {
-                      Get.toNamed(RouteHelper.getChatRoute());
-                    },
-                    icon: Icon(
-                      Icons.message_outlined,
-                      color: Theme.of(context).primaryColor,
-                    )),
-                sizedBoxW10(),
+                // IconButton(
+                //     onPressed: () {
+                //       Get.toNamed(RouteHelper.getChatRoute());
+                //     },
+                //     icon: Icon(
+                //       Icons.message_outlined,
+                //       color: Theme.of(context).primaryColor,
+                //     )),
+                // sizedBoxW10(),
                 const NotificationButton()
               ],
             ),
@@ -72,6 +73,28 @@ class DiabeticDashboard extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Image.asset(Images.icDiabeticBanner),
+                      sizedBox20(),
+                      CustomButtonWidget(
+                        useGradient: true,
+                        gradient: const LinearGradient(
+                          colors: [Color(0xff67D7C3), Color(0xff19BB94)],
+                          stops: [0, 1],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        buttonText: 'Book Appointment',
+                        onPressed: () {
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   const SnackBar(
+                          //     content: Text('Diabetic Clinic currently unavailable.'),
+                          //   ),
+                          // );
+                          Get.find<AppointmentController>().selectBookingType(true);
+                          Get.toNamed(RouteHelper.getAllClinicRoute(isBackButton: true));
+                        },
+                      ),
+                      sizedBox10(),
                       Container(
                         width: Get.size.width,
                         clipBehavior: Clip.hardEdge,
@@ -163,6 +186,7 @@ class DiabeticDashboard extends StatelessWidget {
                       // const CurrentMedicationComponent(),
                       // sizedBoxDefault(),
                       const ResourcesComponent(),
+                      sizedBox100(),
                     ],
                   );
                 }),

@@ -11,6 +11,7 @@ import 'package:iclinix/helper/date_converter.dart';
 import 'package:iclinix/helper/route_helper.dart';
 import 'package:iclinix/utils/images.dart';
 
+import '../app/widget/loading_widget.dart';
 import '../data/models/body/appointment_model.dart';
 import 'profile_controller.dart';
 
@@ -243,6 +244,7 @@ class AppointmentController extends GetxController implements GetxService {
 
   Future<void> getAppointmentHistory() async {
     _isAppointmentHistoryLoading = true;
+    LoadingDialog.showLoading(message: "Please wait...");
     update();
 
     try {
@@ -265,7 +267,9 @@ class AppointmentController extends GetxController implements GetxService {
     } catch (error) {
       print("Error while fetching appointment history: $error");
     } finally {
+
       _isAppointmentHistoryLoading = false;
+      LoadingDialog.hideLoading();
       update();
     }
   }

@@ -15,6 +15,8 @@ import 'package:iclinix/data/repo/appointment_repo.dart';
 import 'package:iclinix/data/repo/clinic_repo.dart';
 import 'package:iclinix/helper/date_converter.dart';
 
+import '../app/widget/loading_widget.dart';
+
 class ClinicController extends GetxController implements GetxService {
   final ClinicRepo clinicRepo;
   final ApiClient apiClient;
@@ -32,6 +34,7 @@ class ClinicController extends GetxController implements GetxService {
   bool get isClinicLoading => _isClinicLoading;
 
   Future<void> getClinicList() async {
+    LoadingDialog.showLoading(message: "Please wait...");
     _isClinicLoading = true;
     update();
     try {
@@ -47,6 +50,7 @@ class ClinicController extends GetxController implements GetxService {
       print("Error while fetching Plans list: $error");
     }
     _isClinicLoading = false;
+    LoadingDialog.hideLoading();
     update();
   }
 

@@ -13,6 +13,7 @@ import 'package:iclinix/data/repo/profile_repo.dart';
 import 'package:iclinix/utils/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controller/chat_controller.dart';
 import '../controller/diabetic_controller.dart';
 
 
@@ -39,6 +40,7 @@ Future<void>   init() async {
   Get.lazyPut(() => ClinicController(clinicRepo:  Get.find(), apiClient: Get.find()));
   Get.lazyPut(() => ProfileController(profileRepo: Get.find(), apiClient: Get.find()));
   Get.lazyPut(() => DiabeticController(diabeticRepo: Get.find(), apiClient: Get.find()));
+  Get.lazyPut(() => ChatController());
 
 
 
