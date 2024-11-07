@@ -16,17 +16,19 @@ class DiabeticRepo {
   DiabeticRepo({required this.apiClient,});
 
 
-  Future<Response> dailySugarCheckUpRepo(String? beforeMeal,
-      String? afterBreakFast,String? afterLunch,
-      String? afterDinner, String? randomEntry,String? checkingDate,) {
+  Future<Response> dailySugarCheckUpRepo(String? testType,
+      String? checkingTime,
+      String? fastingSugar,
+      String? measuredValue,
+      String? checkingDate,
+      String? hbA1c,) {
     return apiClient.postData(AppConstants.dailySugarCheckup, {
-      'before_meal' : beforeMeal,
-      'after_breakfast' :afterBreakFast,
-      'after_lunch' : afterLunch,
-      'after_dinner' : afterDinner,
-      'random_entry' :randomEntry,
-      'checking_date' : checkingDate,
-      // 'patient_id' :patientId,
+      'test_type' : testType,
+      'checking_time' : checkingTime,
+      'fasting_suger' : fastingSugar,
+      'measured_value' : measuredValue,
+      'test_date' : checkingDate,
+      'hbA1c' : hbA1c,
     });
   }
 
@@ -48,8 +50,12 @@ class DiabeticRepo {
       'dura_diabetes' :duraDiabetes,
     });
   }
+
   Future<Response> fetchResourceContentRepo(String id) {
     return apiClient.getData('${AppConstants.resourceContent}/$id',method: 'GET');
+  }
+  Future<Response> fetchSubscribedPatientDataRepo() {
+    return apiClient.getData(AppConstants.subscribedPatientDetails,method: 'GET');
   }
 
 

@@ -12,7 +12,7 @@ import '../../../../utils/styles.dart';
 import '../../../widget/custom_snackbar.dart';
 
 class AddHealthParameterDialog extends StatefulWidget {
-  AddHealthParameterDialog({super.key});
+  const AddHealthParameterDialog({super.key});
 
   @override
   _AddHealthParameterDialogState createState() => _AddHealthParameterDialogState();
@@ -29,6 +29,7 @@ class _AddHealthParameterDialogState extends State<AddHealthParameterDialog> wit
   final diastolicBpController = TextEditingController();
   final bpDateController = TextEditingController();
   final bpTimeController = TextEditingController();
+  final otherHealthController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late TabController _tabController;
@@ -36,18 +37,21 @@ class _AddHealthParameterDialogState extends State<AddHealthParameterDialog> wit
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this); // 2 tabs (Health Data, BP Data)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _tabController = TabController(length: 2, vsync: this);
+      Get.find<DiabeticController>().getSubscribedPatientDataApi();
+    });
   }
 
   void _calculateBMI() {
     double weight = double.tryParse(weightController.text) ?? 0.0;
-    double heightInMeters = (double.tryParse(heightController.text) ?? 0.0) / 100; // Convert cm to meters
+    double heightInMeters = (double.tryParse(heightController.text) ?? 0.0) / 100;
 
     if (heightInMeters > 0) {
       double bmi = weight / (heightInMeters * heightInMeters);
-      bMIController.text = bmi.toStringAsFixed(2); // Show BMI with 2 decimal places
+      bMIController.text = bmi.toStringAsFixed(2);
     } else {
-      bMIController.clear(); // Clear the BMI field if height is invalid
+      bMIController.clear();
     }
   }
 
@@ -60,8 +64,20 @@ class _AddHealthParameterDialogState extends State<AddHealthParameterDialog> wit
         key: _formKey,
         child: SingleChildScrollView(
           child: GetBuilder<DiabeticController>(builder: (controller) {
-            bpDateController.text = controller.formattedDate!;
-            bpTimeController.text = controller.formattedTime!;
+            bpDateController.text = controller.formattedDate ?? '';
+            bpTimeController.text = controller.formattedTime ?? '';
+            weightController.text = controller.subscribedPatientData?.weight ?? '';
+            heightController.text = controller.subscribedPatientData?.height?.toString() ?? '';
+            waistController.text = controller.subscribedPatientData?.waistCircumference?.toString() ?? '';
+            hipController.text = controller.subscribedPatientData?.hipCircumference?.toString() ?? '';
+            daibetesController.text = controller.subscribedPatientData?.duraDiabetes?.toString() ?? '';
+            double weight = double.tryParse(weightController.text) ?? 0;
+            double height = double.tryParse(heightController.text) ?? 0;
+            String bmi = '';
+            if (height > 0) {
+              bmi = (weight / ((height / 100) * (height / 100))).toStringAsFixed(2); // height in cm
+            }
+            bMIController.text = bmi;
             return Padding(
               padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
               child: Column(
@@ -197,7 +213,7 @@ class _AddHealthParameterDialogState extends State<AddHealthParameterDialog> wit
                                 BloodSugarInput(
                                   title: 'Any Other Health Condition / Co-Morbidities',
                                   hintText: 'Any Other Health Condition / Co-Morbidities',
-                                  controller: waistController,
+                                  controller: otherHealthController,
                                   suffixText: '',
                                   // validator: (value) {
                                   //   if (value == null || value.isEmpty) {
@@ -385,7 +401,6 @@ class _AddHealthParameterDialogState extends State<AddHealthParameterDialog> wit
                       ],
                     ),
                   ),
-
                 ],
               ),
             );

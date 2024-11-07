@@ -25,6 +25,7 @@ class AppConstants {
   static const String diabeticDashboard = "dashboard";
   static const String healthCheckup = "update-body-data";
   static const String resourceContent = "resouce-content";
+  static const String subscribedPatientDetails = "subscribed-patient-details";
 
   /// image url ///
   static const String serviceImageUrl = "https://lab5.invoidea.in/iclinix/public/serviceImage/";

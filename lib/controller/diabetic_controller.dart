@@ -5,6 +5,7 @@ import 'package:iclinix/app/widget/custom_snackbar.dart';
 import 'package:iclinix/app/widget/loading_widget.dart';
 import 'package:iclinix/data/api/api_client.dart';
 import 'package:iclinix/data/models/response/diabetic_dashboard_detail_model.dart';
+import 'package:iclinix/data/models/response/patient_data_model.dart';
 import 'package:iclinix/data/models/response/sugar_checkup_model.dart';
 import 'package:iclinix/data/repo/diabetic_repo.dart';
 import 'package:iclinix/helper/date_converter.dart';
@@ -76,12 +77,19 @@ class DiabeticController extends GetxController implements GetxService {
   void toggleTab(bool isHealthData) {
     isHealthDataTabActive.value = isHealthData;
   }
-
   var selectedSugarCheck = '';  // Initialize as an empty string
   final List<String> sugarCheckOptions = ['Post Breakfast', 'Post Lunch', 'Post Dinner', 'Bedtime'];
   late List<String> uniqueSugarCheckOptions = [];  // Initialize as empty list
 
+// This will map string values to corresponding numeric values
+  final Map<String, int> sugarCheckMapping = {
+    'Post Breakfast': 2,
+    'Post Lunch': 3,
+    'Post Dinner': 4,
+    'Bedtime': 5,
+  };
 
+  int selectedSugarCheckValue = 0; // Initialize numeric variable for the selected value
 
   void generateUniqueSugarCheckOptions() {
     uniqueSugarCheckOptions = sugarCheckOptions.toSet().toList();  // Remove duplicates
@@ -89,6 +97,7 @@ class DiabeticController extends GetxController implements GetxService {
 
   void updateSugarCheck(String val) {
     selectedSugarCheck = val;
+    selectedSugarCheckValue = sugarCheckMapping[val] ?? 0;  // Convert to numeric value
     update();  // Use GetX to update state
   }
 
@@ -185,11 +194,12 @@ class DiabeticController extends GetxController implements GetxService {
   bool _isDailySugarCheckupLoading = false;
   bool get isDailySugarCheckupLoading => _isDailySugarCheckupLoading;
 
-  Future<void> addSugarApi(String? beforeMeal, String? afterBreakFast, String? afterLunch, String? afterDinner, String? randomEntry,String? checkingDate) async {
+  Future<void> addSugarApi(String? testType, String? checkingTime, String? fastingSugar, String? measuredValue, String? checkingDate,
+      String? hbA1c,) async {
     _isDailySugarCheckupLoading = true;
     update();
     Response response = await diabeticRepo.dailySugarCheckUpRepo(
-        beforeMeal,afterBreakFast,afterLunch, afterDinner,randomEntry,checkingDate
+        testType, checkingTime,fastingSugar, measuredValue,checkingDate,hbA1c
     );
     if(response.statusCode == 200) {
       var responseData = response.body;
@@ -304,8 +314,8 @@ class DiabeticController extends GetxController implements GetxService {
             textResources.clear();
 
             // Categorize resources by type
-            if (planDetailsData.containsKey('attachedPlanResources') && planDetailsData['attachedPlanResources'] != null) {
-              for (var resourceData in planDetailsData['attachedPlanResources']) {
+            if (planDetailsData.containsKey('plan_resources') && planDetailsData['plan_resources'] != null) {
+              for (var resourceData in planDetailsData['plan_resources']) {
                 final PlanResourceModel resource = PlanResourceModel.fromJson(resourceData);
                 switch (resource.type) {
                   case 1:
@@ -466,6 +476,38 @@ class DiabeticController extends GetxController implements GetxService {
           snackPosition: SnackPosition.BOTTOM);
     }
   }
+
+
+  bool _isPatientDataLoading = false;
+  bool get isPatientDataLoading => _isPatientDataLoading;
+
+  SubscribedPatientModel? _subscribedPatientData;
+  SubscribedPatientModel? get subscribedPatientData => _subscribedPatientData;
+
+  Future<SubscribedPatientModel?> getSubscribedPatientDataApi() async {
+    _isPatientDataLoading = true;
+    _subscribedPatientData = null;
+    update();
+
+    try {
+      Response response = await diabeticRepo.fetchSubscribedPatientDataRepo();
+      if (response.statusCode == 200) {
+        final data = response.body['data'];
+        _subscribedPatientData = SubscribedPatientModel.fromJson(data);
+      } else {
+        // Handle non-200 status codes
+        print("Failed to subscribedPatientData data: ${response.statusCode}");
+        // ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      // Handle exceptions
+      print("Exception occurred: $e");
+    }
+    _isPatientDataLoading = false;
+    update();
+    return _subscribedPatientData;
+  }
+
 
 
 

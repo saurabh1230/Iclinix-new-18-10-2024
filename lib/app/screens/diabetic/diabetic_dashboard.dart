@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iclinix/app/screens/diabetic/components/add_sugar_levels_dialog.dart';
 import 'package:iclinix/app/screens/diabetic/components/routine_component.dart';
@@ -6,6 +7,7 @@ import 'package:iclinix/app/widget/common_widgets.dart';
 import 'package:iclinix/app/widget/custom_app_bar.dart';
 import 'package:flutter_slide_drawer/flutter_slide_widget.dart';
 import 'package:iclinix/app/widget/custom_button_widget.dart';
+import 'package:iclinix/app/widget/custom_containers.dart';
 import 'package:iclinix/app/widget/custom_drawer_widget.dart';
 import 'package:iclinix/controller/appointment_controller.dart';
 import 'package:iclinix/controller/diabetic_controller.dart';
@@ -29,6 +31,7 @@ class DiabeticDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<DiabeticController>().getDiabeticDashboard();
+
     });
     return SliderDrawerWidget(
       key: drawerKey,
@@ -47,17 +50,40 @@ class DiabeticDashboard extends StatelessWidget {
             drawerButton: CustomMenuButton(tap: () {
               drawerKey.currentState!.toggleDrawer();
             }),
-            menuWidget: Row(
+            menuWidget:  Row(
               children: [
-                // IconButton(
-                //     onPressed: () {
-                //       Get.toNamed(RouteHelper.getChatRoute());
-                //     },
-                //     icon: Icon(
-                //       Icons.message_outlined,
-                //       color: Theme.of(context).primaryColor,
-                //     )),
-                // sizedBoxW10(),
+                PopupMenuButton<String>(
+                  icon: Icon(CupertinoIcons.add,color: Theme.of(context).primaryColor,),
+                  onSelected: (String value) {
+                    // Handle selected menu option
+                    print('Selected: $value');
+                  },
+                  itemBuilder: (BuildContext context) => [
+                     PopupMenuItem<String>(
+                      onTap: () {
+                        Get.dialog(AddSugarLevelsDialog());
+                      },
+                      value: 'Add Sugar',
+                      child: Text('Add Sugar'),
+                    ),
+                     PopupMenuItem<String>(
+                       onTap: () {
+                         Get.dialog(AddSugarLevelsDialog(isBp: true,));
+                       },
+                      value: 'Add Bp',
+                      child: Text('Add Bp'),
+                    ),
+                     PopupMenuItem<String>(
+                       onTap: () {
+                         Get.dialog(AddHealthParameterDialog());
+                       },
+                      value: 'Add Health Data',
+                      child: Text('Add Health Data'),
+                    ),
+                  ],
+                ),
+                sizedBoxW15(),
+
                 const NotificationButton()
               ],
             ),
@@ -73,8 +99,7 @@ class DiabeticDashboard extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(Images.icDiabeticBanner),
-                      sizedBox20(),
+
                       CustomButtonWidget(
                         useGradient: true,
                         gradient: const LinearGradient(
@@ -145,34 +170,34 @@ class DiabeticDashboard extends StatelessWidget {
                       const Text('Today’s Blood Sugar Parameters',
                           style: openSansSemiBold),
                       sizedBoxDefault(),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: CustomButtonWidget(
-                              buttonText: 'Blood Sugar Level',
-                              onPressed: () {
-                                Get.dialog(AddSugarLevelsDialog());
-                              },
-                              isBold: false,
-                              fontSize: Dimensions.fontSize14,
-                              transparent: true,
-                            ),
-                          ),
-                          sizedBoxW15(),
-                          Flexible(
-                            child: CustomButtonWidget(
-                              buttonText: 'Health Parameters',
-                              onPressed: () {
-                                Get.dialog(AddHealthParameterDialog());
-                              },
-                              isBold: false,
-                              fontSize: Dimensions.fontSize14,
-                              transparent: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                      sizedBoxDefault(),
+                      // Row(
+                      //   children: [
+                      //     Flexible(
+                      //       child: CustomButtonWidget(
+                      //         buttonText: 'Blood Sugar Level',
+                      //         onPressed: () {
+                      //           Get.dialog(AddSugarLevelsDialog());
+                      //         },
+                      //         isBold: false,
+                      //         fontSize: Dimensions.fontSize14,
+                      //         transparent: true,
+                      //       ),
+                      //     ),
+                      //     sizedBoxW15(),
+                      //     Flexible(
+                      //       child: CustomButtonWidget(
+                      //         buttonText: 'Health Parameters',
+                      //         onPressed: () {
+                      //           Get.dialog(AddHealthParameterDialog());
+                      //         },
+                      //         isBold: false,
+                      //         fontSize: Dimensions.fontSize14,
+                      //         transparent: true,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // sizedBoxDefault(),
 
                       // Check for null or empty list
                       if (!isListEmpty) ...[
