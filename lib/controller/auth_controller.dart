@@ -102,12 +102,12 @@ class AuthController extends GetxController implements GetxService {
       var responseData = response.body;
       if (responseData["message"].contains("OTP sent to your mobile number")) {
         String otp = responseData['otp'].toString();
-        _isLoading = false;
+        _isLoginLoading = false;
         update();
         showCustomSnackBar(responseData['message'], isError: false);
         Get.toNamed(RouteHelper.getOtpVerificationRoute(phoneNo));
       } else {
-        _isLoading = false;
+        _isLoginLoading = false;
         update();
         return showCustomSnackBar(responseData['message'], isError: true);
       }
