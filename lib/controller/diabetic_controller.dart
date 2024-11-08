@@ -5,6 +5,7 @@ import 'package:iclinix/app/widget/custom_snackbar.dart';
 import 'package:iclinix/app/widget/loading_widget.dart';
 import 'package:iclinix/data/api/api_client.dart';
 import 'package:iclinix/data/models/response/diabetic_dashboard_detail_model.dart';
+import 'package:iclinix/data/models/response/health_goal_model.dart';
 import 'package:iclinix/data/models/response/patient_data_model.dart';
 import 'package:iclinix/data/models/response/sugar_checkup_model.dart';
 import 'package:iclinix/data/repo/diabetic_repo.dart';
@@ -427,6 +428,42 @@ class DiabeticController extends GetxController implements GetxService {
     return _resourceDetail;
   }
 
+  Future<void> addHealthGoalApi(String? title, String? description) async {
+    LoadingDialog.showLoading(message: "Please wait...");
+    update();
+
+    // Call API to add health goal
+    Response response = await diabeticRepo.addHealthGoal(title, description);
+
+    if (response.statusCode == 200) {
+      var responseData = response.body;
+
+      // Check if the health goal was successfully created
+      if (responseData["message"] == "health goal created successfully") {
+        // Close the loading dialog
+        Get.back(); // Close the current screen (dialog or page)
+
+        // Call the method to refresh the health goals data
+        await Get.find<DiabeticController>().getHealthGoalApi();
+
+        // Show success message
+        showCustomSnackBar('Added Successfully');
+      } else {
+        // Show error message if creation fails
+        showCustomSnackBar(responseData["message"], isError: true);
+      }
+    } else {
+      // Handle the case when the API call fails
+      showCustomSnackBar('Failed to add health goal. Please try again.', isError: true);
+    }
+
+    // Close the loading dialog
+    LoadingDialog.hideLoading();
+    update();
+  }
+
+
+
 
 
   Future<void> downloadImage(String url, String imageName) async {
@@ -509,7 +546,47 @@ class DiabeticController extends GetxController implements GetxService {
   }
 
 
+  bool _loading = false;
+  bool get loading => _loading;
 
+  List<MedicalRecord>? _healthGoalData;
+  List<MedicalRecord>? get healthGoalData => _healthGoalData;
+
+  String? _healthGoal = '';
+  String? get healthGoal => _healthGoal;
+
+  // Call the API to fetch health goal data
+  Future<void> getHealthGoalApi() async {
+    _loading = true;
+    update();  // Trigger UI update for loading state
+    try {
+      Response response = await diabeticRepo.fetchHealthGoatDataRepo();
+      if (response.statusCode == 200) {
+        print("Full API Response: ${response.body}");
+        if (response.body != null && response.body.containsKey('data')) {
+          List<dynamic> responseData = response.body['data'];
+          _healthGoalData = responseData.map((json) => MedicalRecord.fromJson(json as Map<String, dynamic>)).toList();
+          print("Appointment data fetched successfully: $_healthGoalData");
+        } else {
+          print("No data key found in the response.");
+          _healthGoalData = [];
+        }
+      } else {
+        print("Error while fetching data history. Status code: ${response.statusCode} - ${response.statusText}");
+      }
+    } catch (error) {
+      print("Error while fetching data history: $error");
+    } finally {
+      _loading = false;
+      update();  // Trigger UI update for loading state
+    }
+  }
+
+  // Update the health goal value when the dropdown is changed
+  void updateHealthGoal(String newValue) {
+    _healthGoal = newValue;
+    update();  // Trigger UI update for the selected value
+  }
 
 
 

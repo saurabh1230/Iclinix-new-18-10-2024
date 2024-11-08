@@ -54,10 +54,21 @@ class DiabeticRepo {
   Future<Response> fetchResourceContentRepo(String id) {
     return apiClient.getData('${AppConstants.resourceContent}/$id',method: 'GET');
   }
+
   Future<Response> fetchSubscribedPatientDataRepo() {
     return apiClient.getData(AppConstants.subscribedPatientDetails,method: 'GET');
   }
 
+  Future<Response> addHealthGoal(String? title,String? description) {
+    return apiClient.postData(AppConstants.storeHealthGoal,{
+      'title' : title,
+      'description' : description,
+    });
+  }
+
+  Future<Response> fetchHealthGoatDataRepo() {
+    return apiClient.getData(AppConstants.fetchHealthGoal,method: 'GET');
+  }
 
 }
 

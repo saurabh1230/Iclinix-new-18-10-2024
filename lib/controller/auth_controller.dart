@@ -205,28 +205,24 @@ class AuthController extends GetxController implements GetxService {
   PatientData? get patientData => _patientData;
 
   Future<ApiResponse?> userDataApi() async {
-    LoadingDialog.showLoading(message: "Please wait...");
+    // LoadingDialog.showLoading(message: "Please wait...");
     _userDataLoading = true;
     _userData = null;
     _patientData = null;
     update();
-
     Response response = await authRepo.getUserData();
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = response.body;
       ApiResponse apiResponse = ApiResponse.fromJson(responseData);
-
       _userData = apiResponse.userData;
       _patientData = apiResponse.patientData;
       bool isSubscriptionActive = responseData['subscriptionArray']['status'] == 'active';
       await saveSubscriptionStatus(isSubscriptionActive);
-
     } else {
-      // Handle the error response if needed
-    }
 
+    }
     _userDataLoading = false;
-    LoadingDialog.hideLoading();
+    // LoadingDialog.hideLoading();
     update();
     return ApiResponse(userData: _userData, patientData: _patientData); // Return the combined response
   }

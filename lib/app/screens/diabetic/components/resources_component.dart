@@ -12,8 +12,16 @@ import 'package:iclinix/utils/styles.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
-
 import '../../../../data/models/response/diabetic_dashboard_detail_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import '../../../../helper/local_notification.dart';
+import '../../../widget/custom_snackbar.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/widgets.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 
 class ResourcesComponent extends StatelessWidget {
   const ResourcesComponent({super.key});
@@ -233,7 +241,7 @@ class ResourcesComponent extends StatelessWidget {
         ),
         sizedBox10(),
         SizedBox(
-          height: 200,
+          height: 180,
           child: ListView.separated(
             itemCount: dataImage.length,
             shrinkWrap: true,
@@ -358,7 +366,12 @@ class ResourcesComponent extends StatelessWidget {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          print('check');
+                          final url = '${AppConstants.resourcesImageUrl}${dataPdf[i].file}';
+                          downloadFile(url);
+
+                        },
                         child: Text(
                           'Download',
                           maxLines: 1,
@@ -429,5 +442,60 @@ class ResourcesComponent extends StatelessWidget {
 
   void _launchURL(String url) async {
     if (!await launch(url)) throw 'Could not launch $url';
+  }
+
+  Future<void> downloadFile(String fileUrl) async {
+    // Ask for permission
+    await Permission.manageExternalStorage.request();
+    var status = await Permission.manageExternalStorage.status;
+    if (status.isDenied) {
+      // Permission denied
+      return;
+    }
+
+    if (await Permission.storage.isRestricted) {
+      // Storage is restricted
+      return;
+    }
+
+    if (status.isGranted) {
+      var storageStatus = await Permission.storage.status;
+      if (!storageStatus.isGranted) {
+        await Permission.storage.request();
+      }
+
+      final response = await http.get(Uri.parse(fileUrl));
+      final bytes = response.bodyBytes;
+      final fileName = fileUrl.split('/').last;
+
+      try {
+        final directory = Directory('/storage/emulated/0/Download'); // Android default download folder
+        final filePath = '${directory.path}/$fileName';
+        File file = File(filePath);
+        await file.writeAsBytes(bytes);
+        showCustomSnackBar("File Saved to download folder", isError: false);
+        print('File downloaded to: $filePath');
+        _showNotification(fileName, filePath);
+      } catch (e) {
+        print('Error downloading file: $e');
+      }
+    }
+  }
+
+  Future<void> _showNotification(String fileName, String filePath) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+        'your channel id', 'your channel name',
+        importance: Importance.max, priority: Priority.high, ticker: 'ticker');
+
+    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        'Download Complete',
+        'File downloaded to: $filePath',
+        platformChannelSpecifics,
+        payload: filePath);
   }
 }

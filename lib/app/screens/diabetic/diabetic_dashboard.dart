@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iclinix/app/screens/diabetic/components/add_health_goal.dart';
 import 'package:iclinix/app/screens/diabetic/components/add_sugar_levels_dialog.dart';
 import 'package:iclinix/app/screens/diabetic/components/routine_component.dart';
 import 'package:iclinix/app/screens/diabetic/components/sugar_chart.dart';
@@ -18,15 +19,13 @@ import 'package:iclinix/utils/sizeboxes.dart';
 import 'package:iclinix/utils/styles.dart';
 import 'package:get/get.dart';
 import 'package:iclinix/utils/themes/light_theme.dart';
-import 'components/current_medication_component.dart';
 import 'components/health_parameter_dialog.dart';
 import 'components/resources_component.dart';
 
+
 class DiabeticDashboard extends StatelessWidget {
   DiabeticDashboard({super.key});
-
   final GlobalKey<SliderDrawerWidgetState> drawerKey = GlobalKey<SliderDrawerWidgetState>();
-
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -55,7 +54,6 @@ class DiabeticDashboard extends StatelessWidget {
                 PopupMenuButton<String>(
                   icon: Icon(CupertinoIcons.add,color: Theme.of(context).primaryColor,),
                   onSelected: (String value) {
-                    // Handle selected menu option
                     print('Selected: $value');
                   },
                   itemBuilder: (BuildContext context) => [
@@ -64,21 +62,21 @@ class DiabeticDashboard extends StatelessWidget {
                         Get.dialog(AddSugarLevelsDialog());
                       },
                       value: 'Add Sugar',
-                      child: Text('Add Sugar'),
+                      child: const Text('Add Sugar'),
                     ),
                      PopupMenuItem<String>(
                        onTap: () {
                          Get.dialog(AddSugarLevelsDialog(isBp: true,));
                        },
                       value: 'Add Bp',
-                      child: Text('Add Bp'),
+                      child: const Text('Add Bp'),
                     ),
                      PopupMenuItem<String>(
                        onTap: () {
-                         Get.dialog(AddHealthParameterDialog());
+                         Get.dialog(const AddHealthParameterDialog());
                        },
                       value: 'Add Health Data',
-                      child: Text('Add Health Data'),
+                      child: const Text('Add Health Data'),
                     ),
                   ],
                 ),
@@ -95,11 +93,11 @@ class DiabeticDashboard extends StatelessWidget {
                   final sugarList = diabeticControl.sugarChartList;
                   final isListEmpty = sugarList == null || sugarList.isEmpty;
                   final isSugarLoading = diabeticControl.isDailySugarCheckupLoading;
+                  final planDetails = diabeticControl.planDetails;
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       CustomButtonWidget(
                         useGradient: true,
                         gradient: const LinearGradient(
@@ -134,7 +132,9 @@ class DiabeticDashboard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Plan Name Pre Diabetes',
+                                diabeticControl.planDetails != null
+                                    ? diabeticControl.planDetails!.planName.toString()
+                                    : "N/A",
                                 style: openSansRegular.copyWith(
                                     color: Theme.of(context).cardColor,
                                     fontSize: Dimensions.fontSizeDefault),
@@ -161,14 +161,10 @@ class DiabeticDashboard extends StatelessWidget {
                                   ],
                                 ),
                               ),
-
                             ],
                           ),
                         ),
                       ),
-                      sizedBoxDefault(),
-                      const Text('Today’s Blood Sugar Parameters',
-                          style: openSansSemiBold),
                       sizedBoxDefault(),
                       // Row(
                       //   children: [
@@ -201,10 +197,14 @@ class DiabeticDashboard extends StatelessWidget {
 
                       // Check for null or empty list
                       if (!isListEmpty) ...[
+                        const Text('Today’s Blood Sugar Parameters',
+                            style: openSansSemiBold),
+                        sizedBoxDefault(),
                         SugarChart(),
                       ],
                       sizedBoxDefault(),
-                      
+                      const AddHealthGoal(),
+
                       // sizedBoxDefault(),
                       // const RoutineComponent(),
                       sizedBoxDefault(),

@@ -199,11 +199,9 @@ class AppointmentController extends GetxController implements GetxService {
   bool get isBookingLoading => _isBookingLoading;
 
   Future<void> bookAppointmentApi(AppointmentModel appointment) async {
-    _isBookingLoading = true;
+    // _isBookingLoading = true;
     update();
-
     Response response = await appointmentRepo.bookAppointmentRepo(appointment);
-
     if (response.statusCode == 200) {
       Get.toNamed(RouteHelper.getBookingSuccessfulRoute(
           appointment.appointmentTime,
@@ -215,7 +213,6 @@ class AppointmentController extends GetxController implements GetxService {
       update();
       print('Failed to book appointment');
     }
-
     _isBookingLoading = false;
     update();
   }

@@ -26,16 +26,15 @@ class AppConstants {
   static const String healthCheckup = "update-body-data";
   static const String resourceContent = "resouce-content";
   static const String subscribedPatientDetails = "subscribed-patient-details";
+  static const String storeHealthGoal = "store/health-goal";
+  static const String fetchHealthGoal = "get/health-goal";
+
+
 
   /// image url ///
   static const String serviceImageUrl = "https://lab5.invoidea.in/iclinix/public/serviceImage/";
   static const String branchImageUrl = "https://lab5.invoidea.in/iclinix/public/branch_image/";
   static const String resourcesImageUrl = "https://lab5.invoidea.in/iclinix/public/diabetic_resource/";
-
-
-
-
-
 
   // Shared Key
   static const String theme = 'theme';

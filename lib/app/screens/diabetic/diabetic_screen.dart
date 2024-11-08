@@ -44,7 +44,6 @@ class DiabeticScreen extends StatelessWidget {
           ),
             drawerButton : CustomMenuButton(tap: () {
               drawerKey.currentState!.toggleDrawer();
-
             })
         ),
         body: GetBuilder<AuthController>(builder: (appointControl) {
