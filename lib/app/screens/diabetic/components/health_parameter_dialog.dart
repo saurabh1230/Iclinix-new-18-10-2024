@@ -91,8 +91,7 @@ class _AddHealthParameterDialogState extends State<AddHealthParameterDialog> wit
                     child:
                     Text('Heath Data',style: openSansMedium.copyWith(
                         fontSize: Dimensions.fontSizeDefault,
-                        color: Theme.of(context).cardColor
-                    ),),
+                        color: Theme.of(context).cardColor),),
                   ),
                   sizedBox10(),
                   SingleChildScrollView(

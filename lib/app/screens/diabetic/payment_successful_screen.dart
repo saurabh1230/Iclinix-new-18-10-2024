@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iclinix/app/screens/dashboard/dashboard_screen.dart';
 import 'package:iclinix/app/widget/custom_button_widget.dart';
 import 'package:iclinix/app/widget/custom_containers.dart';
 import 'package:iclinix/controller/auth_controller.dart';
@@ -40,14 +41,13 @@ class PlanBookingSuccessfulScreen extends StatelessWidget {
                       fontSize: Dimensions.fontSize12,
                       color: Theme.of(context).disabledColor.withOpacity(0.70)),),
                 sizedBox40(),
-                CustomButtonWidget(buttonText: 'Go To Dashboard',
+                CustomButtonWidget(buttonText: 'Go To Diabetic Dashboard',
                   transparent: true,
                   isBold: false,
                   fontSize: Dimensions.fontSize14,
                   onPressed: () {
                     Get.find<AuthController>().userDataApi();
-                    // Get.toNamed(RouteHelper.getInitialRoute());
-                    Get.toNamed(RouteHelper.getDashboardRoute());
+                    Get.to(const DashboardScreen(pageIndex: 1));
                   },),
 
 
