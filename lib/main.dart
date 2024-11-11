@@ -7,16 +7,10 @@ import 'package:iclinix/utils/app_constants.dart';
 import 'package:iclinix/utils/themes/light_theme.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
-  // Initialize the notification plugin
-
-  // Initialize the plugin
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
   const androidInitialization = AndroidInitializationSettings('@mipmap/ic_launcher');
   const initializationSettings = InitializationSettings(android: androidInitialization);
 
